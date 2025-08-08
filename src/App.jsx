@@ -88,7 +88,7 @@ const PROJECTS = [
       "Ingested and analyzed ~5M hourly ridership records (2020–2024) to model demand patterns, cluster stations, and detect anomalies; trained linear/RandomForest/GBT models as delay proxies.",
     stack: ["PySpark", "Athena", "S3", "Spark MLlib", "Tableau"],
     impact: ["~5M rows processed", "Station typologies via KMeans", "Rolling anomaly detection"],
-    links: { github: "#", demo: "#" },
+    links: { github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection", demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing" },
   },
   {
     title: "ASL Recognition (CV + Temporal Smoothing)",
