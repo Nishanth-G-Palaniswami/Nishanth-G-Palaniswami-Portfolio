@@ -332,6 +332,16 @@ export default function Portfolio() {
                           <ExternalLink className="h-4 w-4"/> Demo
                         </a>
                       )}
+                      {p.links?.ieee && (
+                        <a
+                          href={p.links.ieee}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 hover:underline"
+                        >
+                          <ExternalLink className="h-4 w-4" /> IEEE Publication
+                        </a>
+                      )}
                     </div>
                   </div>
                 </Card>
