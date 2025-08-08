@@ -97,7 +97,7 @@ const PROJECTS = [
       "Prototyped sign recognition with data augmentation and temporal smoothing; exported for edge‑friendly formats (TorchScript/TFLite).",
     stack: ["PyTorch", "OpenCV", "TensorFlow"],
     impact: ["Deployable model artifacts", "Baseline‑beating prototype"],
-    links: { github: "#", demo: "#" },
+    links: { github: "https://github.com/Nishanth-G-Palaniswami/english-asl", 'IEEE Publication': "https://ieeexplore.ieee.org/document/10725877" },
   },
   {
     title: "MLOps for Agri Drones — Crop Health Inference API",
