@@ -204,9 +204,20 @@ export default function Portfolio() {
             </h1>
             <p className="mt-3 text-lg text-slate-700">{PROFILE.tagline}</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Badge><Globe className="h-3.5 w-3.5 mr-1"/> {PROFILE.location}</Badge>
-              <Badge><Cpu className="h-3.5 w-3.5 mr-1"/> Grad: {PROFILE.graduation}</Badge>
-              <Badge><Cloud className="h-3.5 w-3.5 mr-1"/> {PROFILE.workAuth}</Badge>
+              {/* University first, with logo */}
+              <Badge>
+                <img src="/nyu-logo.png" alt="NYU" className="h-3.5 w-3.5 mr-1 rounded-sm" />
+                {PROFILE.University}
+              </Badge>
+            
+              {/* Location */}
+              <Badge>
+                <Globe className="h-3.5 w-3.5 mr-1" /> {PROFILE.location}
+              </Badge>
+            
+              {/* Graduation & Work Auth */}
+              <Badge><Cpu className="h-3.5 w-3.5 mr-1" /> Grad: {PROFILE.graduation}</Badge>
+              <Badge><Cloud className="h-3.5 w-3.5 mr-1" /> {PROFILE.workAuth}</Badge>
             </div>
             <p className="mt-6 text-slate-700 max-w-2xl">{PROFILE.summary}</p>
             <div className="mt-6 flex flex-wrap gap-3">
