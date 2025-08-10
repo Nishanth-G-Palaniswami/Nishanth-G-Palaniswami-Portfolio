@@ -55,6 +55,7 @@ const LINKS = {
 const SKILLS = {
   coreCloud: [
     "Amazon SageMaker",
+    "Amazon Bedrock",
     "Amazon S3",
     "EC2",
     "AWS Lambda",
@@ -65,7 +66,6 @@ const SKILLS = {
     "IAM",
     "API Gateway",
     "DynamoDB",
-    "AWS Bedrock"
   ],
   mlAi: [
     "PyTorch",
