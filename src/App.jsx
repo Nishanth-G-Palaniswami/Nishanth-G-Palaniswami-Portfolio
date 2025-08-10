@@ -363,40 +363,40 @@ export default function Portfolio() {
             className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 backdrop-blur p-8 shadow-sm"
           >
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-gradient-to-br from-indigo-200 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-indigo-300 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/50 p-4">
                 <div className="text-sm font-semibold">AWS</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.coreCloud.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-emerald-200 to-emerald-50 dark:from-emerald-900/50 dark:to-emerald-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-emerald-300 to-emerald-50 dark:from-emerald-900/50 dark:to-emerald-800/50 p-4">
                 <div className="text-sm font-semibold">ML / AI</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.mlAi.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-pink-200 to-pink-50 dark:from-pink-900/50 dark:to-pink-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-pink-300 to-pink-50 dark:from-pink-900/50 dark:to-pink-800/50 p-4">
                 <div className="text-sm font-semibold">Programming</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.programming.map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-lime-100 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
-                <div className="text-sm font-semibold">Design & Frontend</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.uiUx.map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-purple-200 to-purple-50 dark:from-purple-900/50 dark:to-purple-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-amber-300 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
                 <div className="text-sm font-semibold">Databases & Analytics</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.databases.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-stone-200 to-amber-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-purple-300 to-purple-50 dark:from-purple-900/50 dark:to-purple-800/50 p-4">
                 <div className="text-sm font-semibold">Professional Skills</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.softSkills.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
+                </ul>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-lime-200 to-lime-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
+                <div className="text-sm font-semibold">Design & Frontend</div>
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
+                  {SKILLS.uiUx.map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
               
