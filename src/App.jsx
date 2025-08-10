@@ -146,9 +146,8 @@ const PROJECTS = [
   {
     title: "American Sign Language Alphabet Recognition",
     category: ["ml", "cv"],
-    summary:
-    "Developed an ASL recognition model integrating CNN-based image classification with temporal smoothing for real-time video input. Achieved 99% accuracy in translating ASL alphabets to text and voice. Published findings in IEEE ICCCNT 2023. Designed for deployment on edge devices via TensorFlow Lite, with preprocessing in OpenCV to enhance robustness.",
-  stack: ["TensorFlow", "OpenCV", "Teachable Machine", "Python"],
+    summary: "Developed an ASL recognition model integrating CNN-based image classification with temporal smoothing for real-time video input. Achieved 99% accuracy in translating ASL alphabets to text and voice. Published findings in IEEE ICCCNT 2023. Designed for deployment on edge devices via TensorFlow Lite, with preprocessing in OpenCV to enhance robustness.",
+    stack: ["Python", "OpenCV", "Llama 2 7B LLM", "LM Studio", "TensorFlow", "spaCy (for similarity search)", "OpenAI API", "Teachable Machine"],
   impact: [
     "99% translation accuracy (alphabet set)",
     "Reduced false positives by ~35% using temporal smoothing",
@@ -165,7 +164,7 @@ const PROJECTS = [
     category: ["leadership", "creative"],
     summary: "Shipped a repeatable pipeline (pillars → calendar → briefs → templates → checklist) and stayed hands-on: copy + Procreate/Canva/PS design. Ran 15+ collabs and added 3,000+ followers by iterating on timing/copy and posting consistently.",
     stack: ["Strategy", "Analytics", "Adobe Photoshop", "Procreate", "Canva", "Scheduling", "Leadership"],
-    impact: ["+3,000 followers", "15+ creator partnerships"],
+    impact: ["Led a 20-member creative team", "+3,000 followers", "15+ creator partnerships", "Increased engagement rate by 40%"],
     links: { insta: "https://www.instagram.com/psg_radio_hub/?hl=en" },
   },
   {
