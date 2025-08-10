@@ -1,7 +1,12 @@
 
-import React, { useMemo, useState } from "react";
-import { Mail, ExternalLink, Github, Linkedin, FileText, Filter, Globe, Server, Cloud, Cpu, Layers, Sparkles } from "lucide-react";
+import React, { useMemo, useState, useEffect } from "react";
+import {
+  Mail, ExternalLink, Github, Linkedin, FileText, Filter, Globe, Server, Cloud,
+  Cpu, Layers, Sparkles, BookOpen, Sun, Moon
+} from "lucide-react";
+
 import { motion } from "framer-motion";
+
 
 /**
  * Nishanth G. Palaniswami — One-file React portfolio
@@ -22,7 +27,7 @@ const PROFILE = {
   graduation: "Spring 2026",
   workAuth: "3 years U.S. work authorization post‑graduation (OPT + STEM OPT)",
   summary:
-    "MS in Computer Engineering at NYU focused on ML, data, and cloud. I build end‑to‑end systems: data pipelines → training → deployment on AWS. I also lead with community—grew a university club radio hub by 3,000+ followers via strategic content and creator collaborations.",
+    "Hey there! I’m Nishanth — a Computer Engineering master’s student at NYU who turns massive datasets into real-world impact. From crafting machine learning models to deploying them in the cloud (AWS is my playground), I love building end-to-end systems that actually solve problems. Beyond the code, I’m a community builder, event organizer, and believer that tech should be as collaborative as it is powerful. Let’s create something game-changing together!",
 };
 
 const LINKS = {
@@ -31,6 +36,8 @@ const LINKS = {
   linkedin: "https://www.linkedin.com/in/nishanth-g-palaniswami",
   resume: "https://bit.ly/nishanthresume",
 };
+
+
 
 const SKILLS = {
   coreCloud: [
@@ -56,10 +63,11 @@ const SKILLS = {
     "NumPy",
     "Matplotlib / Seaborn",
   ],
-  bigData: ["Apache Spark", "(optional) Apache Airflow", "(optional) Kafka"],
-  programming: ["Python", "Django", "FastAPI", "MATLAB", "HTML/CSS/JS"],
+  programming: ["Python", "Django", "FastAPI", "MATLAB", "JavaScript"],
   databases: ["PostgreSQL", "ElasticSearch", "Tableau", "Google Analytics", "Athena"],
   interests: ["MLOps", "LangChain", "API Mesh", "Kubernetes", "Microservices"],
+  uiUx: ["Figma", "Procreate", "Photoshop", "HTML/CSS", "Tailwind CSS", "React"],
+  softSkills: ["Microsoft Excel", "Microsoft Word", "PowerPoint", "Project Management", "Team Leadership", "Communication", "Problem Solving", "Data Analysis"],
 };
 
 const CATEGORIES = [
@@ -79,7 +87,10 @@ const PROJECTS = [
       "Built a multi‑modal (SMILES sequences + 2D molecular images) and multi‑task pipeline to jointly predict DTI (pKI regression) and side‑effects (multi‑label). Used ProtBERT for protein embeddings and RDKit for cheminformatics.",
     stack: ["PyTorch", "Hugging Face", "RDKit", "SageMaker", "S3"],
     impact: ["End‑to‑end, reproducible notebooks", "Joint training & evaluation scripts"],
-    links: { github: "#", demo: "#" },
+    links: { github: "https://github.com/Nishanth-G-Palaniswami/Multi-Modal-Deep-Learning-for-Joint-Prediction-of-Drug-Target-Interaction-and-Side-Effects.git",
+       demo: "#",
+       ppt: "https://docs.google.com/presentation/d/1hXOH0fBqxfF33P-VlMnFsEevn2IKBg7NmSnFfXH_Ftc/edit?usp=sharing",   
+      },
   },
   {
     title: "MetroScan — NYC Subway Big Data Analytics",
@@ -88,7 +99,16 @@ const PROJECTS = [
       "Ingested and analyzed ~5M hourly ridership records (2020–2024) to model demand patterns, cluster stations, and detect anomalies; trained linear/RandomForest/GBT models as delay proxies.",
     stack: ["PySpark", "Athena", "S3", "Spark MLlib", "Tableau"],
     impact: ["~5M rows processed", "Station typologies via KMeans", "Rolling anomaly detection"],
+<<<<<<< Updated upstream
     links: { github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection", demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing" },
+=======
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
+      demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
+      ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",       // optional
+      ieee: "https://ieeexplore.ieee.org/document/10725877"  // optional
+    },
+>>>>>>> Stashed changes
   },
   {
     title: "ASL Recognition (CV + Temporal Smoothing)",
@@ -97,7 +117,16 @@ const PROJECTS = [
       "Prototyped sign recognition with data augmentation and temporal smoothing; exported for edge‑friendly formats (TorchScript/TFLite).",
     stack: ["PyTorch", "OpenCV", "TensorFlow"],
     impact: ["Deployable model artifacts", "Baseline‑beating prototype"],
+<<<<<<< Updated upstream
     links: { github: "https://github.com/Nishanth-G-Palaniswami/english-asl", 'IEEE Publication': "https://ieeexplore.ieee.org/document/10725877" },
+=======
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
+      // demo: "https://...",                                 // optional
+      ppt: "https://your-slide-link.com/ASL.pdf",            // optional
+      ieee: "https://ieeexplore.ieee.org/document/10725877", // <-- fixed key
+    },
+>>>>>>> Stashed changes
   },
   {
     title: "MLOps for Agri Drones — Crop Health Inference API",
@@ -140,13 +169,13 @@ const Section = ({ id, title, icon, children }) => (
 );
 
 const Badge = ({ children }) => (
-  <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium bg-white/60 backdrop-blur border-black/10">
+  <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium bg-white/60 dark:bg-slate-700/60 backdrop-blur border-black/10 dark:border-white/10">
     {children}
   </span>
 );
 
 const Card = ({ children }) => (
-  <div className="rounded-2xl border border-black/10 bg-white/80 backdrop-blur shadow-sm hover:shadow-md transition-shadow">
+  <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-slate-800/80 backdrop-blur shadow-sm hover:shadow-md transition-shadow">
     <div className="p-5 md:p-6">{children}</div>
   </div>
 );
@@ -155,6 +184,30 @@ const Card = ({ children }) => (
 export default function Portfolio() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Initialize dark mode from localStorage and system preference
+  useEffect(() => {
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode !== null) {
+      setDarkMode(JSON.parse(savedMode));
+    } else {
+      // Check system preference if no saved preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(prefersDark);
+    }
+  }, []);
+
+  // Save dark mode preference
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    console.log('Dark mode:', darkMode); // Debug log
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -171,11 +224,14 @@ export default function Portfolio() {
   }, [query, filter]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
-      <header className="sticky top-0 z-20 border-b border-black/10 bg-white/70 backdrop-blur">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100">
+      <header className="sticky top-0 z-20 border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Sparkles className="h-6 w-6" />
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="15" fill="#FFFFFF" stroke="#000000" stroke-width="1"/>
+              <path d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z" fill="#000000"/>
+            </svg>
             <span className="font-semibold">{PROFILE.name.split(" ")[0]} · Portfolio</span>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -184,14 +240,33 @@ export default function Portfolio() {
             <a href="#about" className="hover:underline">About</a>
             <a href="#contact" className="hover:underline">Contact</a>
           </nav>
-          <a
-            href={LINKS.resume}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-black text-white px-4 py-2 text-sm hover:opacity-90"
-          >
-            <FileText className="h-4 w-4" /> Resume
-          </a>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white/80 dark:bg-slate-800/80 backdrop-blur hover:bg-white dark:hover:bg-slate-700 transition-colors text-sm"
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? (
+                <>
+                  <Sun className="h-4 w-4 text-yellow-500" />
+                  <span className="hidden sm:inline">Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="h-4 w-4 text-slate-600" />
+                  <span className="hidden sm:inline">Dark Mode</span>
+                </>
+              )}
+            </button>
+            <a
+              href={LINKS.resume}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90"
+            >
+              <FileText className="h-4 w-4" /> Resume
+            </a>
+          </div>
         </div>
       </header>
 
@@ -219,18 +294,18 @@ export default function Portfolio() {
               <Badge><Cpu className="h-3.5 w-3.5 mr-1" /> Grad: {PROFILE.graduation}</Badge>
               <Badge><Cloud className="h-3.5 w-3.5 mr-1" /> {PROFILE.workAuth}</Badge>
             </div>
-            <p className="mt-6 text-slate-700 max-w-2xl">{PROFILE.summary}</p>
+            <p className="mt-6 text-slate-700 dark:text-slate-300 max-w-2xl">{PROFILE.summary}</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Linkedin className="h-4 w-4"/> LinkedIn
               </a>
-              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Github className="h-4 w-4"/> GitHub
               </a>
-              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Mail className="h-4 w-4"/> Email
               </a>
-              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <FileText className="h-4 w-4"/> View Resume
               </a>
             </div>
@@ -239,35 +314,48 @@ export default function Portfolio() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="rounded-2xl border border-black/10 bg-white/70 backdrop-blur p-8 shadow-sm"
+            className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 backdrop-blur p-8 shadow-sm"
           >
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-gradient-to-br from-indigo-200 to-indigo-50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-indigo-200 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/50 p-4">
                 <div className="text-sm font-semibold">AWS</div>
-                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.coreCloud.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-emerald-200 to-emerald-50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-emerald-200 to-emerald-50 dark:from-emerald-900/50 dark:to-emerald-800/50 p-4">
                 <div className="text-sm font-semibold">ML / AI</div>
-                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.mlAi.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-amber-200 to-amber-50 p-4">
-                <div className="text-sm font-semibold">Big Data</div>
-                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
-                  {SKILLS.bigData.map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-pink-200 to-pink-50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-pink-200 to-pink-50 dark:from-pink-900/50 dark:to-pink-800/50 p-4">
                 <div className="text-sm font-semibold">Programming</div>
-                <ul className="mt-2 text-sm text-slate-700 space-y-1 list-disc list-inside">
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.programming.map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
+              <div className="rounded-xl bg-gradient-to-br from-amber-200 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
+                <div className="text-sm font-semibold">Design & Frontend</div>
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
+                  {SKILLS.uiUx.map((s) => (<li key={s}>{s}</li>))}
+                </ul>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-purple-200 to-purple-50 dark:from-purple-900/50 dark:to-purple-800/50 p-4">
+                <div className="text-sm font-semibold">Databases & Analytics</div>
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
+                  {SKILLS.databases.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
+                </ul>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-yellow-200 to-yellow-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
+                <div className="text-sm font-semibold">Professional Skills</div>
+                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
+                  {SKILLS.softSkills.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
+                </ul>
+              </div>
+              
             </div>
-            <p className="mt-4 text-xs text-slate-500">* Full skills below</p>
+            <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">* Full skills below</p>
           </motion.div>
         </section>
 
@@ -282,8 +370,8 @@ export default function Portfolio() {
                     onClick={() => setFilter(c.key)}
                     className={`px-3 py-1 rounded-full text-sm border transition ${
                       filter === c.key
-                        ? "bg-black text-white border-black"
-                        : "bg-white border-black/10 hover:bg-slate-50"
+                        ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                        : "bg-white dark:bg-slate-800 border-black/10 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-slate-700"
                     }`}
                   >
                     {c.label}
@@ -296,7 +384,7 @@ export default function Portfolio() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search projects, stacks, impacts…"
-                  className="w-full rounded-xl border border-black/10 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
+                  className="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:text-white"
                 />
               </div>
             </div>
@@ -308,28 +396,45 @@ export default function Portfolio() {
                 <Card>
                   <div className="flex flex-col gap-3">
                     <h3 className="text-lg font-semibold">{p.title}</h3>
-                    <p className="text-sm text-slate-700">{p.summary}</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">{p.summary}</p>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {p.stack.map((s) => (
                         <Badge key={s}>{s}</Badge>
                       ))}
                     </div>
                     {p.impact?.length ? (
-                      <ul className="mt-2 text-sm text-slate-700 list-disc list-inside">
+                      <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc list-inside">
                         {p.impact.map((i) => (
                           <li key={i}>{i}</li>
                         ))}
                       </ul>
                     ) : null}
-                    <div className="mt-3 flex gap-3">
+                    <div className="mt-3 flex gap-3 flex-wrap">
                       {p.links?.github && (
-                        <a href={p.links.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-indigo-700 hover:underline">
-                          <Github className="h-4 w-4"/> Code
+                        <a href={p.links.github} target="_blank" rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
+                          <Github className="h-4 w-4" /> Code
                         </a>
                       )}
+
                       {p.links?.demo && (
-                        <a href={p.links.demo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-indigo-700 hover:underline">
-                          <ExternalLink className="h-4 w-4"/> Demo
+                        <a href={p.links.demo} target="_blank" rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
+                          <ExternalLink className="h-4 w-4" /> Demo
+                        </a>
+                      )}
+
+                      {p.links?.ppt && (
+                        <a href={p.links.ppt} target="_blank" rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
+                          <FileText className="h-4 w-4" /> PPT
+                        </a>
+                      )}
+
+                      {p.links?.ieee && (
+                        <a href={p.links.ieee} target="_blank" rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
+                          <BookOpen className="h-4 w-4" /> IEEE
                         </a>
                       )}
                       {p.links?.ieee && (
@@ -370,17 +475,25 @@ export default function Portfolio() {
               </div>
             </Card>
             <Card>
-              <h4 className="font-semibold">Big Data & Distributed</h4>
+              <h4 className="font-semibold">Programming & Frameworks</h4>
               <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.bigData.map((s) => (
+                {SKILLS.programming.map((s) => (
                   <Badge key={s}>{s}</Badge>
                 ))}
               </div>
             </Card>
             <Card>
-              <h4 className="font-semibold">Programming & Frameworks</h4>
+              <h4 className="font-semibold">Design & Frontend Development</h4>
               <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.programming.map((s) => (
+                {SKILLS.uiUx.map((s) => (
+                  <Badge key={s}>{s}</Badge>
+                ))}
+              </div>
+            </Card>
+            <Card>
+              <h4 className="font-semibold">Professional & Soft Skills</h4>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {SKILLS.softSkills.map((s) => (
                   <Badge key={s}>{s}</Badge>
                 ))}
               </div>
@@ -407,7 +520,7 @@ export default function Portfolio() {
         {/* About */}
         <Section id="about" title="About" icon={<Sparkles className="h-6 w-6"/>}>
           <Card>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
               I’m pursuing an MS in Computer Engineering at NYU (graduating Spring 2026). My focus is
               applied machine learning and cloud: I enjoy turning large datasets into deployable models and
               shipping them on AWS. I care about community and communication—leading a university club
@@ -420,16 +533,16 @@ export default function Portfolio() {
         <Section id="contact" title="Contact" icon={<Mail className="h-6 w-6"/>}>
           <Card>
             <div className="flex flex-wrap items-center gap-3">
-              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Mail className="h-4 w-4"/> {LINKS.email}
               </a>
-              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Linkedin className="h-4 w-4"/> LinkedIn
               </a>
-              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <Github className="h-4 w-4"/> GitHub
               </a>
-              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 hover:shadow">
+              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
                 <FileText className="h-4 w-4"/> Resume
               </a>
             </div>
@@ -437,8 +550,8 @@ export default function Portfolio() {
         </Section>
       </main>
 
-      <footer className="border-t border-black/10 bg-white/60 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-500">
+      <footer className="border-t border-black/10 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur">
+        <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-500 dark:text-slate-400">
           © {new Date().getFullYear()} {PROFILE.name}. Built with React + Tailwind.
         </div>
       </footer>
