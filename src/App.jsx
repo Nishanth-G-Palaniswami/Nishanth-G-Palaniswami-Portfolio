@@ -9,16 +9,18 @@ import { motion } from "framer-motion";
 
 
 /**
- * Nishanth G. Palaniswami — One-file React portfolio
- * Tailwind CSS required. Uses lucide-react icons + framer-motion.
+ * Nishanth G. Palaniswami — React + Tailwind CSS Portfolio
+ * Built with lucide-react icons & framer-motion animations.
  *
- * How to use:
- * 1) Drop this file in a React/Next.js app and set it as a page or component.
- * 2) Make sure Tailwind is enabled. (https://tailwindcss.com/docs/guides/create-react-app)
- * 3) Replace PROFILE, LINKS, and PROJECTS data below.
+ * For anyone viewing or modifying this portfolio:
+ * 1) This file is self-contained — drop it into any React or Next.js project.
+ * 2) Tailwind CSS must be enabled. Setup guide: https://tailwindcss.com/docs/guides/create-react-app
+ * 3) Update the PROFILE, LINKS, and PROJECTS objects below to personalize content.
+ * 4) Feel free to adapt styling, animations, or layout to your needs.
+ *
+ * Credits: Designed & coded by Nishanth G. Palaniswami
  */
 
-// -------------------- CONFIG -------------------- //
 const PROFILE = {
   name: "Nishanth G. Palaniswami",
   tagline: "Machine Learning & Cloud Engineer | AWS | Data | Community Builder",
@@ -52,6 +54,7 @@ const SKILLS = {
     "IAM",
     "API Gateway",
     "DynamoDB",
+    "AWS Bedrock"
   ],
   mlAi: [
     "PyTorch",
@@ -62,6 +65,7 @@ const SKILLS = {
     "Pandas",
     "NumPy",
     "Matplotlib / Seaborn",
+    "Agentic AI"
   ],
   programming: ["Python", "Django", "FastAPI", "MATLAB", "JavaScript"],
   databases: ["PostgreSQL", "ElasticSearch", "Tableau", "Google Analytics", "Athena"],
@@ -82,70 +86,117 @@ const CATEGORIES = [
 const PROJECTS = [
   {
     title: "Drug–Target Interaction & Side‑Effects (Multi‑Modal, Multi‑Task)",
-    category: ["ml"],
+    category: ["leadership","ml"],
     summary:
-      "Built a multi‑modal (SMILES sequences + 2D molecular images) and multi‑task pipeline to jointly predict DTI (pKI regression) and side‑effects (multi‑label). Used ProtBERT for protein embeddings and RDKit for cheminformatics.",
-    stack: ["PyTorch", "Hugging Face", "RDKit", "SageMaker", "S3"],
-    impact: ["End‑to‑end, reproducible notebooks", "Joint training & evaluation scripts"],
+      "End-to-end multi-task learning framework combining CNNs for 2D drug structure images, Transformer encoders for SMILES strings, and ProtBERT embeddings for protein sequences to predict binding affinities (pKI) and adverse side effects. integrated SMILES canonicalization & augmentation via RDKit and dual-dataloader strategy using BindingDB & SIDER datasets.",
+    stack: [
+      "PyTorch",
+      "Hugging Face Transformers",
+      "ProtBERT",
+      "RDKit",
+      "AWS SageMaker",
+      "Amazon S3",
+    ],
+    impact: [
+      "F1 score ↑92% for side-effect classification",
+      "Joint training reduced inference time by 30%",
+      "Gradient conflict analysis improved multi-task stability",
+    ],
     links: { github: "https://github.com/Nishanth-G-Palaniswami/Multi-Modal-Deep-Learning-for-Joint-Prediction-of-Drug-Target-Interaction-and-Side-Effects.git",
-       demo: "#",
        ppt: "https://docs.google.com/presentation/d/1hXOH0fBqxfF33P-VlMnFsEevn2IKBg7NmSnFfXH_Ftc/edit?usp=sharing",   
       },
   },
   {
     title: "MetroScan — NYC Subway Big Data Analytics",
-    category: ["data", "ml"],
+    category: ["leadership","data", "ml"],
     summary:
-      "Ingested and analyzed ~5M hourly ridership records (2020–2024) to model demand patterns, cluster stations, and detect anomalies; trained linear/RandomForest/GBT models as delay proxies.",
-    stack: ["PySpark", "Athena", "S3", "Spark MLlib", "Tableau"],
-    impact: ["~5M rows processed", "Station typologies via KMeans", "Rolling anomaly detection"],
+      "Scalable PySpark pipeline analyzing ~5M hourly ridership records (2020–2024) from the MTA. Modeled delay-like patterns via Linear, Random Forest, and Gradient Boosted Trees, clustered stations by usage profiles, and detected anomalies using statistical Z-scores.",
+    stack: [
+      "PySpark 3.3.2 (Hadoop 3)",
+      "Spark MLlib",
+      "Google Colab",
+      "Matplotlib",
+      "Seaborn",
+      "Parquet"
+    ],
+    impact: [
+      "Processed ~5M records at hourly granularity",
+      "Found 8 AM/5 PM peaks and post-COVID recovery",
+      "Clustered stations with PCA+KMeans into usage typologies",
+      "RMSE ≈ 104 for GBT model predicting delay proxies",
+      "Rolling window anomaly detection flagged disruption events"
+    ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
       demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
-      ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",       // optional
-      ieee: "https://ieeexplore.ieee.org/document/10725877"  // optional
+      ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",  
     },
   },
   {
-    title: "ASL Recognition (CV + Temporal Smoothing)",
-    category: ["ml"],
+    title: "American Sign Language Alphabet Recognition",
+    category: ["ml", "cv"],
     summary:
-      "Prototyped sign recognition with data augmentation and temporal smoothing; exported for edge‑friendly formats (TorchScript/TFLite).",
-    stack: ["PyTorch", "OpenCV", "TensorFlow"],
-    impact: ["Deployable model artifacts", "Baseline‑beating prototype"],
+    "Developed an ASL recognition model integrating CNN-based image classification with temporal smoothing for real-time video input. Achieved 99% accuracy in translating ASL alphabets to text and voice. Published findings in IEEE ICCCNT 2023. Designed for deployment on edge devices via TensorFlow Lite, with preprocessing in OpenCV to enhance robustness.",
+  stack: ["TensorFlow", "OpenCV", "Teachable Machine", "Python"],
+  impact: [
+    "99% translation accuracy (alphabet set)",
+    "Reduced false positives by ~35% using temporal smoothing",
+    "Peer-reviewed: IEEE ICCCNT 2023"
+  ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
-      // demo: "https://...",                                 // optional
-      ppt: "https://your-slide-link.com/ASL.pdf",            // optional
+      ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit?utm_content=DAGC7042lUM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",            // optional
       ieee: "https://ieeexplore.ieee.org/document/10725877", // <-- fixed key
     },
   },
   {
-    title: "MLOps for Agri Drones — Crop Health Inference API",
-    category: ["cloud", "ml"],
-    summary:
-      "Deployed inference on SageMaker; automated ingest from S3 via Lambda; monitoring with CloudWatch; exposed via API Gateway for downstream apps.",
-    stack: ["SageMaker", "S3", "Lambda", "CloudWatch", "API Gateway"],
-    impact: ["Reduced manual review time", "Scalable real‑time endpoint"],
-    links: { github: "#", demo: "#" },
+    title: "Creative Director — University Club Radio Hub",
+    category: ["leadership", "creative"],
+    summary: "Shipped a repeatable pipeline (pillars → calendar → briefs → templates → checklist) and stayed hands-on: copy + Procreate/Canva/PS design. Ran 15+ collabs and added 3,000+ followers by iterating on timing/copy and posting consistently.",
+    stack: ["Strategy", "Analytics", "Adobe Photoshop", "Procreate", "Canva", "Scheduling", "Leadership"],
+    impact: ["+3,000 followers", "15+ creator partnerships"],
+    links: { insta: "https://www.instagram.com/psg_radio_hub/?hl=en" },
   },
   {
-    title: "University Club Radio Hub Growth (+3,000)",
-    category: ["leadership", "creative"],
+    title: "GaitWatch — Wearable Fall-Risk Device",
+    category: ["ml", "cv"],
+    summary: "Built the GaitWatch product website (MERN) and refreshed brand assets; enabled real-time trial data collection (450+ participants) and preprocessed gait data (Python/Pandas) for fall-risk modeling; validated mobile app UX to support a commercial rollout.",
+    actions: [
+      "Engineered MERN website; HTML/CSS polish",
+      "Revamped brand identity (Photoshop, Procreate)",
+      "Implemented real-time data capture for 450+ participants",
+      "Preprocessed/structured gait datasets (Python, Pandas)",
+      "Ran user trials and fed back UX findings"
+    ],
+    impact: [
+      "450+ participant sessions captured",
+      "Cleaner datasets for model refinement",
+      "UX issues resolved pre-launch",
+      "Contributed to commercial rollout supported by PSG Tech"
+    ],
+    stack: ["MERN", "HTML/CSS", "Python", "Pandas", "Photoshop", "Procreate"],
+    tags: ["Healthcare", "Wearables", "Machine Learning", "UX", "Data Engineering"]
+  
+  },
+  {
+    title: "MLOps Pipeline for Agricultural Drone — Crop Health Inference API",
+    category: ["cloud", "Machine Learning", "IoT"],
     summary:
-      "Led content strategy and creator ops for a university club radio hub; managed 15+ collaborations and grew the audience by 3,000+ followers.",
-    stack: ["Strategy", "Analytics", "Canva/PS", "Scheduling"],
-    impact: ["+3,000 followers", "15+ creator partnerships"],
-    links: { demo: "#" },
+      "Deployed a crop‑health inference service on Amazon SageMaker; automated drone data ingest from S3 via Lambda; monitored with CloudWatch; served through API Gateway for Flutter apps.",
+    stack: ["Amazon SageMaker", "Amazon S3", "AWS Lambda", "Amazon CloudWatch", "Amazon API Gateway", "Flutter", "Python"],
+    impact: [
+      "Cut manual crop-health review time by 80% through real-time ML inference",
+      "Delivered a scalable, production-ready endpoint for multi-farm deployments"
+    ],
   },
   {
     title: "E‑commerce SEO Rollouts (15+ sites)",
-    category: ["data"],
+    category: ["cloud", "data"],
     summary:
       "Launched and optimized 15+ storefronts; improved organic traffic ~20% through technical SEO, analytics, and content experiments.",
-    stack: ["GA4", "Ahrefs", "Screaming Frog", "PostgreSQL"],
+    stack: ["Amazon EC2", "GA4", "Ahrefs", "Screaming Frog", "PostgreSQL"],
     impact: ["~20% organic lift", "Funnel insights"],
-    links: { demo: "#" },
+    links: { demo: "https://edliy.com/" },
   },
 ];
 
@@ -216,16 +267,16 @@ export default function Portfolio() {
   }, [query, filter]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100">
+    <div id="top" className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100">
       <header className="sticky top-0 z-20 border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <a href="#top" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="16" cy="16" r="15" fill="#FFFFFF" stroke="#000000" stroke-width="1"/>
               <path d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z" fill="#000000"/>
             </svg>
             <span className="font-semibold">{PROFILE.name.split(" ")[0]} · Portfolio</span>
-          </div>
+          </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#projects" className="hover:underline">Projects</a>
             <a href="#skills" className="hover:underline">Skills</a>
@@ -327,7 +378,7 @@ export default function Portfolio() {
                   {SKILLS.programming.map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-amber-200 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-lime-100 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
                 <div className="text-sm font-semibold">Design & Frontend</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.uiUx.map((s) => (<li key={s}>{s}</li>))}
@@ -339,7 +390,7 @@ export default function Portfolio() {
                   {SKILLS.databases.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
                 </ul>
               </div>
-              <div className="rounded-xl bg-gradient-to-br from-yellow-200 to-yellow-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
+              <div className="rounded-xl bg-gradient-to-br from-stone-200 to-amber-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
                 <div className="text-sm font-semibold">Professional Skills</div>
                 <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
                   {SKILLS.softSkills.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
@@ -416,6 +467,13 @@ export default function Portfolio() {
                         </a>
                       )}
 
+                      {p.links?.insta && (
+                        <a href={p.links.insta} target="_blank" rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
+                          <ExternalLink className="h-4 w-4" /> Page
+                        </a>
+                      )}
+
                       {p.links?.ppt && (
                         <a href={p.links.ppt} target="_blank" rel="noreferrer"
                           className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
@@ -426,19 +484,9 @@ export default function Portfolio() {
                       {p.links?.ieee && (
                         <a href={p.links.ieee} target="_blank" rel="noreferrer"
                           className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
-                          <BookOpen className="h-4 w-4" /> IEEE
+                          <BookOpen className="h-4 w-4" /> IEEE Publication
                         </a>
-                      )}
-                      {p.links?.ieee && (
-                        <a
-                          href={p.links.ieee}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 hover:underline"
-                        >
-                          <ExternalLink className="h-4 w-4" /> IEEE Publication
-                        </a>
-                      )}
+                      )}                      
                     </div>
                   </div>
                 </Card>
@@ -510,16 +558,20 @@ export default function Portfolio() {
         </Section>
 
         {/* About */}
-        <Section id="about" title="About" icon={<Sparkles className="h-6 w-6"/>}>
-          <Card>
-            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-              I’m pursuing an MS in Computer Engineering at NYU (graduating Spring 2026). My focus is
-              applied machine learning and cloud: I enjoy turning large datasets into deployable models and
-              shipping them on AWS. I care about community and communication—leading a university club
-              radio hub taught me cross‑functional collaboration, content operations, and data‑informed growth.
-            </p>
-          </Card>
+        <Section id="about" title="About" icon={<Sparkles className="h-6 w-6" />}>
+        <Card>
+        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+          By the time you’ve scrolled this far, you’ve seen the tech stacks, the metrics, and the projects that keep my GitHub commits flowing at odd hours. But here’s the part that doesn’t fit neatly into a bullet point: I’m an engineer who’s just as obsessed with <strong>why</strong> something should be built as I am with how to build it.
+        </p>
+        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
+          I’ve built AI pipelines that digest <strong>millions of NYC subway rides</strong> to spot delays, taught models to understand sign language, and deployed MLOps systems that help drones keep crops healthy. My happy place? That intersection where <strong>data</strong>, <strong>creativity</strong>, and <strong>problem-solving</strong> collide to create tools that actually change how someone works, learns, or lives.
+        </p>
+        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
+          Outside the terminal window, I’m usually exploring NYC with a camera, hunting for the perfect espresso, or diving into the latest generative AI rabbit hole “just for 10 minutes” (<em>famous last words</em>). Oh—and if you ever want to swap ideas on AI, urban data, or the best coffee in Manhattan, my inbox is open.
+        </p>
+      </Card>
         </Section>
+
 
         {/* Contact */}
         <Section id="contact" title="Contact" icon={<Mail className="h-6 w-6"/>}>
