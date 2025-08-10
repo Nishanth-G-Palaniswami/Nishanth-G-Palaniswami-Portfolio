@@ -13,12 +13,23 @@ import { motion } from "framer-motion";
  * Built with lucide-react icons & framer-motion animations.
  *
  * For anyone viewing or modifying this portfolio:
- * 1) This file is self-contained — drop it into any React or Next.js project.
- * 2) Tailwind CSS must be enabled. Setup guide: https://tailwindcss.com/docs/guides/create-react-app
- * 3) Update the PROFILE, LINKS, and PROJECTS objects below to personalize content.
- * 4) Feel free to adapt styling, animations, or layout to your needs.
+ * 
+ * SETUP INSTRUCTIONS:
+ * 1. This is a self-contained React component — drop it into any React or Next.js project
+ * 2. Ensure Tailwind CSS is installed and configured: https://tailwindcss.com/docs/guides/create-react-app
+ * 3. Install required dependencies: npm install lucide-react framer-motion
+ * 4. Update the PROFILE, LINKS, and PROJECTS objects below with your information
+ * 5. Customize colors, animations, and layout as needed
  *
- * Credits: Designed & coded by Nishanth G. Palaniswami
+ * CUSTOMIZATION:
+ * - Modify PROFILE object for personal information
+ * - Update PROJECTS array with your projects
+ * - Adjust LINKS object for your social media and resume
+ * - Customize SKILLS object to match your expertise
+ * - Modify CATEGORIES array for project filtering
+ *
+ * Author: Nishanth G. Palaniswami
+ * License: MIT (feel free to use and modify)
  */
 
 const PROFILE = {
@@ -145,8 +156,8 @@ const PROJECTS = [
   ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
-      ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit?utm_content=DAGC7042lUM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",            // optional
-      ieee: "https://ieeexplore.ieee.org/document/10725877", // <-- fixed key
+              ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit?utm_content=DAGC7042lUM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        ieee: "https://ieeexplore.ieee.org/document/10725877",
     },
   },
   {
@@ -161,21 +172,14 @@ const PROJECTS = [
     title: "GaitWatch — Wearable Fall-Risk Device",
     category: ["ml", "cv"],
     summary: "Built the GaitWatch product website (MERN) and refreshed brand assets; enabled real-time trial data collection (450+ participants) and preprocessed gait data (Python/Pandas) for fall-risk modeling; validated mobile app UX to support a commercial rollout.",
-    actions: [
-      "Engineered MERN website; HTML/CSS polish",
-      "Revamped brand identity (Photoshop, Procreate)",
-      "Implemented real-time data capture for 450+ participants",
-      "Preprocessed/structured gait datasets (Python, Pandas)",
-      "Ran user trials and fed back UX findings"
-    ],
+    stack: ["MERN", "HTML/CSS", "Python", "Pandas", "Photoshop", "Procreate"],
     impact: [
       "450+ participant sessions captured",
       "Cleaner datasets for model refinement",
       "UX issues resolved pre-launch",
       "Contributed to commercial rollout supported by PSG Tech"
     ],
-    stack: ["MERN", "HTML/CSS", "Python", "Pandas", "Photoshop", "Procreate"],
-    tags: ["Healthcare", "Wearables", "Machine Learning", "UX", "Data Engineering"]
+    links: { demo: "#" }
   
   },
   {
@@ -194,7 +198,7 @@ const PROJECTS = [
     category: ["cloud", "data"],
     summary:
       "Launched and optimized 15+ storefronts; improved organic traffic ~20% through technical SEO, analytics, and content experiments.",
-    stack: ["Amazon EC2", "GA4", "Ahrefs", "Screaming Frog", "PostgreSQL"],
+    stack: ["Amazon EC2", "Google Analytics 4", "Ahrefs", "Screaming Frog", "PostgreSQL"],
     impact: ["~20% organic lift", "Funnel insights"],
     links: { demo: "https://edliy.com/" },
   },
