@@ -99,16 +99,12 @@ const PROJECTS = [
       "Ingested and analyzed ~5M hourly ridership records (2020–2024) to model demand patterns, cluster stations, and detect anomalies; trained linear/RandomForest/GBT models as delay proxies.",
     stack: ["PySpark", "Athena", "S3", "Spark MLlib", "Tableau"],
     impact: ["~5M rows processed", "Station typologies via KMeans", "Rolling anomaly detection"],
-<<<<<<< Updated upstream
-    links: { github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection", demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing" },
-=======
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
       demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
       ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",       // optional
       ieee: "https://ieeexplore.ieee.org/document/10725877"  // optional
     },
->>>>>>> Stashed changes
   },
   {
     title: "ASL Recognition (CV + Temporal Smoothing)",
@@ -117,16 +113,12 @@ const PROJECTS = [
       "Prototyped sign recognition with data augmentation and temporal smoothing; exported for edge‑friendly formats (TorchScript/TFLite).",
     stack: ["PyTorch", "OpenCV", "TensorFlow"],
     impact: ["Deployable model artifacts", "Baseline‑beating prototype"],
-<<<<<<< Updated upstream
-    links: { github: "https://github.com/Nishanth-G-Palaniswami/english-asl", 'IEEE Publication': "https://ieeexplore.ieee.org/document/10725877" },
-=======
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
       // demo: "https://...",                                 // optional
       ppt: "https://your-slide-link.com/ASL.pdf",            // optional
       ieee: "https://ieeexplore.ieee.org/document/10725877", // <-- fixed key
     },
->>>>>>> Stashed changes
   },
   {
     title: "MLOps for Agri Drones — Crop Health Inference API",
