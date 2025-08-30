@@ -556,7 +556,7 @@ export default function Portfolio() {
         </Section>
 
         {/* Skills */}
-        <Section id="skills" title="Skills (Ranked)" icon={<Server className="h-6 w-6"/>}>
+        <Section id="skills" title="Skills" icon={<Server className="h-6 w-6"/>}>
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <h4 className="font-semibold">Cloud & AWS (Core)</h4>
