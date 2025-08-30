@@ -57,39 +57,38 @@ const EXPERIENCE = [
     company: "Tagwebs Technologies",
     period: "April 2023 – May 2024",
     location: "Remote",
-    summary:
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days.",
-    stack: ["Python", "Django", "HTML", "CSS", "JavaScript", "AWS EC2/S3", "CloudWatch"],
     impact: [
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days",
       "Deployed backend systems on AWS EC2/S3 and integrated CloudWatch to track application performance",
-      "Optimized pipelines to improve deployment efficiency, driving a 12% productivity gain"
-    ],
+      "Optimized pipelines to improve deployment efficiency, driving a 12% productivity gain",
+      ],
+     stack: ["Python", "Django", "HTML", "CSS", "JavaScript", "AWS EC2/S3", "CloudWatch"],
   },
   {
     role: "Software Engineer Intern - ML & IoT",
     company: "Vaayusastra Aerospace (IIT Madras RTBI)",
     period: "February 2023 – March 2023",
     location: "Chennai, India",
-    summary:
-      "Spearheaded a responsive Mobile dashboard and UI using React & Javascript for an automated irrigation and agricultural drone system.",
-    stack: ["React", "Javascript", "ESP32", "PyTorch", "Scikit-learn"],
     impact: [
+      "Spearheaded a responsive Mobile dashboard and UI using React & Javascript for an automated irrigation and agricultural drone system",
       "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
-      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules"
+      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules",
     ],
+    stack: ["React", "Javascript", "ESP32", "PyTorch", "Scikit-learn"],
+    
   },
   {
     role: "Research Intern",
     company: "GaiT Watch, PSG CARE (Center for Academic Research and Excellence)",
     period: "December 2021 – January 2022",
     location: "Coimbatore, India",
-    summary:
-      "Engineered the GaitWatch product website using Python, Django, HTML & CSS, revamped the brand identity using Photoshop and Procreate, and generated real-time data collection from 450+ participants during early clinical trials.",
-    stack: ["Python", "Django", "HTML", "CSS", "Photoshop", "Procreate", "Pandas"],
     impact: [
+       "Engineered the GaitWatch product website using Python, Django, HTML & CSS, revamped the brand identity using Photoshop and Procreate, and generated real-time data collection from 450+ participants during early clinical trials",
       "Preprocessed and structured gait data to assist ML research team in refining fall-risk prediction models",
-      "Validated mobile app UX through user trials, contributing to commercial rollout funded by PSG College of Technology"
+      "Validated mobile app UX through user trials, contributing to commercial rollout funded by PSG College of Technology",
     ],
+    stack: ["Python", "Django", "HTML", "CSS", "Photoshop", "Procreate", "Pandas"],
+    
   },
 ];
 
