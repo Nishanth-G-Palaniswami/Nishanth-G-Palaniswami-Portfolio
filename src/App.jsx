@@ -123,7 +123,6 @@ const SKILLS = {
 const CATEGORIES = [
   { key: "all", label: "All" },
   { key: "ml", label: "ML/AI" },
-  { key: "cloud", label: "Cloud/AWS" },
   { key: "data", label: "Big Data" },
   { key: "leadership", label: "Leadership" },
   { key: "creative", label: "Creative" },
