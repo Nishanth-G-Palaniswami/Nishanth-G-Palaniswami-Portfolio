@@ -56,7 +56,7 @@ const EXPERIENCE = [
     role: "Software Engineer Intern",
     company: "Tagwebs Technologies",
     period: "April 2023 – May 2024",
-    location: "Coimbatore, India",
+    location: "Remote",
     summary:
       "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days.",
     stack: ["Python", "Django", "HTML", "CSS", "JavaScript", "AWS EC2/S3", "CloudWatch"],
@@ -69,7 +69,7 @@ const EXPERIENCE = [
     role: "Software Engineer Intern - ML & IoT",
     company: "Vaayusastra Aerospace (IIT Madras RTBI)",
     period: "February 2023 – March 2023",
-    location: "Remote",
+    location: "Chennai, India",
     summary:
       "Spearheaded a responsive Mobile dashboard and UI using React & Javascript for an automated irrigation and agricultural drone system.",
     stack: ["React", "Javascript", "ESP32", "PyTorch", "Scikit-learn"],
