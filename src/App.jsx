@@ -47,7 +47,7 @@ const LINKS = {
   email: "ng3124@nyu.edu",
   github: "https://github.com/Nishanth-G-Palaniswami",
   linkedin: "https://www.linkedin.com/in/nishanth-g-palaniswami",
-  resume: "https://bit.ly/nishanthresume",
+  resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view?usp=sharing",
 };
 
 
