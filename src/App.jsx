@@ -188,7 +188,7 @@ const PROJECTS = [
     "Peer-reviewed: IEEE ICCCNT 2023"
   ],
     links: {
-      github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
+      github: "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
               ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit?utm_content=DAGC7042lUM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
         ieee: "https://ieeexplore.ieee.org/document/10725877",
     },
