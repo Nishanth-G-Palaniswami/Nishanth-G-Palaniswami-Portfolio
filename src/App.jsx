@@ -2,7 +2,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import {
   Mail, ExternalLink, Github, Linkedin, FileText, Filter, Globe, Server, Cloud,
-  Cpu, Layers, Sparkles, BookOpen, Sun, Moon
+  Cpu, Layers, Sparkles, BookOpen, Sun, Moon, Building2, Calendar, MapPin
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -51,6 +51,48 @@ const LINKS = {
 };
 
 
+const EXPERIENCE = [
+  {
+    role: "Software Engineer Intern",
+    company: "Tagwebs Technologies",
+    period: "April 2023 – May 2024",
+    location: "Coimbatore, India",
+    summary:
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days.",
+    stack: ["Python", "Django", "HTML", "CSS", "JavaScript", "AWS EC2/S3", "CloudWatch"],
+    impact: [
+      "Deployed backend systems on AWS EC2/S3 and integrated CloudWatch to track application performance",
+      "Optimized pipelines to improve deployment efficiency, driving a 12% productivity gain"
+    ],
+  },
+  {
+    role: "Software Engineer Intern - ML & IoT",
+    company: "Vaayusastra Aerospace (IIT Madras RTBI)",
+    period: "February 2023 – March 2023",
+    location: "Remote",
+    summary:
+      "Spearheaded a responsive Mobile dashboard and UI using React & Javascript for an automated irrigation and agricultural drone system.",
+    stack: ["React", "Javascript", "ESP32", "PyTorch", "Scikit-learn"],
+    impact: [
+      "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
+      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules"
+    ],
+  },
+  {
+    role: "Research Intern",
+    company: "GaiT Watch, PSG CARE (Center for Academic Research and Excellence)",
+    period: "December 2021 – January 2022",
+    location: "Coimbatore, India",
+    summary:
+      "Engineered the GaitWatch product website using Python, Django, HTML & CSS, revamped the brand identity using Photoshop and Procreate, and generated real-time data collection from 450+ participants during early clinical trials.",
+    stack: ["Python", "Django", "HTML", "CSS", "Photoshop", "Procreate", "Pandas"],
+    impact: [
+      "Preprocessed and structured gait data to assist ML research team in refining fall-risk prediction models",
+      "Validated mobile app UX through user trials, contributing to commercial rollout funded by PSG College of Technology"
+    ],
+  },
+];
+
 
 const SKILLS = {
   coreCloud: [
@@ -59,17 +101,10 @@ const SKILLS = {
     "Amazon S3",
     "EC2",
     "AWS Lambda",
-    "AWS Glue",
-    "Athena",
     "CloudWatch",
-    "CloudFormation",
-    "IAM",
-    "API Gateway",
-    "DynamoDB",
   ],
   mlAi: [
     "PyTorch",
-    "TensorFlow / Keras",
     "scikit-learn",
     "Hugging Face (NLP)",
     "OpenCV",
@@ -78,9 +113,9 @@ const SKILLS = {
     "Matplotlib / Seaborn",
     "Agentic AI"
   ],
-  programming: ["Python", "Django", "FastAPI", "MATLAB", "JavaScript"],
-  databases: ["PostgreSQL", "ElasticSearch", "Tableau", "Google Analytics", "Athena"],
-  interests: ["MLOps", "LangChain", "API Mesh", "Kubernetes", "Microservices"],
+  programming: ["Python", "Django", "FastAPI", "JavaScript"],
+  databases: ["SQL", "Tableau", "Google Analytics", "Athena"],
+  interests: ["Open-source ML projects", "data-driven applications", "Cloud deployment"],
   uiUx: ["Figma", "Procreate", "Photoshop", "HTML/CSS", "Tailwind CSS", "React"],
   softSkills: ["Microsoft Excel", "Microsoft Word", "PowerPoint", "Project Management", "Team Leadership", "Communication", "Problem Solving", "Data Analysis"],
 };
@@ -166,40 +201,6 @@ const PROJECTS = [
     stack: ["Strategy", "Analytics", "Adobe Photoshop", "Procreate", "Canva", "Scheduling", "Leadership"],
     impact: ["Led a 20-member creative team", "+3,000 followers", "15+ creator partnerships", "Increased engagement rate by 40%"],
     links: { insta: "https://www.instagram.com/psg_radio_hub/?hl=en" },
-  },
-  {
-    title: "GaitWatch — Wearable Fall-Risk Device",
-    category: ["ml", "cv"],
-    summary: "Built the GaitWatch product website (MERN) and refreshed brand assets; enabled real-time trial data collection (450+ participants) and preprocessed gait data (Python/Pandas) for fall-risk modeling; validated mobile app UX to support a commercial rollout.",
-    stack: ["MERN", "HTML/CSS", "Python", "Pandas", "Photoshop", "Procreate"],
-    impact: [
-      "450+ participant sessions captured",
-      "Cleaner datasets for model refinement",
-      "UX issues resolved pre-launch",
-      "Contributed to commercial rollout supported by PSG Tech"
-    ],
-    links: { demo: "#" }
-  
-  },
-  {
-    title: "MLOps Pipeline for Agricultural Drone — Crop Health Inference API",
-    category: ["cloud", "Machine Learning", "IoT"],
-    summary:
-      "Deployed a crop‑health inference service on Amazon SageMaker; automated drone data ingest from S3 via Lambda; monitored with CloudWatch; served through API Gateway for Flutter apps.",
-    stack: ["Amazon SageMaker", "Amazon S3", "AWS Lambda", "Amazon CloudWatch", "Amazon API Gateway", "Flutter", "Python"],
-    impact: [
-      "Cut manual crop-health review time by 80% through real-time ML inference",
-      "Delivered a scalable, production-ready endpoint for multi-farm deployments"
-    ],
-  },
-  {
-    title: "E‑commerce SEO Rollouts (15+ sites)",
-    category: ["cloud", "data"],
-    summary:
-      "Launched and optimized 15+ storefronts; improved organic traffic ~20% through technical SEO, analytics, and content experiments.",
-    stack: ["Amazon EC2", "Google Analytics 4", "Ahrefs", "Screaming Frog", "PostgreSQL"],
-    impact: ["~20% organic lift", "Funnel insights"],
-    links: { demo: "https://edliy.com/" },
   },
 ];
 
@@ -404,6 +405,61 @@ export default function Portfolio() {
             <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">* Full skills below</p>
           </motion.div>
         </section>
+        
+        
+        
+        {/* Experience Section */}
+        <Section id="experience" title="Work Experience" icon={<Server className="h-6 w-6" />}>
+          <div className="relative border-l-2 border-slate-200 dark:border-slate-700 pl-8 md:pl-12 space-y-12">
+            {EXPERIENCE.map((exp, index) => (
+              <motion.div
+                key={exp.role + exp.company}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative"
+              >
+                {/* Timeline Dot */}
+                <div className="absolute -left-[47px] md:-left-[63px] top-1 h-6 w-6 rounded-full bg-indigo-500 border-4 border-slate-50 dark:border-slate-900 flex items-center justify-center">
+                  <Building2 className="h-3 w-3 text-white" />
+                </div>
+                
+                <div className="flex flex-col md:flex-row gap-2 md:gap-8">
+                  {/* Left Column: Metadata */}
+                  <div className="md:w-1/4 text-sm text-slate-600 dark:text-slate-400 space-y-1 pt-1">
+                    <p className="font-semibold text-slate-800 dark:text-slate-200">{exp.company}</p>
+                    <p className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {exp.period}</p>
+                    <p className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> {exp.location}</p>
+                  </div>
+
+                  {/* Right Column: Details in a Card */}
+                  <div className="md:w-3/4">
+                    <Card>
+                      <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100">{exp.role}</h3>
+                      <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{exp.summary}</p>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {exp.stack.map((s) => (
+                          <Badge key={s}>{s}</Badge>
+                        ))}
+                      </div>
+                      {exp.impact && exp.impact.length > 0 && (
+                        <ul className="mt-3 text-sm text-slate-700 dark:text-slate-300 list-disc list-inside space-y-1">
+                          {exp.impact.map((i) => (
+                            <li key={i}>{i}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </Card>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Section>
+
+
+
 
         {/* Projects */}
         <Section id="projects" title="Projects" icon={<Layers className="h-6 w-6"/>}>
