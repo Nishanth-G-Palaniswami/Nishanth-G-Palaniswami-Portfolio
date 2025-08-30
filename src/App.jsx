@@ -282,6 +282,7 @@ export default function Portfolio() {
             <span className="font-semibold">{PROFILE.name.split(" ")[0]} · Portfolio</span>
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
+            <a href="#experience" className="hover:underline">Experience</a>
             <a href="#projects" className="hover:underline">Projects</a>
             <a href="#skills" className="hover:underline">Skills</a>
             <a href="#about" className="hover:underline">About</a>
