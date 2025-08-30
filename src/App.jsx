@@ -40,7 +40,7 @@ const PROFILE = {
   graduation: "Spring 2026",
   workAuth: "3 years U.S. work authorization post‑graduation (OPT + STEM OPT)",
   summary:
-    "Hey there! I’m Nishanth — a Computer Engineering master’s student at NYU who turns massive datasets into real-world impact. From crafting machine learning models to deploying them in the cloud (AWS is my playground), I love building end-to-end systems that actually solve problems. Beyond the code, I’m a community builder, event organizer, and believer that tech should be as collaborative as it is powerful. Let’s create something game-changing together!",
+    "Hey there! I’m Nishanth — a Computer Engineering master’s student at NYU who turns massive datasets into real-world impact. From crafting machine learning models to deploying them in the cloud, I love building end-to-end systems that actually solve problems. Beyond the code, I’m a community builder, event organizer, and believer that tech should be as collaborative as it is powerful. Let’s create something game-changing together!",
 };
 
 const LINKS = {
