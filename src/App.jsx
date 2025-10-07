@@ -53,6 +53,24 @@ const LINKS = {
 
 const EXPERIENCE = [
   {
+    "role": "Software Engineer Intern",
+    "company": "SAIL GTX (Cornell Tech Runway Startup)",
+    "period": "September 2024 – Present",
+    "location": "New York, NY",
+    "impact": [
+      "Building an AI-native trade compliance intelligence system that tracks and analyzes updates in the U.S. Harmonized Tariff Schedule (HTS) and CROSS rulings for duty and classification insights",
+      "Developed a deterministic JSON→OPLOG→CSV diff engine that detects textual, rate, and structural changes across HTS revisions with 99% reproducibility",
+      "Engineered ETL pipelines for ingestion, parsing, and normalization of official HTS datasets with schema validation, provenance hashing, and automated reproducibility gates",
+      "Implemented SKU-level impact analysis by joining product codes to diff outputs, flagging STALE_CODE, RATE_CHANGED, and NOTE_CHANGED items with human-readable audit trails",
+      "Designed REST APIs and CLI utilities for diff queries, report exports, and revision management; integrated Airflow and GitHub Actions for automated orchestration and QA"
+    ],
+    "stack": [
+      "React", "Python", "SQL", "AWS S3", "AWS EC2", "OpenSearch",
+      "Airflow", "GitHub Actions", "Git LFS", "Pandas", "JSON", "CSV",
+      "OPLOG", "CLI Tools", "REST API"
+  ]
+ },
+  {
     role: "Software Engineer Intern",
     company: "Tagwebs Technologies",
     period: "April 2023 – May 2024",
