@@ -61,7 +61,6 @@ const EXPERIENCE = [
       "Building an AI-native trade compliance intelligence system that tracks and analyzes updates in the U.S. Harmonized Tariff Schedule (HTS) and CROSS rulings for duty and classification insights",
       "Developed a deterministic JSON→OPLOG→CSV diff engine that detects textual, rate, and structural changes across HTS revisions with 99% reproducibility",
       "Engineered ETL pipelines for ingestion, parsing, and normalization of official HTS datasets with schema validation, provenance hashing, and automated reproducibility gates",
-      "Implemented SKU-level impact analysis by joining product codes to diff outputs, flagging STALE_CODE, RATE_CHANGED, and NOTE_CHANGED items with human-readable audit trails",
       "Designed REST APIs and CLI utilities for diff queries, report exports, and revision management; integrated Airflow and GitHub Actions for automated orchestration and QA"
     ],
     "stack": [
