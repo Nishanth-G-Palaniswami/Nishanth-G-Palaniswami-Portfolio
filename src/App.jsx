@@ -36,7 +36,7 @@ const PROFILE = {
   name: "Nishanth G. Palaniswami",
   tagline: "Machine Learning & Cloud Engineer | AWS | Data | Community Builder",
   University: "New York University",
-  location: "New York, NY",
+  location: "New York City, NY",
   graduation: "Spring 2026",
   workAuth: "3 years U.S. work authorization post‑graduation (OPT + STEM OPT)",
   summary:
@@ -56,7 +56,7 @@ const EXPERIENCE = [
     "role": "Software Engineer Intern",
     "company": "SAIL GTX (Cornell Tech Runway Startup)",
     "period": "September 2024 – Present",
-    "location": "New York, NY",
+    "location": "New York City, NY",
     "impact": [
       "Building an AI-native trade compliance intelligence system that tracks and analyzes updates in the U.S. Harmonized Tariff Schedule (HTS) and CROSS rulings for duty and classification insights",
       "Developed a deterministic JSON→OPLOG→CSV diff engine that detects textual, rate, and structural changes across HTS revisions with 99% reproducibility",
