@@ -1,661 +1,1138 @@
-
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Mail, ExternalLink, Github, Linkedin, FileText, Filter, Globe, Server, Cloud,
-  Cpu, Layers, Sparkles, BookOpen, Sun, Moon, Building2, Calendar, MapPin
+  ExternalLink, Github, Linkedin, FileText, Server, Menu, X,
+  Layers, BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
+  Cpu, Database, Cloud, Code2, GraduationCap, User, Rocket, Mail, BadgeCheck,
 } from "lucide-react";
 
-import { motion } from "framer-motion";
-
-
-/**
- * Nishanth G. Palaniswami — React + Tailwind CSS Portfolio
- * Built with lucide-react icons & framer-motion animations.
- *
- * For anyone viewing or modifying this portfolio:
- * 
- * SETUP INSTRUCTIONS:
- * 1. This is a self-contained React component — drop it into any React or Next.js project
- * 2. Ensure Tailwind CSS is installed and configured: https://tailwindcss.com/docs/guides/create-react-app
- * 3. Install required dependencies: npm install lucide-react framer-motion
- * 4. Update the PROFILE, LINKS, and PROJECTS objects below with your information
- * 5. Customize colors, animations, and layout as needed
- *
- * CUSTOMIZATION:
- * - Modify PROFILE object for personal information
- * - Update PROJECTS array with your projects
- * - Adjust LINKS object for your social media and resume
- * - Customize SKILLS object to match your expertise
- * - Modify CATEGORIES array for project filtering
- *
- * Author: Nishanth G. Palaniswami
- * License: MIT (feel free to use and modify)
- */
+import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
-  name: "Nishanth G. Palaniswami",
-  tagline: "Machine Learning & Cloud Engineer | AWS | Data | Community Builder",
-  University: "New York University",
-  location: "New York, NY",
-  graduation: "Spring 2026",
-  workAuth: "3 years U.S. work authorization post‑graduation (OPT + STEM OPT)",
-  summary:
-    "Hey there! I’m Nishanth — a Computer Engineering master’s student at NYU who turns massive datasets into real-world impact. From crafting machine learning models to deploying them in the cloud (AWS is my playground), I love building end-to-end systems that actually solve problems. Beyond the code, I’m a community builder, event organizer, and believer that tech should be as collaborative as it is powerful. Let’s create something game-changing together!",
+  name: "Nishanth G Palaniswami",
+  role: "Applied ML Engineer",
+  thesis:
+    "Ship production classifiers end-to-end — data pipeline through inference. Open for full-time roles, May 2026.",
+  availability: "Open May 2026",
+  workAuthShort: "F-1 · OPT + STEM-OPT · no sponsorship needed until 2029",
 };
 
 const LINKS = {
   email: "ng3124@nyu.edu",
+  emailCompose: `https://mail.google.com/mail/?view=cm&fs=1&to=ng3124@nyu.edu&su=${encodeURIComponent(
+    "Hi Nishanth — from [Your name / company]"
+  )}`,
   github: "https://github.com/Nishanth-G-Palaniswami",
   linkedin: "https://www.linkedin.com/in/nishanth-g-palaniswami",
-  resume: "https://bit.ly/nishanthresume",
+  resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view",
 };
 
+const ABOUT = `I'm Nishanth, a software engineer focused on ML infrastructure and applied machine learning. I like building the layers that make ML useful in practice — data pipelines, backend services, evaluation workflows, and product experiences that help models behave reliably in the real world. My work usually sits between engineering and ML: turning ambiguity into systems that are clear, scalable, and production-ready.`;
+
+const WORK_AUTH =
+  "F-1 · 3 years work-authorized via OPT + STEM-OPT · no sponsorship until 2029";
+
+const EDUCATION = [
+  {
+    degree: "M.S. Computer Engineering",
+    school: "New York University",
+    logo: "/nyu-logo.png",
+    period: "2024 – May 2026",
+    detail:
+      "GPA 3.961/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
+  },
+  {
+    degree: "B.E. Computer Science",
+    school: "PSG College of Technology",
+    period: "2020 – 2024",
+    detail: "Published research (IEEE ICCCNT 2024). Creative Director, PSG Radio Hub.",
+  },
+];
+
+const SKILLS = [
+  {
+    group: "Machine Learning",
+    icon: Cpu,
+    items: [
+      "PyTorch", "TensorFlow / TF Lite", "Scikit-learn", "Transformers",
+      "Hugging Face", "ProtBERT", "OpenCV", "CNN / RNN",
+      "Multi-task learning", "Gradient analysis",
+      "NumPy", "Matplotlib", "Seaborn",
+    ],
+  },
+  {
+    group: "Data & Infrastructure",
+    icon: Database,
+    items: [
+      "FastAPI", "REST APIs", "Django", "PySpark", "Spark MLlib",
+      "DuckDB", "PostgreSQL / Supabase", "Pandas", "Parquet",
+    ],
+  },
+  {
+    group: "Cloud & MLOps",
+    icon: Cloud,
+    items: [
+      "AWS EC2 / S3 / SageMaker", "AWS Lambda", "AWS Bedrock", "OpenSearch",
+      "CloudWatch", "Railway", "GitHub Actions", "PyTest", "Golden tests",
+    ],
+  },
+  {
+    group: "Languages & Web",
+    icon: Code2,
+    items: ["Python", "R", "JavaScript / React", "SQL", "HTML / CSS", "Git"],
+  },
+];
+
+const PUBLICATIONS = [
+  {
+    title: "American Sign Language Alphabet Recognition Using Teachable Machine",
+    venue: "IEEE ICCCNT 2024",
+    summary:
+      "CNN image classification with temporal smoothing for robust video ASL-to-voice translation. 99% accuracy on the alphabet set; 35% reduction in false positives; deployable on edge devices (TF Lite).",
+    links: {
+      ieee: "https://ieeexplore.ieee.org/document/10725877",
+      github:
+        "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
+    },
+  },
+];
 
 const EXPERIENCE = [
   {
     role: "Software Engineer Intern",
     company: "Tagwebs Technologies",
     period: "April 2023 – May 2024",
-    location: "Coimbatore, India",
-    summary:
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days.",
-    stack: ["Python", "Django", "HTML", "CSS", "JavaScript", "AWS EC2/S3", "CloudWatch"],
+    location: "Hybrid · Coimbatore, India",
     impact: [
-      "Deployed backend systems on AWS EC2/S3 and integrated CloudWatch to track application performance",
-      "Optimized pipelines to improve deployment efficiency, driving a 12% productivity gain"
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days",
+      "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps — reducing build time by 25%",
+      "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
+    stack: ["Python", "Django", "REST APIs", "JavaScript", "AWS EC2/S3", "CloudWatch", "GitHub Actions"],
   },
   {
-    role: "Software Engineer Intern - ML & IoT",
+    role: "Software Engineer Intern — ML & IoT",
     company: "Vaayusastra Aerospace (IIT Madras RTBI)",
     period: "February 2023 – March 2023",
-    location: "Remote",
-    summary:
-      "Spearheaded a responsive Mobile dashboard and UI using React & Javascript for an automated irrigation and agricultural drone system.",
-    stack: ["React", "Javascript", "ESP32", "PyTorch", "Scikit-learn"],
+    location: "Chennai, India",
     impact: [
+      "Spearheaded a responsive mobile dashboard and UI using React & JavaScript for an automated irrigation and agricultural drone system",
       "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
-      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules"
+      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules",
     ],
+    stack: ["React", "JavaScript", "ESP32", "PyTorch", "Scikit-learn"],
   },
   {
     role: "Research Intern",
-    company: "GaiT Watch, PSG CARE (Center for Academic Research and Excellence)",
+    company: "GaiT Watch · PSG CARE",
     period: "December 2021 – January 2022",
     location: "Coimbatore, India",
-    summary:
-      "Engineered the GaitWatch product website using Python, Django, HTML & CSS, revamped the brand identity using Photoshop and Procreate, and generated real-time data collection from 450+ participants during early clinical trials.",
-    stack: ["Python", "Django", "HTML", "CSS", "Photoshop", "Procreate", "Pandas"],
     impact: [
-      "Preprocessed and structured gait data to assist ML research team in refining fall-risk prediction models",
-      "Validated mobile app UX through user trials, contributing to commercial rollout funded by PSG College of Technology"
+      "Engineered the GaitWatch product website using Python, Django, HTML & CSS; revamped the brand identity and collected real-time data from 450+ participants during early clinical trials",
+      "Preprocessed and structured gait data to assist the ML research team in refining fall-risk prediction models",
+      "Validated mobile app UX through user trials, contributing to a commercial rollout funded by PSG College of Technology",
     ],
+    stack: ["Python", "Django", "HTML", "CSS", "Pandas"],
   },
-];
-
-
-const SKILLS = {
-  coreCloud: [
-    "Amazon SageMaker",
-    "Amazon Bedrock",
-    "Amazon S3",
-    "EC2",
-    "AWS Lambda",
-    "CloudWatch",
-  ],
-  mlAi: [
-    "PyTorch",
-    "scikit-learn",
-    "Hugging Face (NLP)",
-    "OpenCV",
-    "Pandas",
-    "NumPy",
-    "Matplotlib / Seaborn",
-    "Agentic AI"
-  ],
-  programming: ["Python", "Django", "FastAPI", "JavaScript"],
-  databases: ["SQL", "Tableau", "Google Analytics", "Athena"],
-  interests: ["Open-source ML projects", "data-driven applications", "Cloud deployment"],
-  uiUx: ["Figma", "Procreate", "Photoshop", "HTML/CSS", "Tailwind CSS", "React"],
-  softSkills: ["Microsoft Excel", "Microsoft Word", "PowerPoint", "Project Management", "Team Leadership", "Communication", "Problem Solving", "Data Analysis"],
-};
-
-const CATEGORIES = [
-  { key: "all", label: "All" },
-  { key: "ml", label: "ML/AI" },
-  { key: "cloud", label: "Cloud/AWS" },
-  { key: "data", label: "Big Data" },
-  { key: "leadership", label: "Leadership" },
-  { key: "creative", label: "Creative" },
 ];
 
 const PROJECTS = [
   {
-    title: "Drug–Target Interaction & Side‑Effects (Multi‑Modal, Multi‑Task)",
-    category: ["leadership","ml"],
+    title: "ASL Alphabet Recognition",
+    accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
     summary:
-      "End-to-end multi-task learning framework combining CNNs for 2D drug structure images, Transformer encoders for SMILES strings, and ProtBERT embeddings for protein sequences to predict binding affinities (pKI) and adverse side effects. integrated SMILES canonicalization & augmentation via RDKit and dual-dataloader strategy using BindingDB & SIDER datasets.",
-    stack: [
-      "PyTorch",
-      "Hugging Face Transformers",
-      "ProtBERT",
-      "RDKit",
-      "AWS SageMaker",
-      "Amazon S3",
-    ],
+      "Real-time ASL alphabet → text → speech pipeline. Teachable Machine (CNN) for vision, CV + NLP for token translation, temporal smoothing for robust video input. Peer-reviewed and published in IEEE ICCCNT 2024.",
+    stackLine: "Python · OpenCV · TensorFlow Lite",
     impact: [
-      "F1 score ↑92% for side-effect classification",
-      "Joint training reduced inference time by 30%",
-      "Gradient conflict analysis improved multi-task stability",
-    ],
-    links: { github: "https://github.com/Nishanth-G-Palaniswami/Multi-Modal-Deep-Learning-for-Joint-Prediction-of-Drug-Target-Interaction-and-Side-Effects.git",
-       ppt: "https://docs.google.com/presentation/d/1hXOH0fBqxfF33P-VlMnFsEevn2IKBg7NmSnFfXH_Ftc/edit?usp=sharing",   
-      },
-  },
-  {
-    title: "MetroScan — NYC Subway Big Data Analytics",
-    category: ["leadership","data", "ml"],
-    summary:
-      "Scalable PySpark pipeline analyzing ~5M hourly ridership records (2020–2024) from the MTA. Modeled delay-like patterns via Linear, Random Forest, and Gradient Boosted Trees, clustered stations by usage profiles, and detected anomalies using statistical Z-scores.",
-    stack: [
-      "PySpark 3.3.2 (Hadoop 3)",
-      "Spark MLlib",
-      "Google Colab",
-      "Matplotlib",
-      "Seaborn",
-      "Parquet"
-    ],
-    impact: [
-      "Processed ~5M records at hourly granularity",
-      "Found 8 AM/5 PM peaks and post-COVID recovery",
-      "Clustered stations with PCA+KMeans into usage typologies",
-      "RMSE ≈ 104 for GBT model predicting delay proxies",
-      "Rolling window anomaly detection flagged disruption events"
+      "99% accuracy on alphabet set",
+      "−35% false positives via temporal smoothing",
+      "Deployable on edge devices (TF Lite)",
     ],
     links: {
-      github: "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
+      ieee: "https://ieeexplore.ieee.org/document/10725877",
+      github:
+        "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
+      ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit",
+    },
+  },
+  {
+    title: "MetroScan — NYC Subway Analytics",
+    accolade: { label: "PySpark · 2024", tone: "slate" },
+    summary:
+      "PySpark pipeline over 60M+ hourly MTA ridership records (2020–2024), built in a 3-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
+    stackLine: "PySpark · Spark MLlib · Parquet",
+    impact: [
+      "60M+ records processed at hourly granularity",
+      "GBT RMSE ≈ 104 on delay-proxy prediction",
+      "Detected post-COVID ridership recovery + 8 AM / 5 PM peaks",
+      "PCA + KMeans clustered stations into usage typologies",
+    ],
+    links: {
+      github:
+        "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
       demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
-      ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",  
+      ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",
     },
   },
   {
-    title: "American Sign Language Alphabet Recognition",
-    category: ["ml", "cv"],
-    summary: "Developed an ASL recognition model integrating CNN-based image classification with temporal smoothing for real-time video input. Achieved 99% accuracy in translating ASL alphabets to text and voice. Published findings in IEEE ICCCNT 2023. Designed for deployment on edge devices via TensorFlow Lite, with preprocessing in OpenCV to enhance robustness.",
-    stack: ["Python", "OpenCV", "Llama 2 7B LLM", "LM Studio", "TensorFlow", "spaCy (for similarity search)", "OpenAI API", "Teachable Machine"],
-  impact: [
-    "99% translation accuracy (alphabet set)",
-    "Reduced false positives by ~35% using temporal smoothing",
-    "Peer-reviewed: IEEE ICCCNT 2023"
-  ],
+    title: "Drug–Target Interaction & Side-Effects",
+    accolade: { label: "Multi-modal · Multi-task", tone: "slate" },
+    summary:
+      "Multi-modal, multi-task model predicting drug-target binding affinities (pKI) and adverse side effects in one pass — CNNs for drug structure images, Transformers for SMILES strings, ProtBERT for protein sequences. Trained on BindingDB + SIDER with GPT-generated data augmentation.",
+    stackLine: "PyTorch · ProtBERT · RDKit · AWS SageMaker",
+    impact: [
+      "F1 ↑92% for side-effect classification",
+      "30% faster inference vs. two-model baseline",
+      "Gradient-conflict analysis improved multi-task stability",
+    ],
     links: {
-      github: "https://github.com/Nishanth-G-Palaniswami/english-asl",
-              ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit?utm_content=DAGC7042lUM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-        ieee: "https://ieeexplore.ieee.org/document/10725877",
+      github:
+        "https://github.com/Nishanth-G-Palaniswami/Multi-Modal-Deep-Learning-for-Joint-Prediction-of-Drug-Target-Interaction-and-Side-Effects",
+      ppt: "https://docs.google.com/presentation/d/1hXOH0fBqxfF33P-VlMnFsEevn2IKBg7NmSnFfXH_Ftc/edit?usp=sharing",
     },
-  },
-  {
-    title: "Creative Director — University Club Radio Hub",
-    category: ["leadership", "creative"],
-    summary: "Shipped a repeatable pipeline (pillars → calendar → briefs → templates → checklist) and stayed hands-on: copy + Procreate/Canva/PS design. Ran 15+ collabs and added 3,000+ followers by iterating on timing/copy and posting consistently.",
-    stack: ["Strategy", "Analytics", "Adobe Photoshop", "Procreate", "Canva", "Scheduling", "Leadership"],
-    impact: ["Led a 20-member creative team", "+3,000 followers", "15+ creator partnerships", "Increased engagement rate by 40%"],
-    links: { insta: "https://www.instagram.com/psg_radio_hub/?hl=en" },
   },
 ];
 
-// -------------------- UI HELPERS -------------------- //
-const Section = ({ id, title, icon, children }) => (
-  <section id={id} className="scroll-mt-24 py-10 md:py-14">
-    <div className="flex items-center gap-3 mb-6">
-      {icon}
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{title}</h2>
+// -------------------- PRIMITIVES -------------------- //
+
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900";
+
+const NAV_ITEMS = [
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#sail", label: "SAIL" },
+  { href: "#projects", label: "Projects" },
+  { href: "#publications", label: "Publications" },
+  { href: "#experience", label: "Experience" },
+  { href: "#contact", label: "Contact" },
+];
+
+const Section = ({ id, title, icon, kicker, children }) => (
+  <section id={id} className="scroll-mt-20 py-10 md:py-14">
+    <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)]">
+      <div className="flex items-center gap-3 mb-2">
+        {icon}
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight font-display">{title}</h2>
+      </div>
+      {kicker && (
+        <p className="mb-8 text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+          {kicker}
+        </p>
+      )}
+      {!kicker && <div className="mb-8" />}
+      {children}
     </div>
-    {children}
   </section>
 );
 
-const Badge = ({ children }) => (
-  <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium bg-white/60 dark:bg-slate-700/60 backdrop-blur border-black/10 dark:border-white/10">
-    {children}
-  </span>
-);
-
-const Card = ({ children }) => (
-  <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-slate-800/80 backdrop-blur shadow-sm hover:shadow-md transition-shadow">
-    <div className="p-5 md:p-6">{children}</div>
-  </div>
-);
+const accoladeClasses = (tone) =>
+  tone === "blue"
+    ? "bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20"
+    : tone === "violet"
+      ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20"
+      : "bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700";
 
 // -------------------- MAIN COMPONENT -------------------- //
-export default function Portfolio() {
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [darkMode, setDarkMode] = useState(false);
 
-  // Initialize dark mode from localStorage and system preference
+export default function Portfolio() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const reduce = useReducedMotion();
+
   useEffect(() => {
-    const savedMode = localStorage.getItem('darkMode');
+    const savedMode = localStorage.getItem("darkMode");
     if (savedMode !== null) {
       setDarkMode(JSON.parse(savedMode));
     } else {
-      // Check system preference if no saved preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setDarkMode(prefersDark);
+      setDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
     }
   }, []);
 
-  // Save dark mode preference
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(darkMode));
-    console.log('Dark mode:', darkMode); // Debug log
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return PROJECTS.filter((p) => {
-      const inCat = filter === "all" || p.category.includes(filter);
-      const inText = !q
-        ? true
-        : [p.title, p.summary, ...(p.stack || []), ...(p.impact || [])]
-            .join(" ")
-            .toLowerCase()
-            .includes(q);
-      return inCat && inText;
-    });
-  }, [query, filter]);
+  // Motion helpers that respect prefers-reduced-motion
+  const fadeUp = (delay = 0) =>
+    reduce
+      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
+      : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.5, delay },
+      };
+
+  const fadeUpInView = (delay = 0) =>
+    reduce
+      ? {
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true, amount: 0.2 },
+        transition: { duration: 0.2 },
+      }
+      : {
+        initial: { opacity: 0, y: 10 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.2 },
+        transition: { duration: 0.4, delay },
+      };
 
   return (
-    <div id="top" className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100">
-      <header className="sticky top-0 z-20 border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="15" fill="#FFFFFF" stroke="#000000" stroke-width="1"/>
-              <path d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z" fill="#000000"/>
+    <div
+      id="top"
+      className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-200"
+    >
+      {/* Skip link */}
+      <a
+        href="#main"
+        className={`sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-blue-600 focus:text-white ${focusRing}`}
+      >
+        Skip to content
+      </a>
+
+      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+        <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex items-center justify-between">
+          <a
+            href="#top"
+            className={`flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity rounded-md ${focusRing}`}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="flex-shrink-0"
+            >
+              <circle
+                cx="16"
+                cy="16"
+                r="15"
+                fill="currentColor"
+                className="text-white dark:text-slate-900"
+                stroke="currentColor"
+              />
+              <path
+                d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z"
+                className="fill-current"
+              />
             </svg>
-            <span className="font-semibold">{PROFILE.name.split(" ")[0]} · Portfolio</span>
+            <span className="font-semibold tracking-tight truncate">
+              Nishanth G Palaniswami
+            </span>
           </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#projects" className="hover:underline">Projects</a>
-            <a href="#skills" className="hover:underline">Skills</a>
-            <a href="#about" className="hover:underline">About</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-5 text-sm" aria-label="Primary">
+            {NAV_ITEMS.map((n) => (
+              <a
+                key={n.href}
+                href={n.href}
+                className={`px-1 py-1 rounded hover:underline underline-offset-4 ${focusRing}`}
+              >
+                {n.label}
+              </a>
+            ))}
           </nav>
-          <div className="flex items-center gap-3">
+
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white/80 dark:bg-slate-800/80 backdrop-blur hover:bg-white dark:hover:bg-slate-700 transition-colors text-sm"
-              aria-label="Toggle dark mode"
+              className={`hidden sm:inline-flex items-center justify-center h-11 w-11 md:h-9 md:w-9 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={darkMode}
             >
               {darkMode ? (
-                <>
-                  <Sun className="h-4 w-4 text-yellow-500" />
-                  <span className="hidden sm:inline">Light Mode</span>
-                </>
+                <Sun className="h-4 w-4 text-amber-500" aria-hidden="true" />
               ) : (
-                <>
-                  <Moon className="h-4 w-4 text-slate-600" />
-                  <span className="hidden sm:inline">Dark Mode</span>
-                </>
+                <Moon className="h-4 w-4 text-slate-600" aria-hidden="true" />
               )}
             </button>
+
             <a
               href={LINKS.resume}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm hover:opacity-90"
+              className={`inline-flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 sm:px-4 h-11 md:h-9 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
             >
-              <FileText className="h-4 w-4" /> Resume
+              <FileText className="h-4 w-4" aria-hidden="true" /> Resume
             </a>
+
+            {/* Mobile menu toggle */}
+            <button
+              onClick={() => setMobileNavOpen((v) => !v)}
+              className={`md:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileNavOpen}
+              aria-controls="mobile-nav"
+            >
+              {mobileNavOpen ? (
+                <X className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile nav drawer */}
+        {mobileNavOpen && (
+          <nav
+            id="mobile-nav"
+            aria-label="Mobile"
+            className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+          >
+            <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
+              {NAV_ITEMS.map((n) => (
+                <li key={n.href}>
+                  <a
+                    href={n.href}
+                    onClick={() => setMobileNavOpen(false)}
+                    className={`block px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              ))}
+              <li className="mt-1 pt-2 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setDarkMode(!darkMode)}
+                  className={`w-full flex items-center justify-between px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
+                  aria-pressed={darkMode}
+                >
+                  <span className="flex items-center gap-2">
+                    {darkMode ? (
+                      <Sun className="h-4 w-4 text-amber-500" aria-hidden="true" />
+                    ) : (
+                      <Moon className="h-4 w-4 text-slate-600" aria-hidden="true" />
+                    )}
+                    {darkMode ? "Light mode" : "Dark mode"}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                    {darkMode ? "on" : "off"}
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        )}
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-10 md:py-16">
+      <main id="main" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-12 md:py-20">
         {/* Hero */}
-        <section className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
+        <section aria-labelledby="hero-name" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] grid md:grid-cols-5 gap-10 items-start">
+          <div className="md:col-span-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-medium border border-emerald-500/20 font-mono">
+                <span className="relative flex h-2 w-2" aria-hidden="true">
+                  {!reduce && (
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  )}
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                {PROFILE.availability}
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-400 text-xs font-medium border border-blue-500/20 font-mono">
+                {PROFILE.workAuthShort}
+              </span>
+            </div>
+
+            <h1
+              id="hero-name"
+              className="mt-5 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] font-display"
+            >
               {PROFILE.name}
             </h1>
-            <p className="mt-3 text-lg text-slate-700">{PROFILE.tagline}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {/* University first, with logo */}
-              <Badge>
-                <img src="/nyu-logo.png" alt="NYU" className="h-3.5 w-3.5 mr-1 rounded-sm" />
-                {PROFILE.University}
-              </Badge>
-            
-              {/* Location */}
-              <Badge>
-                <Globe className="h-3.5 w-3.5 mr-1" /> {PROFILE.location}
-              </Badge>
-            
-              {/* Graduation & Work Auth */}
-              <Badge><Cpu className="h-3.5 w-3.5 mr-1" /> Grad: {PROFILE.graduation}</Badge>
-              <Badge><Cloud className="h-3.5 w-3.5 mr-1" /> {PROFILE.workAuth}</Badge>
-            </div>
-            <p className="mt-6 text-slate-700 dark:text-slate-300 max-w-2xl">{PROFILE.summary}</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Linkedin className="h-4 w-4"/> LinkedIn
-              </a>
-              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Github className="h-4 w-4"/> GitHub
-              </a>
-              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Mail className="h-4 w-4"/> Email
-              </a>
-              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <FileText className="h-4 w-4"/> View Resume
-              </a>
-            </div>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 backdrop-blur p-8 shadow-sm"
-          >
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl bg-gradient-to-br from-indigo-300 to-indigo-50 dark:from-indigo-900/50 dark:to-indigo-800/50 p-4">
-                <div className="text-sm font-semibold">AWS</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.coreCloud.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-emerald-300 to-emerald-50 dark:from-emerald-900/50 dark:to-emerald-800/50 p-4">
-                <div className="text-sm font-semibold">ML / AI</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.mlAi.slice(0,6).map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-pink-300 to-pink-50 dark:from-pink-900/50 dark:to-pink-800/50 p-4">
-                <div className="text-sm font-semibold">Programming</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.programming.map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-amber-300 to-amber-50 dark:from-amber-900/50 dark:to-amber-800/50 p-4">
-                <div className="text-sm font-semibold">Databases & Analytics</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.databases.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-purple-300 to-purple-50 dark:from-purple-900/50 dark:to-purple-800/50 p-4">
-                <div className="text-sm font-semibold">Professional Skills</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.softSkills.slice(0, 6).map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              <div className="rounded-xl bg-gradient-to-br from-lime-200 to-lime-50 dark:from-yellow-900/50 dark:to-yellow-800/50 p-4">
-                <div className="text-sm font-semibold">Design & Frontend</div>
-                <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside">
-                  {SKILLS.uiUx.map((s) => (<li key={s}>{s}</li>))}
-                </ul>
-              </div>
-              
-            </div>
-            <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">* Full skills below</p>
-          </motion.div>
-        </section>
-        
-        
-        
-        {/* Experience Section */}
-        <Section id="experience" title="Work Experience" icon={<Server className="h-6 w-6" />}>
-          <div className="relative border-l-2 border-slate-200 dark:border-slate-700 pl-8 md:pl-12 space-y-12">
-            {EXPERIENCE.map((exp, index) => (
-              <motion.div
-                key={exp.role + exp.company}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative"
+
+            <p className="mt-3 text-xl md:text-2xl text-slate-800 dark:text-slate-200 font-medium">
+              {PROFILE.role}
+            </p>
+
+            <p className="mt-5 text-base md:text-lg text-slate-700 dark:text-slate-300 max-w-2xl leading-relaxed">
+              {PROFILE.thesis}
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href={LINKS.resume}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
               >
-                {/* Timeline Dot */}
-                <div className="absolute -left-[47px] md:-left-[63px] top-1 h-6 w-6 rounded-full bg-indigo-500 border-4 border-slate-50 dark:border-slate-900 flex items-center justify-center">
-                  <Building2 className="h-3 w-3 text-white" />
-                </div>
-                
-                <div className="flex flex-col md:flex-row gap-2 md:gap-8">
-                  {/* Left Column: Metadata */}
-                  <div className="md:w-1/4 text-sm text-slate-600 dark:text-slate-400 space-y-1 pt-1">
-                    <p className="font-semibold text-slate-800 dark:text-slate-200">{exp.company}</p>
-                    <p className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {exp.period}</p>
-                    <p className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> {exp.location}</p>
-                  </div>
-
-                  {/* Right Column: Details in a Card */}
-                  <div className="md:w-3/4">
-                    <Card>
-                      <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100">{exp.role}</h3>
-                      <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{exp.summary}</p>
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {exp.stack.map((s) => (
-                          <Badge key={s}>{s}</Badge>
-                        ))}
-                      </div>
-                      {exp.impact && exp.impact.length > 0 && (
-                        <ul className="mt-3 text-sm text-slate-700 dark:text-slate-300 list-disc list-inside space-y-1">
-                          {exp.impact.map((i) => (
-                            <li key={i}>{i}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </Card>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Section>
-
-
-
-
-        {/* Projects */}
-        <Section id="projects" title="Projects" icon={<Layers className="h-6 w-6"/>}>
-          <Card>
-            <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-              <div className="flex flex-wrap gap-2 items-center">
-                {CATEGORIES.map((c) => (
-                  <button
-                    key={c.key}
-                    onClick={() => setFilter(c.key)}
-                    className={`px-3 py-1 rounded-full text-sm border transition ${
-                      filter === c.key
-                        ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                        : "bg-white dark:bg-slate-800 border-black/10 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-slate-700"
-                    }`}
-                  >
-                    {c.label}
-                  </button>
-                ))}
-              </div>
-              <div className="md:ml-auto relative max-w-md w-full">
-                <Filter className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"/>
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search projects, stacks, impacts…"
-                  className="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 dark:text-white"
-                />
-              </div>
+                <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+              </a>
+              <a
+                href={LINKS.emailCompose}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              >
+                <Mail className="h-4 w-4" aria-hidden="true" /> Email
+              </a>
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              >
+                <Linkedin className="h-4 w-4" aria-hidden="true" /> LinkedIn
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              >
+                <Github className="h-4 w-4" aria-hidden="true" /> GitHub
+              </a>
             </div>
-          </Card>
+          </div>
 
-          <div className="mt-6 grid md:grid-cols-2 gap-6">
-            {filtered.map((p, idx) => (
-              <motion.div key={p.title} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.03 }}>
-                <Card>
-                  <div className="flex flex-col gap-3">
-                    <h3 className="text-lg font-semibold">{p.title}</h3>
-                    <p className="text-sm text-slate-700 dark:text-slate-300">{p.summary}</p>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {p.stack.map((s) => (
-                        <Badge key={s}>{s}</Badge>
-                      ))}
-                    </div>
-                    {p.impact?.length ? (
-                      <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc list-inside">
-                        {p.impact.map((i) => (
-                          <li key={i}>{i}</li>
-                        ))}
-                      </ul>
-                    ) : null}
-                    <div className="mt-3 flex gap-3 flex-wrap">
-                      {p.links?.github && (
-                        <a href={p.links.github} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
-                          <Github className="h-4 w-4" /> Code
-                        </a>
-                      )}
+          {/* Visual anchor — pipeline motif (not a duplicate of SAIL card) */}
+          <motion.aside
+            {...fadeUp(0.1)}
+            className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
+            aria-label="What I build"
+          >
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+              <Rocket className="h-3 w-3" aria-hidden="true" /> Trajectory
+            </div>
 
-                      {p.links?.demo && (
-                        <a href={p.links.demo} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
-                          <ExternalLink className="h-4 w-4" /> Demo
-                        </a>
-                      )}
+            <ol className="mt-5 space-y-4">
+              <li className="flex gap-4">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                  2024
+                </span>
+                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
+                  <span className="font-semibold">Joined M.S. Computer Engineering</span>
+                  <span className="text-slate-500 dark:text-slate-400"> — NYU</span>
+                </span>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                  2025
+                </span>
+                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
+                  <span className="font-semibold">Founding engineer</span>
+                  <span className="text-slate-500 dark:text-slate-400"> — SAIL</span>
+                </span>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                  Now
+                </span>
+                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
+                  <span className="font-semibold">Shipping a production ML classifier</span>
+                  <span className="text-slate-500 dark:text-slate-400"> — in international trade</span>
+                </span>
+              </li>
+            </ol>
 
-                      {p.links?.insta && (
-                        <a href={p.links.insta} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline">
-                          <ExternalLink className="h-4 w-4" /> Page
-                        </a>
-                      )}
+            <a
+              href="#sail"
+              className={`mt-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline underline-offset-4 rounded ${focusRing}`}
+            >
+              Open the case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </motion.aside>
+        </section>
 
-                      {p.links?.ppt && (
-                        <a href={p.links.ppt} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
-                          <FileText className="h-4 w-4" /> PPT
-                        </a>
-                      )}
-
-                      {p.links?.ieee && (
-                        <a href={p.links.ieee} target="_blank" rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-indigo-700 dark:text-indigo-400 hover:underline uppercase">
-                          <BookOpen className="h-4 w-4" /> IEEE Publication
-                        </a>
-                      )}                      
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+        {/* About */}
+        <Section
+          id="about"
+          title="About"
+          kicker="background"
+          icon={<User className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="grid md:grid-cols-5 gap-8 items-start">
+            <p className="md:col-span-3 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
+              {ABOUT}
+            </p>
+            <aside className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+                Quick facts
+              </div>
+              <ul className="mt-3 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+                <li className="flex gap-2">
+                  <GraduationCap className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span>Graduating M.S. Computer Engineering · NYU · May 2026</span>
+                </li>
+                <li className="flex gap-2">
+                  <MapPin className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span>Based in New York City · open to relocation</span>
+                </li>
+                <li className="flex gap-2">
+                  <BadgeCheck className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span>F-1 · work-authorized through 2029 · no sponsorship needed</span>
+                </li>
+              </ul>
+            </aside>
           </div>
         </Section>
 
         {/* Skills */}
-        <Section id="skills" title="Skills (Ranked)" icon={<Server className="h-6 w-6"/>}>
+        <Section
+          id="skills"
+          title="Skills"
+          kicker="what I work with"
+          icon={<Layers className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
           <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-              <h4 className="font-semibold">Cloud & AWS (Core)</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.coreCloud.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">ML & AI</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.mlAi.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">Programming & Frameworks</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.programming.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">Design & Frontend Development</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.uiUx.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">Professional & Soft Skills</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.softSkills.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">Databases & Analytics</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.databases.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
-            <Card>
-              <h4 className="font-semibold">Professional Interests</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {SKILLS.interests.map((s) => (
-                  <Badge key={s}>{s}</Badge>
-                ))}
-              </div>
-            </Card>
+            {SKILLS.map((group) => {
+              const Icon = group.icon;
+              return (
+                <motion.article
+                  key={group.group}
+                  {...fadeUpInView(0)}
+                  className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                    <h3 className="font-semibold tracking-tight">{group.group}</h3>
+                  </div>
+                  <ul className="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.article>
+              );
+            })}
           </div>
         </Section>
 
-        {/* About */}
-        <Section id="about" title="About" icon={<Sparkles className="h-6 w-6" />}>
-        <Card>
-        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-          By the time you’ve scrolled this far, you’ve seen the tech stacks, the metrics, and the projects that keep my GitHub commits flowing at odd hours. But here’s the part that doesn’t fit neatly into a bullet point: I’m an engineer who’s just as obsessed with <strong>why</strong> something should be built as I am with how to build it.
-        </p>
-        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
-          I’ve built AI pipelines that digest <strong>millions of NYC subway rides</strong> to spot delays, taught models to understand sign language, and deployed MLOps systems that help drones keep crops healthy. My happy place? That intersection where <strong>data</strong>, <strong>creativity</strong>, and <strong>problem-solving</strong> collide to create tools that actually change how someone works, learns, or lives.
-        </p>
-        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
-          Outside the terminal window, I’m usually exploring NYC with a camera, hunting for the perfect espresso, or diving into the latest generative AI rabbit hole “just for 10 minutes” (<em>famous last words</em>). Oh—and if you ever want to swap ideas on AI, urban data, or the best coffee in Manhattan, my inbox is open.
-        </p>
-      </Card>
-        </Section>
-
-
-        {/* Contact */}
-        <Section id="contact" title="Contact" icon={<Mail className="h-6 w-6"/>}>
-          <Card>
-            <div className="flex flex-wrap items-center gap-3">
-              <a href={`mailto:${LINKS.email}`} className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Mail className="h-4 w-4"/> {LINKS.email}
-              </a>
-              <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Linkedin className="h-4 w-4"/> LinkedIn
-              </a>
-              <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <Github className="h-4 w-4"/> GitHub
-              </a>
-              <a href={LINKS.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-2 hover:shadow dark:hover:bg-slate-700 transition-colors">
-                <FileText className="h-4 w-4"/> Resume
-              </a>
+        {/* SAIL — case study */}
+        <Section
+          id="sail"
+          title="SAIL"
+          kicker="case study"
+          icon={<Rocket className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <motion.article
+            {...fadeUpInView(0)}
+            className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+          >
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                  Founding Engineer · Ongoing
+                </div>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-[11px] font-semibold uppercase tracking-wide border border-slate-300/60 dark:border-slate-700 font-mono">
+                  Cornell Tech Runway–backed
+                </span>
+              </div>
+              <h3 className="mt-3 text-2xl md:text-3xl font-semibold tracking-tight font-display">
+                Global Trade Intelligence Platform
+              </h3>
+              <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                Founding engineer on SAIL&rsquo;s applied data platform — built the{" "}
+                <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
+                and in-house pipeline behind 5M+ tariff records across 38 HTS revisions.
+                Co-built the{" "}
+                <strong className="text-slate-900 dark:text-slate-100">HTS classification model</strong>{" "}
+                on top that maps a product description to the correct tariff code at inference
+                time.
+              </p>
             </div>
-          </Card>
+
+            {/* Metric strip — primary visual anchor */}
+            <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-10">
+              <div>
+                <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
+                  5M<span className="text-blue-600 dark:text-blue-400">+</span>
+                </div>
+                <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+                  Tariff records indexed
+                </div>
+              </div>
+              <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
+                <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
+                  38
+                </div>
+                <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+                  HTS revisions tracked
+                </div>
+              </div>
+              <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
+                <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
+                  97<span className="text-blue-600 dark:text-blue-400">%</span>
+                </div>
+                <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+                  Pipeline reliability
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mt-10 pt-8 border-t border-slate-100 dark:border-slate-800">
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
+                  The problem
+                </div>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  International-trade teams operate inside a 10,000-category tariff schedule that
+                  changes every few weeks. Every revision shifts duty rates and product
+                  classifications — but most teams don&rsquo;t know what changed, and most tools
+                  either call external APIs per query or rely on manual lookup. Both are slow,
+                  stale, and brittle.
+                </p>
+              </div>
+
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
+                  The approach
+                </div>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  A deterministic revision engine ingests and versions every HTS revision
+                  (DuckDB + Supabase, backed by golden tests + PyTest + GitHub Actions),
+                  surfaces normalized changes between any two revisions, and powers
+                  downstream duty calculation. On top of that data layer, a co-built
+                  classification model maps product descriptions to the right HTS code at
+                  inference time. A &ldquo;Product DNA&rdquo; layer persists each classification
+                  alongside the SKU it describes, so recurring products aren&rsquo;t
+                  re-classified from scratch on every run.
+                </p>
+              </div>
+
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
+                  The impact
+                </div>
+                <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
+                  <li className="flex gap-2">
+                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span>5M+ tariff records indexed; 38 HTS revisions tracked (Jan 2025 → 2026)</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span>A↔B HTS revision engine at ≥95% accuracy; 1000+ changes surfaced per release</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span>97% pipeline reliability end-to-end via golden tests + schema validation</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span>Co-built HTS classifier serving production traffic for international-trade customers</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-2">
+                What I own
+              </div>
+              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                Sole owner of the HTS revision engine + US tariff data pipeline — schema,
+                ingestion, 38-revision history, golden tests, normalized change detection,
+                duty-calculation layer, and the Product DNA store. Co-owner (with our CTO) of
+                the HTS classification model built on top — training data curation, model,
+                inference pipeline, evaluation loops.
+              </p>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                Python · SQL · R · FastAPI · Supabase · DuckDB · Railway · PyTest · GitHub Actions
+              </p>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <a
+                  href="https://sailgtx.ai"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                >
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Visit product
+                </a>
+                <a
+                  href="https://www.sailgtx.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                >
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
+                </a>
+              </div>
+            </div>
+          </motion.article>
         </Section>
+
+        {/* Projects */}
+        <Section
+          id="projects"
+          title="Projects"
+          kicker="selected work"
+          icon={<Layers className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="space-y-6">
+            {PROJECTS.map((p, idx) => (
+              <motion.article
+                key={p.title}
+                {...fadeUpInView(idx * 0.05)}
+                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col"
+              >
+                {p.accolade && (
+                  <span
+                    className={
+                      "self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide mb-3 font-mono " +
+                      accoladeClasses(p.accolade.tone)
+                    }
+                  >
+                    {p.accolade.tone === "violet" && (
+                      <BookOpen className="h-3 w-3" aria-hidden="true" />
+                    )}
+                    {p.accolade.label}
+                  </span>
+                )}
+                <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {p.summary}
+                </p>
+
+                <ul className="mt-4 space-y-1.5 text-sm text-slate-800 dark:text-slate-200">
+                  {p.impact.map((i) => (
+                    <li key={i} className="flex gap-2">
+                      <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                      <span>{i}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  {p.stackLine}
+                </p>
+
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 text-sm">
+                  {p.links?.product && (
+                    <a
+                      href={p.links.product}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Product
+                    </a>
+                  )}
+                  {p.links?.site && (
+                    <a
+                      href={p.links.site}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
+                    </a>
+                  )}
+                  {p.links?.github && (
+                    <a
+                      href={p.links.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <Github className="h-4 w-4" aria-hidden="true" /> Code
+                    </a>
+                  )}
+                  {p.links?.demo && (
+                    <a
+                      href={p.links.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Demo
+                    </a>
+                  )}
+                  {p.links?.insta && (
+                    <a
+                      href={p.links.insta}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Page
+                    </a>
+                  )}
+                  {p.links?.ppt && (
+                    <a
+                      href={p.links.ppt}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <FileText className="h-4 w-4" aria-hidden="true" /> Slides
+                    </a>
+                  )}
+                  {p.links?.ieee && (
+                    <a
+                      href={p.links.ieee}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <BookOpen className="h-4 w-4" aria-hidden="true" /> IEEE Paper
+                    </a>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
+        {/* Publications */}
+        <Section
+          id="publications"
+          title="Publications"
+          kicker="peer-reviewed"
+          icon={<BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="grid gap-6">
+            {PUBLICATIONS.map((pub) => (
+              <motion.article
+                key={pub.title}
+                {...fadeUpInView(0)}
+                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                  {pub.venue}
+                </div>
+                <h3 className="mt-2 text-lg md:text-xl font-semibold tracking-tight font-display">
+                  {pub.title}
+                </h3>
+                <p className="mt-3 text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                  {pub.summary}
+                </p>
+                <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 text-sm">
+                  {pub.links?.ieee && (
+                    <a
+                      href={pub.links.ieee}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <BookOpen className="h-4 w-4" aria-hidden="true" /> Read on IEEE Xplore
+                    </a>
+                  )}
+                  {pub.links?.github && (
+                    <a
+                      href={pub.links.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                    >
+                      <Github className="h-4 w-4" aria-hidden="true" /> Code
+                    </a>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
+        {/* Experience */}
+        <Section
+          id="experience"
+          title="Experience"
+          kicker="prior roles"
+          icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="space-y-6">
+            {/* Current role pointer — anchors to SAIL case study */}
+            <a
+              href="#sail"
+              className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-baseline gap-3 flex-wrap">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                    Current
+                  </span>
+                  <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
+                    <strong className="font-semibold">Founding Engineer @ SAIL</strong>
+                    <span className="text-slate-600 dark:text-slate-400"> — see case study above</span>
+                  </span>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+              </div>
+            </a>
+
+            {EXPERIENCE.map((exp, index) => (
+              <motion.article
+                key={exp.role + exp.company}
+                {...fadeUpInView(index * 0.06)}
+                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="md:col-span-2">
+                  <p className="font-semibold text-slate-900 dark:text-slate-100">
+                    {exp.company}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {exp.location}
+                  </p>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
+                  {exp.impact && exp.impact.length > 0 && (
+                    <ul className="mt-3 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-w-3xl">
+                      {exp.impact.map((i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {exp.stack && exp.stack.length > 0 && (
+                    <p className="mt-4 text-xs text-slate-500 dark:text-slate-400 font-mono max-w-3xl">
+                      {exp.stack.join(" · ")}
+                    </p>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
+        {/* Education */}
+        <Section
+          id="education"
+          title="Education"
+          kicker="credentials"
+          icon={<GraduationCap className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="space-y-6">
+            {EDUCATION.map((ed, index) => (
+              <motion.article
+                key={ed.school}
+                {...fadeUpInView(index * 0.06)}
+                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-3">
+                    {ed.logo && (
+                      <img
+                        src={ed.logo}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-8 w-8 object-contain flex-shrink-0 dark:bg-white dark:rounded dark:p-0.5"
+                      />
+                    )}
+                    <p className="font-semibold text-slate-900 dark:text-slate-100">{ed.school}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {ed.period}
+                  </p>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
+                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                    {ed.detail}
+                  </p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
       </main>
 
-      <footer className="border-t border-black/10 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-slate-500 dark:text-slate-400">
-          © {new Date().getFullYear()} {PROFILE.name}. Built with React + Tailwind.
+      {/* Contact — full-bleed dark closing moment, breaks the white-card rhythm */}
+      <section
+        id="contact"
+        aria-labelledby="contact-heading"
+        className="scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
+      >
+        <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-20 md:py-28">
+          <div className="flex items-center gap-2 mb-2">
+            <Mail className="h-6 w-6 text-blue-400" aria-hidden="true" />
+            <h2
+              id="contact-heading"
+              className="text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
+            >
+              Contact
+            </h2>
+          </div>
+          <p className="mb-10 text-xs uppercase tracking-[0.2em] text-slate-400 font-mono">
+            get in touch
+          </p>
+
+          <motion.div {...fadeUpInView(0)}>
+            <a
+              href={LINKS.emailCompose}
+              target="_blank"
+              rel="noreferrer"
+              className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-blue-400 transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+            >
+              {LINKS.email}
+            </a>
+
+            <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-300 leading-relaxed">
+              Open to full-time ML Engineer roles starting May 2026. Happy to chat about ML
+              infrastructure, multi-modal models, or building ML products that behave reliably
+              in the real world.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a
+                href={LINKS.resume}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg bg-white text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+              >
+                <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+              </a>
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+              >
+                <Linkedin className="h-4 w-4" aria-hidden="true" /> LinkedIn
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+              >
+                <Github className="h-4 w-4" aria-hidden="true" /> GitHub
+              </a>
+            </div>
+
+            <p className="mt-12 pt-8 border-t border-slate-800 text-xs text-slate-400 font-mono max-w-2xl">
+              {WORK_AUTH}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <footer className="bg-slate-950 text-slate-500 border-t border-slate-800">
+        <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-xs font-mono">
+          <span>
+            © {new Date().getFullYear()} Nishanth G Palaniswami
+            <span className="text-slate-600"> · built solo · React + Vite + Tailwind</span>
+          </span>
+          <a
+            href="#top"
+            className={`hover:text-blue-400 rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+          >
+            back to top ↑
+          </a>
         </div>
       </footer>
     </div>

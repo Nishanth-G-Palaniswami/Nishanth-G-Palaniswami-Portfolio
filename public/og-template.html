@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OG template — Nishanth G Palaniswami</title>
+  <meta name="viewport" content="width=1200, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body {
+      width: 1200px;
+      height: 630px;
+      box-sizing: border-box;
+      background: #020617;
+      color: #f8fafc;
+      padding: 72px;
+      font-family: "Geist", system-ui, -apple-system, sans-serif;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Subtle grid fades out to bottom-left */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      -webkit-mask-image: radial-gradient(ellipse at top right, black 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse at top right, black 0%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .top, .content, .bottom { position: relative; z-index: 1; }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #f8fafc;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .logo svg { flex-shrink: 0; }
+
+    .url {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .pills {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+    .pill {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill.emerald {
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .pill.blue {
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #10b981;
+    }
+
+    .name {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 700;
+      font-size: 76px;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      color: #f8fafc;
+      margin: 0;
+    }
+
+    .role {
+      font-size: 26px;
+      color: #cbd5e1;
+      margin-top: 18px;
+      font-weight: 500;
+    }
+
+    .thesis {
+      font-size: 20px;
+      color: #94a3b8;
+      line-height: 1.45;
+      margin-top: 22px;
+      max-width: 900px;
+    }
+    .thesis strong {
+      color: #60a5fa;
+      font-weight: 500;
+    }
+
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 13px;
+      color: #64748b;
+      letter-spacing: 0.08em;
+    }
+
+    .bottom .right { color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="15" fill="#f8fafc" stroke="#f8fafc" />
+        <path d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z" fill="#020617" />
+      </svg>
+      <span>Nishanth G Palaniswami</span>
+    </div>
+    <div class="url">nishanthgp.me</div>
+  </div>
+
+  <div class="content">
+    <div class="pills">
+      <div class="pill emerald">
+        <span class="dot"></span>
+        Open May 2026
+      </div>
+      <div class="pill blue">F-1 · OPT + STEM-OPT · no sponsorship needed until 2029</div>
+    </div>
+    <h1 class="name">Nishanth G<br />Palaniswami</h1>
+    <div class="role">Applied ML Engineer</div>
+    <div class="thesis">
+      Ship <strong>production classifiers</strong> end-to-end — data pipeline through
+      inference.
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div>Founding engineer · SAIL · MS Computer Engineering · NYU 2026</div>
+    <div class="right">ng3124@nyu.edu</div>
+  </div>
+</body>
+</html>
