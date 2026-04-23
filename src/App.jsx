@@ -3,6 +3,7 @@ import {
   ExternalLink, Github, Linkedin, FileText, Server, Menu, X,
   Layers, BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
   Cpu, Database, Cloud, Code2, GraduationCap, User, Rocket, Mail, BadgeCheck,
+  Copy, Check,
 } from "lucide-react";
 
 import { motion, useReducedMotion } from "framer-motion";
@@ -18,8 +19,22 @@ const PROFILE = {
 
 const LINKS = {
   email: "ng3124@nyu.edu",
-  emailCompose: `https://mail.google.com/mail/?view=cm&fs=1&to=ng3124@nyu.edu&su=${encodeURIComponent(
-    "Hi Nishanth — from [Your name / company]"
+  personalEmail: "nishanthgpalaniswami@gmail.com",
+  emailCompose: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    "ng3124@nyu.edu"
+  )}&bcc=${encodeURIComponent(
+    "nishanthgpalaniswami@gmail.com"
+  )}&su=${encodeURIComponent(
+    "Portfolio Reachout - [Company/Individual]"
+  )}&body=${encodeURIComponent(
+    `Hi Nishanth,
+
+I came across your portfolio and wanted to reach out.
+
+[Add your message here]
+
+Best,
+[Name]`
   )}`,
   github: "https://github.com/Nishanth-G-Palaniswami",
   linkedin: "https://www.linkedin.com/in/nishanth-g-palaniswami",
@@ -237,7 +252,29 @@ const accoladeClasses = (tone) =>
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
   const reduce = useReducedMotion();
+
+  const copyEmailAddresses = async () => {
+    const text = `${LINKS.email}, ${LINKS.personalEmail}`;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+      } catch { }
+      document.body.removeChild(ta);
+    }
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 1800);
+  };
 
   useEffect(() => {
     const savedMode = localStorage.getItem("darkMode");
@@ -475,14 +512,32 @@ export default function Portfolio() {
               >
                 <FileText className="h-4 w-4" aria-hidden="true" /> Resume
               </a>
-              <a
-                href={LINKS.emailCompose}
-                target="_blank"
-                rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
-              >
-                <Mail className="h-4 w-4" aria-hidden="true" /> Email
-              </a>
+              <div className="inline-flex rounded-lg border border-slate-300 dark:border-slate-700 divide-x divide-slate-300 dark:divide-slate-700">
+                <a
+                  href={LINKS.emailCompose}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-l-lg px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-inset"
+                >
+                  <Mail className="h-4 w-4" aria-hidden="true" /> Email
+                </a>
+                <button
+                  type="button"
+                  onClick={copyEmailAddresses}
+                  aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
+                  aria-live="polite"
+                  className={`inline-flex items-center justify-center rounded-r-lg h-11 md:h-10 w-11 md:w-10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-inset ${emailCopied
+                      ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                >
+                  {emailCopied ? (
+                    <Check className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <Copy className="h-4 w-4" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
               <a
                 href={LINKS.linkedin}
                 target="_blank"
@@ -490,14 +545,6 @@ export default function Portfolio() {
                 className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               >
                 <Linkedin className="h-4 w-4" aria-hidden="true" /> LinkedIn
-              </a>
-              <a
-                href={LINKS.github}
-                target="_blank"
-                rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
-              >
-                <Github className="h-4 w-4" aria-hidden="true" /> GitHub
               </a>
             </div>
           </div>
@@ -1079,14 +1126,32 @@ export default function Portfolio() {
           </p>
 
           <motion.div {...fadeUpInView(0)}>
-            <a
-              href={LINKS.emailCompose}
-              target="_blank"
-              rel="noreferrer"
-              className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-blue-400 transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
-            >
-              {LINKS.email}
-            </a>
+            <div className="flex flex-wrap items-baseline gap-3 sm:gap-4">
+              <a
+                href={LINKS.emailCompose}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-blue-400 transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+              >
+                {LINKS.email}
+              </a>
+              <button
+                type="button"
+                onClick={copyEmailAddresses}
+                aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
+                aria-live="polite"
+                className={`inline-flex items-center justify-center h-11 md:h-10 w-11 md:w-10 rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${emailCopied
+                  ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
+                  : "border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 hover:bg-slate-900"
+                  }`}
+              >
+                {emailCopied ? (
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Copy className="h-4 w-4" aria-hidden="true" />
+                )}
+              </button>
+            </div>
 
             <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-300 leading-relaxed">
               Open to full-time ML Engineer roles starting May 2026. Happy to chat about ML
