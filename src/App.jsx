@@ -300,7 +300,7 @@ export default function Portfolio() {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/85 backdrop-blur">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex items-center justify-between">
           <a
             href="#top"
@@ -393,7 +393,7 @@ export default function Portfolio() {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+            className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
