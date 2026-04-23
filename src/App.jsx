@@ -359,9 +359,11 @@ export default function Portfolio() {
               href={LINKS.resume}
               target="_blank"
               rel="noreferrer"
-              className={`inline-flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 sm:px-4 h-11 md:h-9 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
+              aria-label="Resume"
+              className={`inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 h-11 md:h-9 w-11 sm:w-auto sm:px-4 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
             >
-              <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+              <FileText className="h-4 w-4" aria-hidden="true" />
+              <span className="hidden sm:inline">Resume</span>
             </a>
 
             {/* Mobile menu toggle */}
