@@ -255,6 +255,11 @@ export default function Portfolio() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    // Keep iOS Safari chrome matched to the current theme
+    const themeMeta = document.getElementById("theme-color-meta");
+    if (themeMeta) {
+      themeMeta.setAttribute("content", darkMode ? "#0f172a" : "#f8fafc");
+    }
   }, [darkMode]);
 
   // Motion helpers that respect prefers-reduced-motion

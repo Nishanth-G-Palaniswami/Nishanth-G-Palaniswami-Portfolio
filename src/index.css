@@ -3,3 +3,10 @@
 @tailwind utilities;
 
 html, body, #root { height: 100%; }
+
+/* iOS Safari paints the <html> element's background into the safe-area above
+ * the URL bar and during rubber-band overscroll. Match it to the page theme
+ * so landscape / overscroll doesn't reveal a white strip in dark mode.
+ */
+html { background-color: rgb(248 250 252); } /* slate-50 */
+html.dark { background-color: rgb(15 23 42); } /* slate-900 */
