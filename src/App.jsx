@@ -118,7 +118,7 @@ const EXPERIENCE = [
     period: "April 2023 – May 2024",
     location: "Hybrid · Coimbatore, India",
     impact: [
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days",
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 5000+ users in 90 days",
       "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps — reducing build time by 25%",
       "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
@@ -527,8 +527,8 @@ export default function Portfolio() {
                   aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
                   aria-live="polite"
                   className={`inline-flex items-center justify-center rounded-r-lg h-11 md:h-10 w-11 md:w-10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-inset ${emailCopied
-                      ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                 >
                   {emailCopied ? (
