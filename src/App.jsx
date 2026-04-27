@@ -10,10 +10,10 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
-  role: "Applied ML Engineer",
+  role: "Software Engineer | Applied ML Engineer",
   thesis:
     "Ship production classifiers end-to-end — data pipeline through inference. Open for full-time roles, May 2026.",
-  availability: "Open May 2026",
+  availability: "Actively seeking full-time roles",
   workAuthShort: "F-1 · OPT + STEM-OPT · no sponsorship needed until 2029",
 };
 
