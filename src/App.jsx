@@ -51,50 +51,52 @@ const EDUCATION = [
     degree: "M.S. Computer Engineering",
     school: "New York University",
     logo: "/nyu-logo.png",
-    period: "2024 – May 2026",
+    period: "August 2024 – May 2026",
     detail:
       "GPA 3.961/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
   },
   {
     degree: "B.E. Computer Science",
     school: "PSG College of Technology",
-    period: "2020 – 2024",
-    detail: "Published research (IEEE ICCCNT 2024). Creative Director, PSG Radio Hub.",
+    logo: "/psg-logo.png",
+    period: "August 2020 – May 2024",
+    detail: "Published research (IEEE ICCCNT 2024). Creative Director - PSG Radio Hub (Guiness World Record holder).",
   },
 ];
 
 const SKILLS = [
   {
-    group: "Machine Learning",
+    group: "ML & AI",
     icon: Cpu,
     items: [
-      "PyTorch", "TensorFlow / TF Lite", "Scikit-learn", "Transformers",
-      "Hugging Face", "ProtBERT", "OpenCV", "CNN / RNN",
-      "Multi-task learning", "Gradient analysis",
-      "NumPy", "Matplotlib", "Seaborn",
+      "PyTorch", "Scikit-learn", "SciPy", "Pandas", "NumPy", "LLMs / RAG / GenAI",
+      "NLP", "Transformers (Hugging Face)",
+      "OpenCV", "Eval-driven development",
     ],
   },
   {
     group: "Data & Infrastructure",
     icon: Database,
     items: [
-      "FastAPI", "REST APIs", "Django", "PySpark", "Spark MLlib",
-      "DuckDB", "PostgreSQL / Supabase", "Pandas", "Parquet",
+      "PySpark", "Supabase / PostgreSQL", "DuckDB / MotherDuck",
+      "OpenSearch", "FastAPI", "Django", "REST APIs", "React",
     ],
+  },
+  {
+    group: "Languages",
+    icon: Code2,
+    items: ["Python", "SQL", "JavaScript (ES6+)", "TypeScript", "R", "HTML / CSS", "Git"],
   },
   {
     group: "Cloud & MLOps",
     icon: Cloud,
     items: [
-      "AWS EC2 / S3 / SageMaker", "AWS Lambda", "AWS Bedrock", "OpenSearch",
-      "CloudWatch", "Railway", "GitHub Actions", "PyTest", "Golden tests",
+      "AWS S3 / EC2 / Lambda", "AWS SageMaker AI", "AWS Bedrock",
+      "MLOps", "Observability", "CI/CD (GitHub Actions)",
+      "Golden tests", "PyTest",
     ],
   },
-  {
-    group: "Languages & Web",
-    icon: Code2,
-    items: ["Python", "R", "JavaScript / React", "SQL", "HTML / CSS", "Git"],
-  },
+
 ];
 
 const PUBLICATIONS = [
@@ -151,6 +153,22 @@ const EXPERIENCE = [
 ];
 
 const PROJECTS = [
+  {
+    title: "Second Brain — Personal Agentic Co-Pilot",
+    accolade: { label: "Agentic AI · 2026", tone: "slate" },
+    summary:
+      "Self-built agentic system on top of Claude Code that reads my Gmail, Slack, GitHub, and Calendar, drafts replies into a review folder, and persists context as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
+    stackLine: "Python · Claude Agent SDK · MCP · sqlite-vec · fastembed (ONNX)",
+    impact: [
+      "Heartbeat scheduler runs every 30 min during work hours — diff-based snapshot invokes Claude only on new signal, writes drafts and Windows toast notifications",
+      "Multi-source ingest (Gmail · Slack · GitHub · Calendar) via Python CLI wrappers — credentials never enter the LLM context",
+      "Local hybrid memory search: sqlite-vec + fastembed ONNX embeddings, incremental mtime+sha reindex over the Markdown vault",
+      "Advisor-mode safety: every outbound artifact lands in drafts/active/ for review; pre-tool hooks enforce per-USER.md guardrails before any action",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/second-brain",
+    },
+  },
   {
     title: "ASL Alphabet Recognition",
     accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
