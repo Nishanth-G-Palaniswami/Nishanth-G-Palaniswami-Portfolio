@@ -10,20 +10,16 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
-  role: "Software Engineer | Applied ML Engineer",
+  role: "Software Engineer — AI Applications & Data Pipelines",
   thesis:
-    "Ship production classifiers end-to-end — data pipeline through inference. Open for full-time roles, May 2026.",
+    "I build agentic AI systems and audit-ready data pipelines — and the tests that keep them honest. NYU MSCE '26 · previously SAIL GTX. Open to full-time roles now.",
   availability: "Actively seeking full-time roles",
-  workAuthShort: "F-1 · OPT + STEM-OPT · no sponsorship needed until 2029",
 };
 
 const LINKS = {
   email: "ng3124@nyu.edu",
-  personalEmail: "nishanthgpalaniswami@gmail.com",
   emailCompose: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
     "ng3124@nyu.edu"
-  )}&bcc=${encodeURIComponent(
-    "nishanthgpalaniswami@gmail.com"
   )}&su=${encodeURIComponent(
     "Portfolio Reachout - [Company/Individual]"
   )}&body=${encodeURIComponent(
@@ -43,24 +39,21 @@ Best,
 
 const ABOUT = `I'm Nishanth, a software engineer focused on ML infrastructure and applied machine learning. I like building the layers that make ML useful in practice — data pipelines, backend services, evaluation workflows, and product experiences that help models behave reliably in the real world. My work usually sits between engineering and ML: turning ambiguity into systems that are clear, scalable, and production-ready.`;
 
-const WORK_AUTH =
-  "F-1 · 3 years work-authorized via OPT + STEM-OPT · no sponsorship until 2029";
-
 const EDUCATION = [
   {
     degree: "M.S. Computer Engineering",
     school: "New York University",
     logo: "/nyu-logo.png",
-    period: "August 2024 – May 2026",
+    period: "September 2024 – May 2026",
     detail:
-      "GPA 3.961/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
+      "GPA 3.945/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
   },
   {
     degree: "B.E. Computer Science",
     school: "PSG College of Technology",
     logo: "/psg-logo.png",
     period: "August 2020 – May 2024",
-    detail: "Published research (IEEE ICCCNT 2024). Creative Director - PSG Radio Hub (Guiness World Record holder).",
+    detail: "Published research (IEEE ICCCNT 2024). Creative Director - PSG Radio Hub (Guinness World Records contribution).",
   },
 ];
 
@@ -69,17 +62,17 @@ const SKILLS = [
     group: "ML & AI",
     icon: Cpu,
     items: [
-      "PyTorch", "Scikit-learn", "SciPy", "Pandas", "NumPy", "LLMs / RAG / GenAI",
-      "NLP", "Transformers (Hugging Face)",
-      "OpenCV", "Eval-driven development",
+      "PyTorch", "Scikit-learn", "Pandas", "NumPy", "LLMs / RAG / GenAI",
+      "NLP", "Transformers (Hugging Face)", "LoRA / PEFT",
+      "OpenCV",
     ],
   },
   {
     group: "Data & Infrastructure",
     icon: Database,
     items: [
-      "PySpark", "Supabase / PostgreSQL", "DuckDB / MotherDuck",
-      "OpenSearch", "FastAPI", "Django", "REST APIs", "React",
+      "PySpark", "Supabase / PostgreSQL", "SQLite", "DuckDB",
+      "Parquet / pyarrow", "FastAPI", "Django", "REST APIs", "React",
     ],
   },
   {
@@ -91,9 +84,9 @@ const SKILLS = [
     group: "Cloud & MLOps",
     icon: Cloud,
     items: [
-      "AWS S3 / EC2 / Lambda", "AWS SageMaker AI", "AWS Bedrock",
-      "MLOps", "Observability", "CI/CD (GitHub Actions)",
-      "Golden tests", "PyTest",
+      "AWS S3 / EC2 / CloudWatch (deployments)",
+      "Observability", "CI/CD (GitHub Actions)",
+      "Golden tests", "PyTest", "Schema validation",
     ],
   },
 
@@ -104,7 +97,7 @@ const PUBLICATIONS = [
     title: "American Sign Language Alphabet Recognition Using Teachable Machine",
     venue: "IEEE ICCCNT 2024",
     summary:
-      "CNN image classification with temporal smoothing for robust video ASL-to-voice translation. 99% accuracy on the alphabet set; 35% reduction in false positives; deployable on edge devices (TF Lite).",
+      "Co-authored published pipeline translating ASL alphabet signs into real-time text and speech, built on Teachable Machine. 99% alphabet-set accuracy reported in the paper.",
     links: {
       ieee: "https://ieeexplore.ieee.org/document/10725877",
       github:
@@ -120,7 +113,7 @@ const EXPERIENCE = [
     period: "April 2023 – May 2024",
     location: "Hybrid · Coimbatore, India",
     impact: [
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 5000+ users in 90 days",
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform, supporting the launch of 40+ STEM modules and onboarding 500+ users in 90 days",
       "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps — reducing build time by 25%",
       "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
@@ -173,12 +166,11 @@ const PROJECTS = [
     title: "ASL Alphabet Recognition",
     accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
     summary:
-      "Real-time ASL alphabet → text → speech pipeline. Teachable Machine (CNN) for vision, CV + NLP for token translation, temporal smoothing for robust video input. Peer-reviewed and published in IEEE ICCCNT 2024.",
-    stackLine: "Python · OpenCV · TensorFlow Lite",
+      "Real-time ASL alphabet → text → speech pipeline built on Teachable Machine. Co-authored, peer-reviewed, and published in IEEE ICCCNT 2024.",
+    stackLine: "Python · OpenCV · Teachable Machine",
     impact: [
-      "99% accuracy on alphabet set",
-      "−35% false positives via temporal smoothing",
-      "Deployable on edge devices (TF Lite)",
+      "99% alphabet-set accuracy reported in the paper",
+      "Published at IEEE ICCCNT 2024 (6-author team)",
     ],
     links: {
       ieee: "https://ieeexplore.ieee.org/document/10725877",
@@ -191,10 +183,10 @@ const PROJECTS = [
     title: "MetroScan — NYC Subway Analytics",
     accolade: { label: "PySpark · 2024", tone: "slate" },
     summary:
-      "PySpark pipeline over 60M+ hourly MTA ridership records (2020–2024), built in a 3-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
+      "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 3-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
     stackLine: "PySpark · Spark MLlib · Parquet",
     impact: [
-      "60M+ records processed at hourly granularity",
+      "110M raw rows engineered into a 16M-row hourly feature table",
       "GBT RMSE ≈ 104 on delay-proxy prediction",
       "Detected post-COVID ridership recovery + 8 AM / 5 PM peaks",
       "PCA + KMeans clustered stations into usage typologies",
@@ -210,11 +202,10 @@ const PROJECTS = [
     title: "Drug–Target Interaction & Side-Effects",
     accolade: { label: "Multi-modal · Multi-task", tone: "slate" },
     summary:
-      "Multi-modal, multi-task model predicting drug-target binding affinities (pKI) and adverse side effects in one pass — CNNs for drug structure images, Transformers for SMILES strings, ProtBERT for protein sequences. Trained on BindingDB + SIDER with GPT-generated data augmentation.",
-    stackLine: "PyTorch · ProtBERT · RDKit · AWS SageMaker",
+      "Multi-modal, multi-task model jointly predicting drug-target binding affinity and adverse side effects in one pass — Transformer encoder over SMILES strings, CNNs over molecular structure images, shared task heads. 2-person NYU course project on BindingDB + SIDER.",
+    stackLine: "PyTorch · RDKit · BindingDB · SIDER",
     impact: [
-      "F1 ↑92% for side-effect classification",
-      "30% faster inference vs. two-model baseline",
+      "Joint multi-task heads: affinity regression + side-effect classification",
       "Gradient-conflict analysis improved multi-task stability",
     ],
     links: {
@@ -237,6 +228,7 @@ const NAV_ITEMS = [
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
   { href: "#experience", label: "Experience" },
+  { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -274,7 +266,7 @@ export default function Portfolio() {
   const reduce = useReducedMotion();
 
   const copyEmailAddresses = async () => {
-    const text = `${LINKS.email}, ${LINKS.personalEmail}`;
+    const text = LINKS.email;
     try {
       await navigator.clipboard.writeText(text);
     } catch {
@@ -501,9 +493,6 @@ export default function Portfolio() {
                 </span>
                 {PROFILE.availability}
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-400 text-xs font-medium border border-blue-500/20 font-mono">
-                {PROFILE.workAuthShort}
-              </span>
             </div>
 
             <h1
@@ -592,7 +581,7 @@ export default function Portfolio() {
                   2025
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">Founding engineer</span>
+                  <span className="font-semibold">Software Engineer Intern</span>
                   <span className="text-slate-500 dark:text-slate-400"> — SAIL</span>
                 </span>
               </li>
@@ -601,8 +590,8 @@ export default function Portfolio() {
                   Now
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">Shipping a production ML classifier</span>
-                  <span className="text-slate-500 dark:text-slate-400"> — in international trade</span>
+                  <span className="font-semibold">Building agentic AI systems</span>
+                  <span className="text-slate-500 dark:text-slate-400"> — Second Brain · local-inference voicebot</span>
                 </span>
               </li>
             </ol>
@@ -634,15 +623,11 @@ export default function Portfolio() {
               <ul className="mt-3 space-y-3 text-sm text-slate-700 dark:text-slate-300">
                 <li className="flex gap-2">
                   <GraduationCap className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span>Graduating M.S. Computer Engineering · NYU · May 2026</span>
+                  <span>M.S. Computer Engineering · NYU · May 2026</span>
                 </li>
                 <li className="flex gap-2">
                   <MapPin className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
                   <span>Based in New York City · open to relocation</span>
-                </li>
-                <li className="flex gap-2">
-                  <BadgeCheck className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span>F-1 · work-authorized through 2029 · no sponsorship needed</span>
                 </li>
               </ul>
             </aside>
@@ -699,7 +684,7 @@ export default function Portfolio() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
-                  Founding Engineer · Ongoing
+                  Software Engineer Intern · Sep 2025 – May 2026
                 </div>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-[11px] font-semibold uppercase tracking-wide border border-slate-300/60 dark:border-slate-700 font-mono">
                   Cornell Tech Runway–backed
@@ -709,9 +694,9 @@ export default function Portfolio() {
                 Global Trade Intelligence Platform
               </h3>
               <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Founding engineer on SAIL&rsquo;s applied data platform — built the{" "}
+                Engineer on SAIL&rsquo;s applied data platform — built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
-                and in-house pipeline behind 5M+ tariff records across 38 HTS revisions.
+                and in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018–2026).
                 Co-built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS classification model</strong>{" "}
                 on top that maps a product description to the correct tariff code at inference
@@ -731,10 +716,10 @@ export default function Portfolio() {
               </div>
               <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
                 <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
-                  38
+                  166
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-                  HTS revisions tracked
+                  HTS releases tracked (2018–2026)
                 </div>
               </div>
               <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
@@ -784,7 +769,7 @@ export default function Portfolio() {
                 <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
                   <li className="flex gap-2">
                     <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
-                    <span>5M+ tariff records indexed; 38 HTS revisions tracked (Jan 2025 → 2026)</span>
+                    <span>5M+ tariff records indexed; 166 HTS releases tracked (Jan 2018 → May 2026)</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
@@ -807,11 +792,12 @@ export default function Portfolio() {
                 What I own
               </div>
               <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Sole owner of the HTS revision engine + US tariff data pipeline — schema,
-                ingestion, 38-revision history, golden tests, normalized change detection,
-                duty-calculation layer, and the Product DNA store. Co-owner (with our CTO) of
-                the HTS classification model built on top — training data curation, model,
-                inference pipeline, evaluation loops.
+                Primary owner of the HTS revision engine — schema, ingestion, 166-release
+                history (2018–2026), golden tests, normalized change detection — and sole
+                owner of the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
+                and the Product DNA store. Co-owner (with our CTO) of the HTS classification
+                model built on top — training data curation, model, inference pipeline,
+                evaluation loops.
               </p>
             </div>
 
@@ -1029,10 +1015,10 @@ export default function Portfolio() {
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-baseline gap-3 flex-wrap">
                   <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
-                    Current
+                    2025–26
                   </span>
                   <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
-                    <strong className="font-semibold">Founding Engineer @ SAIL</strong>
+                    <strong className="font-semibold">Software Engineer Intern @ SAIL</strong>
                     <span className="text-slate-600 dark:text-slate-400"> — see case study above</span>
                   </span>
                 </div>
@@ -1204,9 +1190,6 @@ export default function Portfolio() {
               </a>
             </div>
 
-            <p className="mt-12 pt-8 border-t border-slate-800 text-xs text-slate-400 font-mono max-w-2xl">
-              {WORK_AUTH}
-            </p>
           </motion.div>
         </div>
       </section>
