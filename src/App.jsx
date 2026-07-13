@@ -163,6 +163,22 @@ const PROJECTS = [
     },
   },
   {
+    title: "voicebot — Local Push-to-Talk Dictation",
+    accolade: { label: "Local ML · 2026", tone: "slate" },
+    summary:
+      "Fully offline dictation tool: hold a key, speak, release, and cleaned text is typed into whatever app has focus. Whisper STT + a local LLM cleanup pass, both on-device — nothing leaves the machine.",
+    stackLine: "Python · faster-whisper (int8) · Ollama · CUDA",
+    impact: [
+      "~2.5s end-to-end within ~2.5 GB VRAM on a 4 GB laptop GPU (GTX 1650 Ti)",
+      "int8 over FP16 — ~4× faster STT on GTX 16-series",
+      "Boot-time CUDA compute-probe with automatic CPU fallback",
+      "LLM cleanup fails safe: pastes the raw transcript rather than dropping your words",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/voicebot",
+    },
+  },
+  {
     title: "ASL Alphabet Recognition",
     accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
     summary:
@@ -196,6 +212,21 @@ const PROJECTS = [
         "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
       demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
       ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",
+    },
+  },
+  {
+    title: "RoBERTa + LoRA — Parameter-Efficient Text Classification",
+    accolade: { label: "PEFT · 2025", tone: "slate" },
+    summary:
+      "Fine-tuned RoBERTa-base for 4-way news topic classification (AG News) using LoRA adapters — matching near-full-fine-tune accuracy while training under 1% of the model's weights. NYU Deep Learning group project.",
+    stackLine: "PyTorch · Hugging Face Transformers · PEFT (LoRA)",
+    impact: [
+      "94.8% test accuracy on the AG News test split",
+      "999K of 125.6M parameters trained — 0.80%",
+      "~4 MB of adapter weights vs a ~500 MB full checkpoint",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/lora-roberta-agnews",
     },
   },
   {
