@@ -113,7 +113,7 @@ const EXPERIENCE = [
     period: "April 2023 – May 2024",
     location: "Hybrid · Coimbatore, India",
     impact: [
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform where I provisioned school/teacher/class accounts, onboarding 500+ users in its first 90 days",
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform where I provisioned 500+ schools with teacher and class accounts in its first 90 days",
       "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps — reducing build time by 25%",
       "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
