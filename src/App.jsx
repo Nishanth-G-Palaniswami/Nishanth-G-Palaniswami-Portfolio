@@ -37,7 +37,7 @@ Best,
   resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view",
 };
 
-const ABOUT = `I'm Nishanth, a software engineer focused on ML infrastructure and applied machine learning. I like building the layers that make ML useful in practice: data pipelines, backend services, evaluation workflows, and product experiences that help models behave reliably in the real world. My work usually sits between engineering and ML: turning ambiguity into systems that are clear, scalable, and production-ready.`;
+const ABOUT = `I'm Nishanth, a software engineer who builds AI systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
 
 const EDUCATION = [
   {
@@ -208,7 +208,6 @@ const PROJECTS = [
       ieee: "https://ieeexplore.ieee.org/document/10725877",
       github:
         "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
-      ppt: "https://www.canva.com/design/DAGC7042lUM/HqdJc_sCPVDXcpvI02a1WA/edit",
     },
   },
   {
