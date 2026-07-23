@@ -46,13 +46,13 @@ const EDUCATION = [
     logo: "/nyu-logo.png",
     period: "September 2024 – May 2026",
     detail:
-      "GPA 3.945/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
+      "GPA 3.965/4.0 · NYU Merit Scholarship recipient. VIP Researcher: dynamic NYC mobility map using GIS + community surveys to analyze mobility patterns.",
   },
   {
     degree: "B.E. Computer Science",
     school: "PSG College of Technology",
     logo: "/psg-logo.png",
-    period: "August 2020 – May 2024",
+    period: "August 2020 – June 2024",
     detail: "Published research (IEEE ICCCNT 2024). Creative Director - PSG Radio Hub (Guinness World Records contribution).",
   },
 ];
@@ -199,7 +199,7 @@ const PROJECTS = [
     title: "MetroScan — NYC Subway Analytics",
     accolade: { label: "PySpark · 2024", tone: "slate" },
     summary:
-      "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 3-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
+      "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
     stackLine: "PySpark · Spark MLlib · Parquet",
     impact: [
       "110M raw rows engineered into a 16M-row hourly feature table",
@@ -1189,9 +1189,9 @@ export default function Portfolio() {
             </div>
 
             <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-300 leading-relaxed">
-              Open to full-time ML Engineer roles starting May 2026. Happy to chat about ML
-              infrastructure, multi-modal models, or building ML products that behave reliably
-              in the real world.
+              Open to full-time software engineering roles across AI applications, data, and
+              backend. Happy to chat about agentic systems, audit-ready data pipelines, or
+              making models behave reliably in production.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-3">
