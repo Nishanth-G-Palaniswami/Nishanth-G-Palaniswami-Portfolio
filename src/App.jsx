@@ -10,9 +10,9 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
-  role: "Software Engineer — AI Applications & Data Pipelines",
+  role: "Software Engineer · AI Applications & Data Pipelines",
   thesis:
-    "I build agentic AI systems and audit-ready data pipelines — and the tests that keep them honest. NYU MSCE '26 · previously SAIL GTX. Open to full-time roles now.",
+    "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · previously SAIL GTX. Open to full-time roles now.",
   availability: "Actively seeking full-time roles",
 };
 
@@ -37,7 +37,7 @@ Best,
   resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view",
 };
 
-const ABOUT = `I'm Nishanth, a software engineer focused on ML infrastructure and applied machine learning. I like building the layers that make ML useful in practice — data pipelines, backend services, evaluation workflows, and product experiences that help models behave reliably in the real world. My work usually sits between engineering and ML: turning ambiguity into systems that are clear, scalable, and production-ready.`;
+const ABOUT = `I'm Nishanth, a software engineer focused on ML infrastructure and applied machine learning. I like building the layers that make ML useful in practice: data pipelines, backend services, evaluation workflows, and product experiences that help models behave reliably in the real world. My work usually sits between engineering and ML: turning ambiguity into systems that are clear, scalable, and production-ready.`;
 
 const EDUCATION = [
   {
@@ -113,14 +113,14 @@ const EXPERIENCE = [
     period: "April 2023 – May 2024",
     location: "Hybrid · Coimbatore, India",
     impact: [
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript — including Edliy.com, an EdTech platform where I provisioned 500+ schools with teacher and class accounts in its first 90 days",
-      "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps — reducing build time by 25%",
+      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript, including Edliy.com, an EdTech platform where I provisioned 500+ schools with teacher and class accounts in its first 90 days",
+      "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps, reducing build time by 25%",
       "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
     stack: ["Python", "Django", "REST APIs", "JavaScript", "AWS EC2/S3", "CloudWatch", "GitHub Actions"],
   },
   {
-    role: "Software Engineer Intern — ML & IoT",
+    role: "Software Engineer Intern · ML & IoT",
     company: "Vaayusastra Aerospace (IIT Madras RTBI)",
     period: "February 2023 – March 2023",
     location: "Chennai, India",
@@ -147,14 +147,14 @@ const EXPERIENCE = [
 
 const PROJECTS = [
   {
-    title: "Second Brain — Personal Agentic Co-Pilot",
+    title: "Second Brain · Personal Agentic Co-Pilot",
     accolade: { label: "Agentic AI · 2026", tone: "slate" },
     summary:
       "Self-built agentic system on top of Claude Code that reads my Gmail, Slack, GitHub, and Calendar, drafts replies into a review folder, and persists context as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
     stackLine: "Python · Claude Agent SDK · MCP · sqlite-vec · fastembed (ONNX)",
     impact: [
-      "Heartbeat scheduler runs every 30 min during work hours — diff-based snapshot invokes Claude only on new signal, writes drafts and Windows toast notifications",
-      "Multi-source ingest (Gmail · Slack · GitHub · Calendar) via Python CLI wrappers — credentials never enter the LLM context",
+      "Heartbeat scheduler runs every 30 min during work hours; diff-based snapshot invokes Claude only on new signal, writes drafts and Windows toast notifications",
+      "Multi-source ingest (Gmail · Slack · GitHub · Calendar) via Python CLI wrappers; credentials never enter the LLM context",
       "Local hybrid memory search: sqlite-vec + fastembed ONNX embeddings, incremental mtime+sha reindex over the Markdown vault",
       "Advisor-mode safety: every outbound artifact lands in drafts/active/ for review; pre-tool hooks enforce per-USER.md guardrails before any action",
     ],
@@ -163,14 +163,30 @@ const PROJECTS = [
     },
   },
   {
-    title: "voicebot — Local Push-to-Talk Dictation",
+    title: "Census Trade Warehouse · Orchestrated ELT",
+    accolade: { label: "Data Engineering · 2026", tone: "slate" },
+    summary:
+      "Scheduled ELT pipeline turning monthly U.S. Census import data into an analytics-ready DuckDB warehouse: Dagster assets feed dbt staging and marts, producing ranked trading-partner and product-category tables.",
+    stackLine: "Dagster · dbt · DuckDB · Python · GitHub Actions",
+    impact: [
+      "12 dbt data tests + pytest run in CI on every push",
+      "Idempotent ingestion: re-running a month never duplicates rows",
+      "Clones and runs offline via a bundled sample, no API key required",
+      "Monthly schedule ingests the latest published Census month automatically",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/census-trade-warehouse",
+    },
+  },
+  {
+    title: "voicebot · Local Push-to-Talk Dictation",
     accolade: { label: "Local ML · 2026", tone: "slate" },
     summary:
-      "Fully offline dictation tool: hold a key, speak, release, and cleaned text is typed into whatever app has focus. Whisper STT + a local LLM cleanup pass, both on-device — nothing leaves the machine.",
+      "Fully offline dictation tool: hold a key, speak, release, and cleaned text is typed into whatever app has focus. Whisper STT + a local LLM cleanup pass, both on-device; nothing leaves the machine.",
     stackLine: "Python · faster-whisper (int8) · Ollama · CUDA",
     impact: [
       "~2.5s end-to-end within ~2.5 GB VRAM on a 4 GB laptop GPU (GTX 1650 Ti)",
-      "int8 over FP16 — ~4× faster STT on GTX 16-series",
+      "int8 over FP16: ~4× faster STT on GTX 16-series",
       "Boot-time CUDA compute-probe with automatic CPU fallback",
       "LLM cleanup fails safe: pastes the raw transcript rather than dropping your words",
     ],
@@ -196,7 +212,7 @@ const PROJECTS = [
     },
   },
   {
-    title: "MetroScan — NYC Subway Analytics",
+    title: "MetroScan · NYC Subway Analytics",
     accolade: { label: "PySpark · 2024", tone: "slate" },
     summary:
       "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
@@ -215,14 +231,14 @@ const PROJECTS = [
     },
   },
   {
-    title: "RoBERTa + LoRA — Parameter-Efficient Text Classification",
+    title: "RoBERTa + LoRA · Parameter-Efficient Text Classification",
     accolade: { label: "PEFT · 2025", tone: "slate" },
     summary:
-      "Fine-tuned RoBERTa-base for 4-way news topic classification (AG News) using LoRA adapters — matching near-full-fine-tune accuracy while training under 1% of the model's weights. NYU Deep Learning group project.",
+      "Fine-tuned RoBERTa-base for 4-way news topic classification (AG News) using LoRA adapters, matching near-full-fine-tune accuracy while training under 1% of the model's weights. NYU Deep Learning group project.",
     stackLine: "PyTorch · Hugging Face Transformers · PEFT (LoRA)",
     impact: [
       "94.8% test accuracy on the AG News test split",
-      "999K of 125.6M parameters trained — 0.80%",
+      "999K of 125.6M parameters trained (0.80%)",
       "~4 MB of adapter weights vs a ~500 MB full checkpoint",
     ],
     links: {
@@ -233,7 +249,7 @@ const PROJECTS = [
     title: "Drug–Target Interaction & Side-Effects",
     accolade: { label: "Multi-modal · Multi-task", tone: "slate" },
     summary:
-      "Multi-modal, multi-task model jointly predicting drug-target binding affinity and adverse side effects in one pass — Transformer encoder over SMILES strings, CNNs over molecular structure images, shared task heads. 2-person NYU course project on BindingDB + SIDER.",
+      "Multi-modal, multi-task model jointly predicting drug-target binding affinity and adverse side effects in one pass: Transformer encoder over SMILES strings, CNNs over molecular structure images, shared task heads. 2-person NYU course project on BindingDB + SIDER.",
     stackLine: "PyTorch · RDKit · BindingDB · SIDER",
     impact: [
       "Joint multi-task heads: affinity regression + side-effect classification",
@@ -254,12 +270,12 @@ const focusRing =
 
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
+  { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
   { href: "#sail", label: "SAIL" },
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
   { href: "#experience", label: "Experience" },
-  { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -587,7 +603,7 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Visual anchor — pipeline motif (not a duplicate of SAIL card) */}
+          {/* Visual anchor - pipeline motif (not a duplicate of SAIL card) */}
           <motion.aside
             {...fadeUp(0.1)}
             className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
@@ -604,7 +620,7 @@ export default function Portfolio() {
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
                   <span className="font-semibold">Joined M.S. Computer Engineering</span>
-                  <span className="text-slate-500 dark:text-slate-400"> — NYU</span>
+                  <span className="text-slate-500 dark:text-slate-400">, NYU</span>
                 </span>
               </li>
               <li className="flex gap-4">
@@ -613,7 +629,7 @@ export default function Portfolio() {
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
                   <span className="font-semibold">Software Engineer Intern</span>
-                  <span className="text-slate-500 dark:text-slate-400"> — SAIL</span>
+                  <span className="text-slate-500 dark:text-slate-400">, SAIL</span>
                 </span>
               </li>
               <li className="flex gap-4">
@@ -622,7 +638,7 @@ export default function Portfolio() {
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
                   <span className="font-semibold">Building agentic AI systems</span>
-                  <span className="text-slate-500 dark:text-slate-400"> — Second Brain · local-inference voicebot</span>
+                  <span className="text-slate-500 dark:text-slate-400">, Second Brain · local-inference voicebot</span>
                 </span>
               </li>
             </ol>
@@ -665,6 +681,47 @@ export default function Portfolio() {
           </div>
         </Section>
 
+        {/* Education */}
+        <Section
+          id="education"
+          title="Education"
+          kicker="credentials"
+          icon={<GraduationCap className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="space-y-6">
+            {EDUCATION.map((ed, index) => (
+              <motion.article
+                key={ed.school}
+                {...fadeUpInView(index * 0.06)}
+                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-3">
+                    {ed.logo && (
+                      <img
+                        src={ed.logo}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-8 w-8 object-contain flex-shrink-0 dark:bg-white dark:rounded dark:p-0.5"
+                      />
+                    )}
+                    <p className="font-semibold text-slate-900 dark:text-slate-100">{ed.school}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {ed.period}
+                  </p>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
+                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                    {ed.detail}
+                  </p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
         {/* Skills */}
         <Section
           id="skills"
@@ -701,7 +758,7 @@ export default function Portfolio() {
           </div>
         </Section>
 
-        {/* SAIL — case study */}
+        {/* SAIL - case study */}
         <Section
           id="sail"
           title="SAIL"
@@ -725,7 +782,7 @@ export default function Portfolio() {
                 Global Trade Intelligence Platform
               </h3>
               <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Engineer on SAIL&rsquo;s applied data platform — built the{" "}
+                Engineer on SAIL&rsquo;s applied data platform. Built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
                 and in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018–2026).
                 Co-built the{" "}
@@ -735,7 +792,7 @@ export default function Portfolio() {
               </p>
             </div>
 
-            {/* Metric strip — primary visual anchor */}
+            {/* Metric strip - primary visual anchor */}
             <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-10">
               <div>
                 <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
@@ -771,7 +828,7 @@ export default function Portfolio() {
                 <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                   International-trade teams operate inside a 10,000-category tariff schedule that
                   changes every few weeks. Every revision shifts duty rates and product
-                  classifications — but most teams don&rsquo;t know what changed, and most tools
+                  classifications, but most teams don&rsquo;t know what changed, and most tools
                   either call external APIs per query or rely on manual lookup. Both are slow,
                   stale, and brittle.
                 </p>
@@ -823,11 +880,11 @@ export default function Portfolio() {
                 What I own
               </div>
               <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Primary owner of the HTS revision engine — schema, ingestion, 166-release
-                history (2018–2026), golden tests, normalized change detection — and sole
+                Primary owner of the HTS revision engine: schema, ingestion, 166-release
+                history (2018–2026), golden tests, normalized change detection, and sole
                 owner of the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
                 and the Product DNA store. Co-owner (with our CTO) of the HTS classification
-                model built on top — training data curation, model, inference pipeline,
+                model built on top: training data curation, model, inference pipeline,
                 evaluation loops.
               </p>
             </div>
@@ -1038,7 +1095,7 @@ export default function Portfolio() {
           icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
         >
           <div className="space-y-6">
-            {/* Current role pointer — anchors to SAIL case study */}
+            {/* Current role pointer - anchors to SAIL case study */}
             <a
               href="#sail"
               className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
@@ -1050,7 +1107,7 @@ export default function Portfolio() {
                   </span>
                   <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
                     <strong className="font-semibold">Software Engineer Intern @ SAIL</strong>
-                    <span className="text-slate-600 dark:text-slate-400"> — see case study above</span>
+                    <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
                   </span>
                 </div>
                 <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
@@ -1097,50 +1154,10 @@ export default function Portfolio() {
           </div>
         </Section>
 
-        {/* Education */}
-        <Section
-          id="education"
-          title="Education"
-          kicker="credentials"
-          icon={<GraduationCap className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
-        >
-          <div className="space-y-6">
-            {EDUCATION.map((ed, index) => (
-              <motion.article
-                key={ed.school}
-                {...fadeUpInView(index * 0.06)}
-                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
-              >
-                <div className="md:col-span-2">
-                  <div className="flex items-center gap-3">
-                    {ed.logo && (
-                      <img
-                        src={ed.logo}
-                        alt=""
-                        aria-hidden="true"
-                        className="h-8 w-8 object-contain flex-shrink-0 dark:bg-white dark:rounded dark:p-0.5"
-                      />
-                    )}
-                    <p className="font-semibold text-slate-900 dark:text-slate-100">{ed.school}</p>
-                  </div>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {ed.period}
-                  </p>
-                </div>
-                <div className="md:col-span-3">
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
-                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                    {ed.detail}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </Section>
 
       </main>
 
-      {/* Contact — full-bleed dark closing moment, breaks the white-card rhythm */}
+      {/* Contact - full-bleed dark closing moment, breaks the white-card rhythm */}
       <section
         id="contact"
         aria-labelledby="contact-heading"
