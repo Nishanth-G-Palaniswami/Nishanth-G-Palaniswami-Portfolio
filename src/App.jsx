@@ -272,9 +272,9 @@ const NAV_ITEMS = [
   { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
   { href: "#sail", label: "SAIL" },
+  { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
-  { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -914,6 +914,73 @@ export default function Portfolio() {
           </motion.article>
         </Section>
 
+        {/* Experience */}
+        <Section
+          id="experience"
+          title="Experience"
+          kicker="prior roles"
+          icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+        >
+          <div className="space-y-6">
+            {/* Current role pointer - anchors to SAIL case study */}
+            <a
+              href="#sail"
+              className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-baseline gap-3 flex-wrap">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                    2025–26
+                  </span>
+                  <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
+                    <strong className="font-semibold">Software Engineer Intern @ SAIL</strong>
+                    <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
+                  </span>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+              </div>
+            </a>
+
+            {EXPERIENCE.map((exp, index) => (
+              <motion.article
+                key={exp.role + exp.company}
+                {...fadeUpInView(index * 0.06)}
+                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="md:col-span-2">
+                  <p className="font-semibold text-slate-900 dark:text-slate-100">
+                    {exp.company}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {exp.location}
+                  </p>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
+                  {exp.impact && exp.impact.length > 0 && (
+                    <ul className="mt-3 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-w-3xl">
+                      {exp.impact.map((i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {exp.stack && exp.stack.length > 0 && (
+                    <p className="mt-4 text-xs text-slate-500 dark:text-slate-400 font-mono max-w-3xl">
+                      {exp.stack.join(" · ")}
+                    </p>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
+
         {/* Projects */}
         <Section
           id="projects"
@@ -1079,73 +1146,6 @@ export default function Portfolio() {
                     >
                       <Github className="h-4 w-4" aria-hidden="true" /> Code
                     </a>
-                  )}
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </Section>
-
-        {/* Experience */}
-        <Section
-          id="experience"
-          title="Experience"
-          kicker="prior roles"
-          icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
-        >
-          <div className="space-y-6">
-            {/* Current role pointer - anchors to SAIL case study */}
-            <a
-              href="#sail"
-              className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-baseline gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
-                    2025–26
-                  </span>
-                  <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
-                    <strong className="font-semibold">Software Engineer Intern @ SAIL</strong>
-                    <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
-                  </span>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
-              </div>
-            </a>
-
-            {EXPERIENCE.map((exp, index) => (
-              <motion.article
-                key={exp.role + exp.company}
-                {...fadeUpInView(index * 0.06)}
-                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
-              >
-                <div className="md:col-span-2">
-                  <p className="font-semibold text-slate-900 dark:text-slate-100">
-                    {exp.company}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {exp.location}
-                  </p>
-                </div>
-                <div className="md:col-span-3">
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
-                  {exp.impact && exp.impact.length > 0 && (
-                    <ul className="mt-3 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-w-3xl">
-                      {exp.impact.map((i) => (
-                        <li key={i} className="flex gap-2">
-                          <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
-                          <span>{i}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {exp.stack && exp.stack.length > 0 && (
-                    <p className="mt-4 text-xs text-slate-500 dark:text-slate-400 font-mono max-w-3xl">
-                      {exp.stack.join(" · ")}
-                    </p>
                   )}
                 </div>
               </motion.article>
