@@ -10,9 +10,9 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
-  role: "Software Engineer · AI Applications & Data Pipelines",
+  role: "AI Engineer · LLM Agents & Data Pipelines",
   thesis:
-    "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · previously SAIL GTX. Open to full-time roles now.",
+    "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX. Open to full-time roles now.",
   availability: "Actively seeking full-time roles",
 };
 
@@ -107,6 +107,25 @@ const PUBLICATIONS = [
 ];
 
 const EXPERIENCE = [
+  {
+    role: "AI Engineer",
+    company: "Got2eat (Base44 Accelerator Runner-Up)",
+    period: "August 2026 – Present",
+    location: "Remote · New York, NY",
+    impact: [
+      "Built a server-side LLM assistant turning meal and transit requests into validated app filters with fail-closed rate limits",
+      "Engineered GTFS-derived subway + PATH routing and MapLibre layers with door-to-door one-transfer ETAs",
+      "Shipped React 19/TypeScript and Deno features for a community map of meals under $15, live at got2eat.site and on iOS (TestFlight)",
+      "Developed a B2B partner dashboard for listings, deals, and occupancy; launched a loyalty-card pilot from partner feedback",
+    ],
+    stack: ["React 19", "TypeScript", "Deno", "MapLibre GL", "GTFS", "Capacitor"],
+  },
+  {
+    role: "Software Engineer Intern",
+    company: "SAIL GTX",
+    period: "September 2025 – May 2026",
+    caseStudyHref: "#sail",
+  },
   {
     role: "Software Engineer Intern",
     company: "Tagwebs Technologies",
@@ -636,8 +655,8 @@ export default function Portfolio() {
                   Now
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">Building agentic AI systems</span>
-                  <span className="text-slate-500 dark:text-slate-400">, Second Brain · local-inference voicebot</span>
+                  <span className="font-semibold">AI Engineer</span>
+                  <span className="text-slate-500 dark:text-slate-400">, got2eat · agentic AI on the side (Second Brain, voicebot)</span>
                 </span>
               </li>
             </ol>
@@ -918,30 +937,31 @@ export default function Portfolio() {
         <Section
           id="experience"
           title="Experience"
-          kicker="prior roles"
+          kicker="roles"
           icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
         >
           <div className="space-y-6">
-            {/* Current role pointer - anchors to SAIL case study */}
-            <a
-              href="#sail"
-              className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-baseline gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
-                    2025–26
-                  </span>
-                  <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
-                    <strong className="font-semibold">Software Engineer Intern @ SAIL</strong>
-                    <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
-                  </span>
+            {EXPERIENCE.map((exp, index) => exp.caseStudyHref ? (
+              /* SAIL sits in the timeline as a pointer - the full case study is its own section above */
+              <a
+                key={exp.role + exp.company}
+                href={exp.caseStudyHref}
+                className={`block rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 md:p-5 hover:bg-white dark:hover:bg-slate-900 transition-colors ${focusRing}`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                      2025–26
+                    </span>
+                    <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
+                      <strong className="font-semibold">{exp.role} @ {exp.company}</strong>
+                      <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
+                    </span>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
-              </div>
-            </a>
-
-            {EXPERIENCE.map((exp, index) => (
+              </a>
+            ) : (
               <motion.article
                 key={exp.role + exp.company}
                 {...fadeUpInView(index * 0.06)}
