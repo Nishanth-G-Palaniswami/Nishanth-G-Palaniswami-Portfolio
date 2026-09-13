@@ -37,7 +37,7 @@ Best,
   resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view",
 };
 
-const ABOUT = `I'm Nishanth, a software engineer who builds AI systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
+const ABOUT = `I'm Nishanth, an AI engineer who builds systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
 
 const EDUCATION = [
   {
@@ -63,16 +63,17 @@ const SKILLS = [
     icon: Cpu,
     items: [
       "PyTorch", "Scikit-learn", "Pandas", "NumPy", "LLMs / RAG / GenAI",
+      "Agents / MCP / Claude Agent SDK",
       "NLP", "Transformers (Hugging Face)", "LoRA / PEFT",
-      "OpenCV",
     ],
   },
   {
     group: "Data & Infrastructure",
     icon: Database,
     items: [
-      "PySpark", "Supabase / PostgreSQL", "SQLite", "DuckDB",
-      "Parquet / pyarrow", "FastAPI", "Django", "REST APIs", "React",
+      "PySpark", "Dagster / dbt", "Supabase / PostgreSQL", "SQLite", "DuckDB",
+      "Parquet / pyarrow", "FastAPI", "Django", "Deno / Node.js", "REST APIs", "React",
+      "MapLibre GL / GTFS",
     ],
   },
   {
@@ -110,6 +111,7 @@ const EXPERIENCE = [
   {
     role: "AI Engineer",
     company: "Got2eat (Base44 Accelerator Runner-Up)",
+    companyHref: "https://got2eat.site",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
     impact: [
@@ -898,11 +900,11 @@ export default function Portfolio() {
                 What I own
               </div>
               <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Primary owner of the HTS revision engine: schema, ingestion, 166-release
-                history (2018–2026), golden tests, normalized change detection, and sole
-                owner of the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
-                and the Product DNA store. Co-owner (with our CTO) of the HTS classification
-                model built on top: training data curation, model, inference pipeline,
+                Owned the HTS revision engine end to end: schema, ingestion, 166-release
+                history (2018–2026), golden tests, normalized change detection. Solely
+                built the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
+                and the Product DNA store; co-built (with the CTO) the HTS classification
+                model on top: training data curation, model, inference pipeline,
                 evaluation loops.
               </p>
             </div>
@@ -969,7 +971,19 @@ export default function Portfolio() {
               >
                 <div className="md:col-span-2">
                   <p className="font-semibold text-slate-900 dark:text-slate-100">
-                    {exp.company}
+                    {exp.companyHref ? (
+                      <a
+                        href={exp.companyHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`inline-flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      >
+                        {exp.company}
+                        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      </a>
+                    ) : (
+                      exp.company
+                    )}
                   </p>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                     <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
@@ -1225,7 +1239,7 @@ export default function Portfolio() {
             </div>
 
             <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-300 leading-relaxed">
-              Open to full-time software engineering roles across AI applications, data, and
+              Open to full-time AI engineering and software roles across agents, data, and
               backend. Happy to chat about agentic systems, audit-ready data pipelines, or
               making models behave reliably in production.
             </p>
