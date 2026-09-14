@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
   BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
@@ -6,7 +6,7 @@ import {
   Copy, Check,
 } from "lucide-react";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -418,6 +418,91 @@ const accoladeClasses = (tone) =>
       ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20"
       : "bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700";
 
+// Strip-map rail (1600px and wider). The active station is the last section whose
+// top has crossed the activation line (header height + 32px); the last station wins
+// at the end of the page so short closing sections still light up. The fill is a
+// piecewise-linear map of scrollY onto the evenly spaced stations.
+const SectionRail = ({ items }) => {
+  const { scrollY } = useScroll();
+  const fill = useMotionValue(0);
+  const [active, setActive] = useState(-1);
+  const activation = useRef([]);
+
+  const update = (y) => {
+    const act = activation.current;
+    const n = act.length;
+    if (n === 0) return;
+    const doc = document.documentElement;
+    const atEnd = y + window.innerHeight >= doc.scrollHeight - 2;
+    let idx = -1;
+    act.forEach((a, i) => { if (y >= a) idx = i; });
+    if (atEnd) idx = n - 1;
+    let fraction = 0;
+    if (atEnd || y >= act[n - 1]) fraction = 1;
+    else if (idx >= 0) fraction = (idx + (y - act[idx]) / (act[idx + 1] - act[idx])) / (n - 1);
+    fill.set(Math.min(1, Math.max(0, fraction)));
+    setActive((prev) => (prev === idx ? prev : idx));
+  };
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const header = document.querySelector("header");
+      const offset = (header ? header.offsetHeight : 0) + 32;
+      const tops = items.map((item) => {
+        const el = document.querySelector(item.href);
+        return el ? el.getBoundingClientRect().top + window.scrollY - offset : 0;
+      });
+      const ascending = tops.every((t, i) => i === 0 || t > tops[i - 1]);
+      activation.current = ascending ? tops : [];
+      update(window.scrollY);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, [items]);
+
+  useMotionValueEvent(scrollY, "change", update);
+
+  return (
+    <nav aria-label="Section progress" className="hidden rail:block fixed left-4 top-1/2 z-20 -translate-y-1/2">
+      <div className="relative">
+        <span aria-hidden="true" className="absolute left-[5px] top-[10px] bottom-[10px] w-0.5 bg-slate-200 dark:bg-slate-800" />
+        <motion.span
+          aria-hidden="true"
+          className="absolute left-[5px] top-[10px] bottom-[10px] w-0.5 origin-top bg-accent"
+          style={{ scaleY: fill }}
+        />
+        <ol className="relative space-y-3">
+          {items.map((item, i) => {
+            const isActive = i === active;
+            return (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`group flex items-center gap-3 py-1 rounded ${focusRing}`}
+                >
+                  <StationDot fill={isActive ? "bg-accent" : undefined} />
+                  <span
+                    className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
+                      isActive
+                        ? "text-accent"
+                        : "text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-100"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </nav>
+  );
+};
+
 // -------------------- MAIN COMPONENT -------------------- //
 
 export default function Portfolio() {
@@ -425,6 +510,7 @@ export default function Portfolio() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
 
   const copyEmailAddresses = async () => {
     const text = LINKS.email;
@@ -517,7 +603,7 @@ export default function Portfolio() {
           </a>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-5 text-sm" aria-label="Primary">
+          <nav className="hidden md:flex rail:hidden items-center gap-5 text-sm" aria-label="Primary">
             {NAV_ITEMS.map((n) => (
               <a
                 key={n.href}
@@ -613,7 +699,15 @@ export default function Portfolio() {
             </ul>
           </nav>
         )}
+        {/* Scroll progress where the rail does not fit */}
+        <motion.span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 h-0.5 w-full origin-left bg-accent rail:hidden"
+          style={{ scaleX: scrollYProgress }}
+        />
       </header>
+
+      <SectionRail items={NAV_ITEMS} />
 
       <main id="main" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-12 md:py-20">
         {/* Hero */}

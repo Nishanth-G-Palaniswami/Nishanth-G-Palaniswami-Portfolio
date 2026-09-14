@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      screens: {
+        rail: '1600px',
+      },
       colors: {
         accent: 'rgb(var(--accent) / <alpha-value>)',
       },
