@@ -211,6 +211,18 @@ const EXPERIENCE = [
     ],
     stack: ["Python", "Django", "REST APIs", "JavaScript", "AWS EC2/S3", "CloudWatch", "GitHub Actions"],
   },
+  {
+    role: "Software Engineer Intern · ML & IoT",
+    company: "Vaayusastra Aerospace (IIT Madras RTBI)",
+    period: "February 2023 – March 2023",
+    location: "Chennai, India",
+    impact: [
+      "Spearheaded a responsive mobile dashboard and UI using React & JavaScript for an automated irrigation and agricultural drone system",
+      "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
+      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules",
+    ],
+    stack: ["React", "JavaScript", "ESP32", "PyTorch", "Scikit-learn"],
+  },
 ];
 
 const PROJECTS = [
