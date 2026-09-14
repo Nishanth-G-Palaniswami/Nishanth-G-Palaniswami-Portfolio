@@ -52,8 +52,8 @@ const PHOTOS = {
   sail: {
     src: "/photos/sail-team.jpg",
     width: 1024,
-    height: 896,
-    alt: "Three people holding a SAIL sign at an event",
+    height: 682,
+    alt: "Nishanth and two SAIL teammates holding a SAIL sign",
     caption: "With the SAIL team",
   },
   got2eat: {
@@ -1496,7 +1496,7 @@ export default function Portfolio() {
                 evaluation loops.
                 </p>
               </div>
-              <PhotoFigure photo={PHOTOS.sail} ratio="aspect-[8/7]" className="md:col-span-2" />
+              <PhotoFigure photo={PHOTOS.sail} ratio="aspect-[3/2]" className="md:col-span-2 max-w-[240px] md:justify-self-end" />
             </div>
 
             <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
