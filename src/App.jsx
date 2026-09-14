@@ -97,7 +97,7 @@ const HOBBIES = [
   {
     activity: "Skiing",
     place: "Hunter Mountain, Catskills",
-    line: "Gravity handles the deployment. I handle the braking.",
+    line: "Gravity deploys. I brake.",
     src: "/photos/skiing.jpg",
     width: 580,
     height: 1024,
@@ -805,7 +805,10 @@ const DetoursBand = ({ notes, reduce, dark }) => {
               <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white">{note.activity}</h3>
                 <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">{note.place}</p>
-                <p className="mt-1.5 text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{note.line}</p>
+                <p className="mt-1.5 font-mono text-[13px] text-slate-900 dark:text-white leading-relaxed">
+                  <span aria-hidden="true" className="mr-1.5 text-accent">&rsaquo;</span>
+                  {note.line}
+                </p>
               </div>
             </li>
           ))}
