@@ -13,7 +13,7 @@ const PROFILE = {
   role: "AI Engineer · LLM Agents & Data Pipelines",
   thesis:
     "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX. Open to full-time roles now.",
-  availability: "Actively seeking full-time roles",
+  availability: "ON AIR · open to full-time roles",
 };
 
 const LINKS = {
@@ -84,7 +84,7 @@ const PHOTOS = {
     width: 768,
     height: 1024,
     alt: "Holding the Base44 accelerator check outside the Demo Day finale",
-    caption: "Base44 Accelerator Demo Day finale",
+    caption: "Base44 Accelerator Champions, Demo Day finale",
   },
 };
 
@@ -162,7 +162,7 @@ const PUBLICATIONS = [
 const EXPERIENCE = [
   {
     role: "AI Engineer",
-    company: "Got2eat (Base44 Accelerator Runner-Up)",
+    company: "Got2eat (Base44 Accelerator Champions)",
     companyHref: "https://got2eat.site",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
