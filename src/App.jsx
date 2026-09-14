@@ -180,6 +180,7 @@ const EXPERIENCE = [
   {
     role: "AI Engineer",
     company: "Got2eat (Base44 Accelerator Champions)",
+    description: "A community map of complete meals under $15 in New York, on the web and iOS.",
     companyHref: "https://got2eat.site",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
@@ -245,10 +246,10 @@ const PROJECTS = [
       "Self-built agentic system on top of Claude Code that reads my Gmail, Slack, GitHub, and Calendar, drafts replies into a review folder, and persists context as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
     stackLine: "Python · Claude Agent SDK · MCP · sqlite-vec · fastembed (ONNX)",
     impact: [
-      "Heartbeat scheduler runs every 30 min during work hours; diff-based snapshot invokes Claude only on new signal, writes drafts and Windows toast notifications",
-      "Multi-source ingest (Gmail · Slack · GitHub · Calendar) via Python CLI wrappers; credentials never enter the LLM context",
-      "Local hybrid memory search: sqlite-vec + fastembed ONNX embeddings, incremental mtime+sha reindex over the Markdown vault",
-      "Advisor-mode safety: every outbound artifact lands in drafts/active/ for review; pre-tool hooks enforce per-USER.md guardrails before any action",
+      "19 deterministic guardrails across 5 permission boundaries, CI-regression-tested after a prompt-injection bypass",
+      "Hybrid local RAG over an Obsidian vault: sqlite-vec + SQLite FTS5 with local ONNX embeddings (fastembed); credentials never enter the LLM context",
+      "Diff-gated scheduler runs every 30 min during work hours and invokes the LLM only on new signal",
+      "Advisor mode: every outbound artifact lands in drafts/active/ for review; the agent never sends, pushes or deletes",
     ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/second-brain",
@@ -429,7 +430,7 @@ const NAV_ITEMS = [
   { href: "#about", label: "About" },
   { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
-  { href: "#sail", label: "SAIL" },
+  { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
@@ -1587,6 +1588,9 @@ export default function Portfolio() {
                       exp.company
                     )}
                   </p>
+                  {exp.description && (
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{exp.description}</p>
+                  )}
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                     <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
                   </p>
