@@ -646,8 +646,10 @@ const RIDGES = [
   { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1440 290 L1440 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
   { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1440 312 L1440 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
 ];
-const TRAIL = "M0 334 L160 312 L300 330 L460 294 L620 326 L760 290 L920 324 L1080 296 L1240 328 L1440 306";
-const TRAIL_STOPS = [[460, 294], [760, 290], [1080, 296]];
+// The trail rides the back ridge, to the right of the title block, so it never
+// crosses the notes; below lg the scene is scaled up and the trail is hidden.
+const TRAIL = "M520 188 L640 124 L780 182 L900 134 L1040 186 L1180 146 L1320 190 L1440 158";
+const TRAIL_STOPS = [[640, 124], [900, 134], [1180, 146]];
 
 const DetoursBand = ({ notes, reduce }) => {
   const ref = useRef(null);
@@ -712,7 +714,7 @@ const DetoursBand = ({ notes, reduce }) => {
         <path
           d={TRAIL}
           fill="none"
-          className="stroke-accent"
+          className="hidden lg:block stroke-accent"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -725,7 +727,7 @@ const DetoursBand = ({ notes, reduce }) => {
             cx={cx}
             cy={cy}
             r="7"
-            className="fill-slate-950 stroke-accent"
+            className="hidden lg:block fill-slate-950 stroke-accent"
             strokeWidth="3"
             {...(reduce
               ? {}
