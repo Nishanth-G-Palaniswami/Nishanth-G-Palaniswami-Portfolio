@@ -211,30 +211,6 @@ const EXPERIENCE = [
     ],
     stack: ["Python", "Django", "REST APIs", "JavaScript", "AWS EC2/S3", "CloudWatch", "GitHub Actions"],
   },
-  {
-    role: "Software Engineer Intern · ML & IoT",
-    company: "Vaayusastra Aerospace (IIT Madras RTBI)",
-    period: "February 2023 – March 2023",
-    location: "Chennai, India",
-    impact: [
-      "Spearheaded a responsive mobile dashboard and UI using React & JavaScript for an automated irrigation and agricultural drone system",
-      "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
-      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules",
-    ],
-    stack: ["React", "JavaScript", "ESP32", "PyTorch", "Scikit-learn"],
-  },
-  {
-    role: "Research Intern",
-    company: "GaiT Watch · PSG CARE",
-    period: "December 2021 – January 2022",
-    location: "Coimbatore, India",
-    impact: [
-      "Engineered the GaitWatch product website using Python, Django, HTML & CSS; revamped the brand identity and collected real-time data from 450+ participants during early clinical trials",
-      "Preprocessed and structured gait data to assist the ML research team in refining fall-risk prediction models",
-      "Validated mobile app UX through user trials, contributing to a commercial rollout funded by PSG College of Technology",
-    ],
-    stack: ["Python", "Django", "HTML", "CSS", "Pandas"],
-  },
 ];
 
 const PROJECTS = [
@@ -289,6 +265,7 @@ const PROJECTS = [
   },
   {
     title: "ASL Alphabet Recognition",
+    compact: true,
     accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
     summary:
       "Real-time ASL alphabet → text → speech pipeline built on Teachable Machine. Co-authored, peer-reviewed, and published in IEEE ICCCNT 2024.",
@@ -305,6 +282,7 @@ const PROJECTS = [
   },
   {
     title: "MetroScan · NYC Subway Analytics",
+    compact: true,
     accolade: { label: "PySpark · 2024", tone: "slate" },
     summary:
       "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
@@ -324,6 +302,7 @@ const PROJECTS = [
   },
   {
     title: "RoBERTa + LoRA · Parameter-Efficient Text Classification",
+    compact: true,
     accolade: { label: "PEFT · 2025", tone: "slate" },
     summary:
       "Fine-tuned RoBERTa-base for 4-way news topic classification (AG News) using LoRA adapters, matching near-full-fine-tune accuracy while training under 1% of the model's weights. NYU Deep Learning group project.",
@@ -339,6 +318,7 @@ const PROJECTS = [
   },
   {
     title: "Drug–Target Interaction & Side-Effects",
+    compact: true,
     accolade: { label: "Multi-modal · Multi-task", tone: "slate" },
     summary:
       "Multi-modal, multi-task model jointly predicting drug-target binding affinity and adverse side effects in one pass: Transformer encoder over SMILES strings, CNNs over molecular structure images, shared task heads. 2-person NYU course project on BindingDB + SIDER.",
@@ -428,12 +408,12 @@ const focusRing =
 
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
-  { href: "#education", label: "Education" },
-  { href: "#skills", label: "Skills" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
+  { href: "#education", label: "Education" },
+  { href: "#skills", label: "Skills" },
   { href: "#detours", label: "Detours" },
   { href: "#contact", label: "Contact" },
 ];
@@ -834,6 +814,32 @@ const DetoursBand = ({ notes, reduce, dark }) => {
     </section>
   );
 };
+
+const PROJECT_LINKS = [
+  ["product", "Product", ArrowUpRight],
+  ["site", "Company", ExternalLink],
+  ["github", "Code", Github],
+  ["demo", "Demo", ExternalLink],
+  ["insta", "Page", ExternalLink],
+  ["ppt", "Slides", FileText],
+  ["ieee", "IEEE Paper", BookOpen],
+];
+
+const ProjectLinks = ({ links, className = "" }) => (
+  <div className={`flex flex-wrap gap-4 text-sm ${className}`}>
+    {PROJECT_LINKS.filter(([key]) => links?.[key]).map(([key, label, Icon]) => (
+      <a
+        key={key}
+        href={links[key]}
+        target="_blank"
+        rel="noreferrer"
+        className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
+      >
+        <Icon className="h-4 w-4" aria-hidden="true" /> {label}
+      </a>
+    ))}
+  </div>
+);
 
 const verdictClasses = {
   allowed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
@@ -1306,79 +1312,6 @@ export default function Portfolio() {
 
         </Section>
 
-        {/* Education */}
-        <Section
-          id="education"
-          title="Education"
-          kicker="credentials"
-        >
-          <div className="space-y-6">
-            {EDUCATION.map((ed, index) => (
-              <article
-                key={ed.school}
-                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
-              >
-                <div className="md:col-span-2">
-                  <div className="flex items-center gap-3">
-                    {ed.logo && (
-                      <img
-                        src={ed.logo}
-                        alt=""
-                        aria-hidden="true"
-                        className="h-8 w-8 object-contain flex-shrink-0 dark:bg-white dark:rounded dark:p-0.5"
-                      />
-                    )}
-                    <p className="font-semibold text-slate-900 dark:text-slate-100">{ed.school}</p>
-                  </div>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {ed.period}
-                  </p>
-                </div>
-                <div className="md:col-span-3">
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
-                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                    {ed.detail}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </Section>
-
-        {/* Skills */}
-        <Section
-          id="skills"
-          title="Skills"
-          kicker="what I work with"
-        >
-          <div className="grid md:grid-cols-2 gap-6">
-            {SKILLS.map((group) => {
-              const Icon = group.icon;
-              return (
-                <article
-                  key={group.group}
-                  className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
-                    <h3 className="font-semibold tracking-tight">{group.group}</h3>
-                  </div>
-                  <ul className="flex flex-wrap gap-2">
-                    {group.items.map((item) => (
-                      <li
-                        key={item}
-                        className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
-        </Section>
-
         {/* SAIL - case study */}
         <Section
           id="sail"
@@ -1629,7 +1562,7 @@ export default function Portfolio() {
           kicker="selected work"
         >
           <div className="space-y-6">
-            {PROJECTS.map((p, idx) => (
+            {PROJECTS.filter((p) => !p.compact).map((p) => (
               <article
                 key={p.title}
                 className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col"
@@ -1667,80 +1600,31 @@ export default function Portfolio() {
                   {p.stackLine}
                 </p>
 
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 text-sm">
-                  {p.links?.product && (
-                    <a
-                      href={p.links.product}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Product
-                    </a>
-                  )}
-                  {p.links?.site && (
-                    <a
-                      href={p.links.site}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
-                    </a>
-                  )}
-                  {p.links?.github && (
-                    <a
-                      href={p.links.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <Github className="h-4 w-4" aria-hidden="true" /> Code
-                    </a>
-                  )}
-                  {p.links?.demo && (
-                    <a
-                      href={p.links.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Demo
-                    </a>
-                  )}
-                  {p.links?.insta && (
-                    <a
-                      href={p.links.insta}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <ExternalLink className="h-4 w-4" aria-hidden="true" /> Page
-                    </a>
-                  )}
-                  {p.links?.ppt && (
-                    <a
-                      href={p.links.ppt}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <FileText className="h-4 w-4" aria-hidden="true" /> Slides
-                    </a>
-                  )}
-                  {p.links?.ieee && (
-                    <a
-                      href={p.links.ieee}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <BookOpen className="h-4 w-4" aria-hidden="true" /> IEEE Paper
-                    </a>
-                  )}
-                </div>
+                <ProjectLinks links={p.links} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
               </article>
             ))}
+
+            {/* Smaller projects, one row each */}
+            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+                More work
+              </div>
+              <ul className="mt-2 divide-y divide-slate-100 dark:divide-slate-800">
+                {PROJECTS.filter((p) => p.compact).map((p) => (
+                  <li key={p.title} className="py-4 grid gap-2 md:grid-cols-5 md:gap-6">
+                    <div className="md:col-span-2">
+                      <h3 className="font-semibold tracking-tight font-display">{p.title}</h3>
+                      <p className="mt-1 text-xs font-mono text-slate-500 dark:text-slate-400">
+                        {p.accolade ? p.accolade.label + " · " : ""}
+                        {p.stackLine}
+                      </p>
+                    </div>
+                    <p className="md:col-span-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{p.summary}</p>
+                    <ProjectLinks links={p.links} className="md:col-span-5" />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Section>
 
@@ -1789,6 +1673,79 @@ export default function Portfolio() {
                 </div>
               </article>
             ))}
+          </div>
+        </Section>
+
+        {/* Education */}
+        <Section
+          id="education"
+          title="Education"
+          kicker="credentials"
+        >
+          <div className="space-y-6">
+            {EDUCATION.map((ed, index) => (
+              <article
+                key={ed.school}
+                className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
+              >
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-3">
+                    {ed.logo && (
+                      <img
+                        src={ed.logo}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-8 w-8 object-contain flex-shrink-0 dark:bg-white dark:rounded dark:p-0.5"
+                      />
+                    )}
+                    <p className="font-semibold text-slate-900 dark:text-slate-100">{ed.school}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {ed.period}
+                  </p>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
+                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                    {ed.detail}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
+
+        {/* Skills */}
+        <Section
+          id="skills"
+          title="Skills"
+          kicker="what I work with"
+        >
+          <div className="grid md:grid-cols-2 gap-6">
+            {SKILLS.map((group) => {
+              const Icon = group.icon;
+              return (
+                <article
+                  key={group.group}
+                  className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
+                    <h3 className="font-semibold tracking-tight">{group.group}</h3>
+                  </div>
+                  <ul className="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
           </div>
         </Section>
 
