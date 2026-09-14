@@ -39,6 +39,58 @@ Best,
 
 const ABOUT = `I'm Nishanth, an AI engineer who builds systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
 
+// Photos live in public/photos (longest edge 1024px, JPEG q82, no EXIF).
+// Captions state only what the frame shows; the user confirms each one.
+const PHOTOS = {
+  about: {
+    src: "/photos/roosevelt-island.jpg",
+    width: 1024,
+    height: 768,
+    alt: "Nishanth on the Roosevelt Island waterfront with the Queensboro Bridge behind him",
+    caption: "Roosevelt Island, New York",
+  },
+  offTheClock: [
+    {
+      src: "/photos/grand-canyon.jpg",
+      width: 768,
+      height: 1024,
+      alt: "Standing arms wide on a rock ledge above the Grand Canyon",
+      caption: "Grand Canyon",
+    },
+    {
+      src: "/photos/devils-bridge-sedona.jpg",
+      width: 768,
+      height: 1024,
+      alt: "A small figure standing on the Devil's Bridge arch in Sedona",
+      caption: "Devil's Bridge, Sedona",
+    },
+    {
+      src: "/photos/lake-powell.jpg",
+      width: 768,
+      height: 1024,
+      alt: "Paddling a yellow kayak below sandstone cliffs on Lake Powell",
+      caption: "Lake Powell, Arizona",
+    },
+    {
+      src: "/photos/skiing.jpg",
+      width: 580,
+      height: 1024,
+      alt: "Skiing down a groomed run toward a wooded mountain",
+      caption: "Skiing",
+    },
+  ],
+  got2eat: {
+    src: "/photos/base44-demo-day.jpg",
+    width: 768,
+    height: 1024,
+    alt: "Holding the Base44 accelerator check outside the Demo Day finale",
+    caption: "Base44 Accelerator Demo Day finale",
+  },
+};
+
+// One optional line above the off-the-clock photos. Empty renders nothing.
+const OFF_THE_CLOCK_LINE = "";
+
 const EDUCATION = [
   {
     degree: "M.S. Computer Engineering",
@@ -114,6 +166,7 @@ const EXPERIENCE = [
     companyHref: "https://got2eat.site",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
+    photo: PHOTOS.got2eat,
     impact: [
       "Built a server-side LLM assistant turning meal and transit requests into validated app filters with fail-closed rate limits",
       "Engineered GTFS-derived subway + PATH routing and MapLibre layers with door-to-door one-transfer ETAs",
@@ -170,6 +223,7 @@ const PROJECTS = [
   {
     title: "Second Brain · Personal Agentic Co-Pilot",
     accolade: { label: "Agentic AI · 2026", tone: "slate" },
+    widget: "guardrails",
     summary:
       "Self-built agentic system on top of Claude Code that reads my Gmail, Slack, GitHub, and Calendar, drafts replies into a review folder, and persists context as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
     stackLine: "Python · Claude Agent SDK · MCP · sqlite-vec · fastembed (ONNX)",
@@ -282,6 +336,62 @@ const PROJECTS = [
     },
   },
 ];
+
+// Guardrail playground: a client-side mirror of the five security boundaries in
+// the second brain's USER.md. First matching rule wins; no match means the real
+// PreToolUse hooks would let the call through.
+const GUARDRAILS = [
+  {
+    boundary: "Boundary 1 · outbound messages",
+    verdict: "draft-only",
+    test: /\b(send|reply|respond|email|e-mail|message|dm|slack)\b/i,
+    then: "Written to drafts/active/ for review. Nothing leaves without a human pressing send.",
+  },
+  {
+    boundary: "Boundary 2 · social posting",
+    verdict: "blocked",
+    test: /\b(tweet|post|publish|linkedin|twitter|instagram|facebook|social)\b/i,
+    then: "Refused before the tool runs. The agent never posts on my behalf.",
+  },
+  {
+    boundary: "Boundary 3 · money",
+    verdict: "blocked",
+    test: /\b(pay|payment|charge|purchase|buy|stripe|paypal|billing|invoice|wire)\b/i,
+    then: "Refused. No financial data, no purchases, no exceptions.",
+  },
+  {
+    boundary: "Boundary 4 · deletion",
+    verdict: "blocked",
+    test: /\b(rm|del|delete|remove|drop|trash|erase|purge|wipe)\b|--force|-D\b/i,
+    then: "Refused. Deletes and force pushes are mine to run.",
+  },
+  {
+    boundary: "Boundary 5 · production",
+    verdict: "blocked",
+    test: /\b(push|merge|deploy|release|railway up|supabase db push|docker push|vercel)\b/i,
+    then: "Refused. The agent prepares the commit; I push.",
+  },
+  {
+    boundary: "Read scope",
+    verdict: "allowed",
+    test: /\b(read|list|search|find|summarize|summarise|show|check|status|inbox|calendar|what|who|when)\b/i,
+    then: "Runs. Reading Gmail, Slack, GitHub, and Calendar is inside the advisor's lane.",
+  },
+];
+
+const GUARDRAIL_FALLBACK = {
+  boundary: "No rule matched",
+  verdict: "allowed",
+  then: "Runs and is logged. The hooks only block what matches a boundary.",
+};
+
+const GUARDRAIL_EXAMPLES = ["git push origin main", "reply to the recruiter", "rm -rf dist", "summarize my inbox"];
+
+const evaluateGuardrail = (text) => {
+  const t = text.trim();
+  if (!t) return null;
+  return GUARDRAILS.find((rule) => rule.test.test(t)) || GUARDRAIL_FALLBACK;
+};
 
 // Career route for the hero: lane 0 is school, lane 1 is work, so the 45-degree
 // jogs in the line mean something. Facts mirror Education and Experience below.
@@ -500,6 +610,111 @@ const SectionRail = ({ items }) => {
         </ol>
       </div>
     </nav>
+  );
+};
+
+const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
+  <figure className={className}>
+    <img
+      src={photo.src}
+      width={photo.width}
+      height={photo.height}
+      alt={photo.alt}
+      loading="lazy"
+      decoding="async"
+      className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
+    />
+    <figcaption className="mt-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+      {photo.caption}
+    </figcaption>
+  </figure>
+);
+
+const verdictClasses = {
+  allowed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
+  blocked: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20",
+  "draft-only": "bg-accent/10 text-accent border-accent/20",
+};
+
+const GuardrailPlayground = () => {
+  const [text, setText] = useState("");
+  const [result, setResult] = useState(null);
+  const run = (value) => {
+    setText(value);
+    setResult(evaluateGuardrail(value));
+  };
+  return (
+    <div className="mt-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
+      <label
+        htmlFor="guardrail-input"
+        className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono"
+      >
+        Try the guardrails
+      </label>
+      <form
+        className="mt-2 flex gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          run(text);
+        }}
+      >
+        <input
+          id="guardrail-input"
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="try: git push origin main"
+          autoComplete="off"
+          spellCheck="false"
+          className={`min-w-0 flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 h-10 text-sm font-mono text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 ${focusRing}`}
+        />
+        <button
+          type="submit"
+          className={`inline-flex items-center rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 h-10 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
+        >
+          Run
+        </button>
+      </form>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {GUARDRAIL_EXAMPLES.map((example) => (
+          <button
+            key={example}
+            type="button"
+            onClick={() => run(example)}
+            className={`rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2.5 py-1 text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500 transition-colors ${focusRing}`}
+          >
+            {example}
+          </button>
+        ))}
+      </div>
+      <div className="mt-4 min-h-[3.5rem]" aria-live="polite" data-guardrail-result>
+        {result && (
+          <div className="flex flex-col gap-1.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide border font-mono ${verdictClasses[result.verdict]}`}
+              >
+                {result.verdict}
+              </span>
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{result.boundary}</span>
+            </div>
+            <p className="text-sm text-slate-700 dark:text-slate-300">{result.then}</p>
+          </div>
+        )}
+      </div>
+      <p className="mt-3 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+        Mirrors the five boundaries in my second brain&rsquo;s USER.md. The real checks are Python
+        PreToolUse hooks, regression-tested in CI.{" "}
+        <a
+          href="https://github.com/Nishanth-G-Palaniswami/second-brain"
+          target="_blank"
+          rel="noreferrer"
+          className={`underline underline-offset-4 hover:text-accent transition-colors rounded ${focusRing}`}
+        >
+          See the rules
+        </a>
+      </p>
+    </div>
   );
 };
 
@@ -849,11 +1064,9 @@ export default function Portfolio() {
             <p className="md:col-span-3 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
               {ABOUT}
             </p>
-            <aside className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-                Quick facts
-              </div>
-              <ul className="mt-3 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+            <div className="md:col-span-2">
+              <PhotoFigure photo={PHOTOS.about} ratio="aspect-[4/3]" />
+              <ul className="mt-5 space-y-3 text-sm text-slate-700 dark:text-slate-300">
                 <li className="flex gap-2">
                   <GraduationCap className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>M.S. Computer Engineering · NYU · May 2026</span>
@@ -863,7 +1076,25 @@ export default function Portfolio() {
                   <span>Based in New York City · open to relocation</span>
                 </li>
               </ul>
-            </aside>
+            </div>
+          </div>
+
+          {/* Off the clock: the photos are the facts */}
+          <div className="mt-12">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+              off the clock
+            </p>
+            <h3 className="mt-2 text-xl md:text-2xl font-semibold tracking-tight font-display">Detours</h3>
+            {OFF_THE_CLOCK_LINE && (
+              <p className="mt-3 max-w-2xl text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                {OFF_THE_CLOCK_LINE}
+              </p>
+            )}
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4" data-detours>
+              {PHOTOS.offTheClock.map((photo) => (
+                <PhotoFigure key={photo.src} photo={photo} />
+              ))}
+            </div>
           </div>
         </Section>
 
@@ -1149,6 +1380,7 @@ export default function Portfolio() {
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {exp.location}
                   </p>
+                  {exp.photo && <PhotoFigure photo={exp.photo} className="mt-4 max-w-[200px]" />}
                 </div>
                 <div className="md:col-span-3">
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
@@ -1211,6 +1443,8 @@ export default function Portfolio() {
                     </li>
                   ))}
                 </ul>
+
+                {p.widget === "guardrails" && <GuardrailPlayground />}
 
                 <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
                   {p.stackLine}
