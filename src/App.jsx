@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
   BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
-  Cpu, Database, Cloud, Code2, GraduationCap, Rocket, Mail,
+  Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail,
   Copy, Check,
 } from "lucide-react";
 
-import { useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -283,6 +283,16 @@ const PROJECTS = [
   },
 ];
 
+// Career route for the hero: lane 0 is school, lane 1 is work, so the 45-degree
+// jogs in the line mean something. Facts mirror Education and Experience below.
+const ROUTE_STOPS = [
+  { label: "PSG College", sub: "B.E. Computer Science", year: "'20", lane: 0 },
+  { label: "Tagwebs", sub: "Software Engineer Intern", year: "'23", lane: 1 },
+  { label: "NYU", sub: "M.S. Computer Engineering", year: "'24", lane: 0 },
+  { label: "SAIL", sub: "Software Engineer Intern", year: "'25", lane: 1 },
+  { label: "got2eat", sub: "AI Engineer", year: "now", lane: 1, terminal: true },
+];
+
 // -------------------- PRIMITIVES -------------------- //
 
 const focusRing =
@@ -305,6 +315,86 @@ const StationDot = ({ fill = "bg-white dark:bg-slate-900", className = "" }) => 
     className={`inline-block h-3 w-3 flex-shrink-0 rounded-full border-2 border-accent ${fill} ${className}`}
   />
 );
+
+// Strip-map geometry: fixed 44px rows keep the SVG line and the HTML stations aligned.
+const ROUTE_ROW = 44;
+const ROUTE_LANE_X = [8, 16];
+
+const routePath = (stops) =>
+  stops
+    .map((stop, i) => {
+      const x = ROUTE_LANE_X[stop.lane];
+      const y = ROUTE_ROW / 2 + ROUTE_ROW * i;
+      if (i === 0) return `M${x} ${y}`;
+      const prev = stops[i - 1];
+      const prevY = ROUTE_ROW / 2 + ROUTE_ROW * (i - 1);
+      return prev.lane === stop.lane
+        ? `V${y}`
+        : `V${prevY + 14} L${x} ${prevY + 22} V${y}`;
+    })
+    .join(" ");
+
+const RouteDiagram = ({ stops, reduce }) => {
+  const height = ROUTE_ROW * stops.length;
+  const stagger = stops.length > 1 ? 1.1 / (stops.length - 1) : 0;
+  return (
+    <div className="relative mt-5">
+      <svg
+        aria-hidden="true"
+        width="24"
+        height={height}
+        viewBox={`0 0 24 ${height}`}
+        className="absolute left-0 top-0 overflow-visible"
+      >
+        <motion.path
+          d={routePath(stops)}
+          className="stroke-accent"
+          fill="none"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={reduce ? false : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.1, ease: "easeInOut" }}
+        />
+      </svg>
+      <ol className="relative">
+        {stops.map((stop, i) => (
+          <li key={stop.label} className="grid h-11 grid-cols-[24px_1fr] items-center">
+            <motion.span
+              aria-hidden="true"
+              className="relative block h-3 w-3"
+              style={{ marginLeft: ROUTE_LANE_X[stop.lane] - 6 }}
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 + i * stagger, duration: 0.2 }}
+            >
+              {stop.terminal ? (
+                <>
+                  {!reduce && (
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  )}
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </>
+              ) : (
+                <StationDot className="block" />
+              )}
+            </motion.span>
+            <span className="min-w-0 pl-3 leading-tight">
+              <span className="block truncate text-sm text-slate-800 dark:text-slate-200">
+                <span className="font-semibold">{stop.label}</span>
+                <span className="ml-2 font-mono text-[11px] tabular-nums tracking-[0.12em] text-accent">
+                  {stop.year}
+                </span>
+              </span>
+              <span className="block truncate text-xs text-slate-500 dark:text-slate-400">{stop.sub}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+};
 
 const Section = ({ id, title, kicker, children }) => (
   <section id={id} className="scroll-mt-20 py-10 md:py-14">
@@ -602,44 +692,16 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Visual anchor - pipeline motif (not a duplicate of SAIL card) */}
+          {/* Visual anchor: the career route as a transit strip map */}
           <aside
             className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
-            aria-label="What I build"
+            aria-label="Career route"
           >
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-              <Rocket className="h-3 w-3" aria-hidden="true" /> Trajectory
+              <Route className="h-3 w-3" aria-hidden="true" /> Route
             </div>
 
-            <ol className="mt-5 space-y-4">
-              <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
-                  2024
-                </span>
-                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">Joined M.S. Computer Engineering</span>
-                  <span className="text-slate-500 dark:text-slate-400">, NYU</span>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
-                  2025
-                </span>
-                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">Software Engineer Intern</span>
-                  <span className="text-slate-500 dark:text-slate-400">, SAIL</span>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
-                  Now
-                </span>
-                <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
-                  <span className="font-semibold">AI Engineer</span>
-                  <span className="text-slate-500 dark:text-slate-400">, got2eat · agentic AI on the side (Second Brain, voicebot)</span>
-                </span>
-              </li>
-            </ol>
+            <RouteDiagram stops={ROUTE_STOPS} reduce={reduce} />
 
             <a
               href="#sail"
