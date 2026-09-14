@@ -640,17 +640,18 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
 // Detours band: a full-bleed dusk scene, mountains in the back, three hobby notes
 // in front. The ridges rise, the sun comes up and the trail draws itself once the
 // band scrolls into view; the back ridge and sun drift a little with scroll.
-// Reduced motion renders the finished scene. viewBox 1440x400, sliced to cover.
+// Reduced motion renders the finished scene. viewBox 2400x400, sliced to cover:
+// wide enough that no viewport up to 2560px crops the peaks, the sun or the rings.
 const RIDGES = [
-  { d: "M0 220 L120 170 L260 202 L380 138 L520 184 L640 120 L780 178 L900 130 L1040 182 L1180 142 L1320 186 L1440 154 L1440 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
-  { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1440 290 L1440 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
-  { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1440 312 L1440 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
+  { d: "M0 200 L140 150 L280 190 L420 130 L560 185 L700 120 L840 180 L980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140 L2400 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
+  { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1400 292 L1540 240 L1680 286 L1820 248 L1960 290 L2100 244 L2240 288 L2400 262 L2400 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
+  { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1400 306 L1560 334 L1720 298 L1880 330 L2040 304 L2200 336 L2400 312 L2400 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
 ];
 // The trail traces the back ridge's own silhouette from x=520 (right of the title
 // block), rings on its peaks, and lives in the ridge's parallax group so they
 // move together. Below xl the scene is scaled up and the trail is hidden.
-const TRAIL = "M520 184 L640 120 L780 178 L900 130 L1040 182 L1180 142 L1320 186 L1440 154";
-const TRAIL_STOPS = [[640, 120], [900, 130], [1180, 142]];
+const TRAIL = "M800 163 L840 180 L980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140";
+const TRAIL_STOPS = [[980, 115], [1260, 125], [1540, 110]];
 
 const DetoursBand = ({ notes, reduce }) => {
   const ref = useRef(null);
@@ -659,7 +660,7 @@ const DetoursBand = ({ notes, reduce }) => {
   // the band's own in-view state drives the trail reveal instead.
   const inView = useInView(ref, { once: true, amount: 0.3 });
   const backY = useTransform(scrollYProgress, [0, 1], [12, -12]);
-  const sunY = useTransform(scrollYProgress, [0, 1], [36, -36]);
+  const sunY = useTransform(scrollYProgress, [0, 1], [18, -18]);
   const reveal = (delay, y) =>
     reduce
       ? {}
@@ -682,13 +683,13 @@ const DetoursBand = ({ notes, reduce }) => {
       />
       <svg
         aria-hidden="true"
-        viewBox="0 0 1440 400"
+        viewBox="0 0 2400 400"
         preserveAspectRatio="xMidYMax slice"
         className="absolute inset-0 -z-10 h-full w-full"
       >
         <motion.g style={reduce ? undefined : { y: sunY }}>
-          <motion.circle cx="1100" cy="150" r="92" className="fill-accent/20" {...reveal(0.1, 60)} />
-          <motion.circle cx="1100" cy="150" r="44" className="fill-accent/80" {...reveal(0.1, 60)} />
+          <motion.circle cx="1380" cy="115" r="80" className="hidden sm:block fill-accent/20" {...reveal(0.1, 60)} />
+          <motion.circle cx="1380" cy="115" r="44" className="hidden sm:block fill-accent/80" {...reveal(0.1, 60)} />
         </motion.g>
         <motion.g style={reduce ? undefined : { y: backY }}>
           <motion.path d={RIDGES[0].d} className={RIDGES[0].cls} {...reveal(RIDGES[0].delay, RIDGES[0].y)} />
@@ -696,14 +697,14 @@ const DetoursBand = ({ notes, reduce }) => {
           <defs>
             <clipPath id="detours-trail-clip">
               {reduce ? (
-                <rect x="0" y="0" width="1440" height="400" />
+                <rect x="800" y="0" width="1600" height="400" />
               ) : (
                 <motion.rect
-                  x="0"
+                  x="800"
                   y="0"
                   height="400"
                   initial={{ width: 0 }}
-                  animate={{ width: inView ? 1440 : 0 }}
+                  animate={{ width: inView ? 1600 : 0 }}
                   transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
                 />
               )}
