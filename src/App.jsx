@@ -853,7 +853,7 @@ export default function Portfolio() {
           </a>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex rail:hidden items-center gap-5 text-sm" aria-label="Primary">
+          <nav className="hidden lg:flex rail:hidden items-center gap-5 text-sm" aria-label="Primary">
             {NAV_ITEMS.map((n) => (
               <a
                 key={n.href}
@@ -893,7 +893,7 @@ export default function Portfolio() {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
-              className={`md:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              className={`lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               aria-controls="mobile-nav"
@@ -912,7 +912,7 @@ export default function Portfolio() {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            className="lg:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
