@@ -6,7 +6,7 @@ import {
   Copy, Check,
 } from "lucide-react";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -380,31 +380,6 @@ export default function Portfolio() {
     }
   }, [darkMode]);
 
-  // Motion helpers that respect prefers-reduced-motion
-  const fadeUp = (delay = 0) =>
-    reduce
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
-      : {
-        initial: { opacity: 0, y: 12 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.5, delay },
-      };
-
-  const fadeUpInView = (delay = 0) =>
-    reduce
-      ? {
-        initial: { opacity: 0 },
-        whileInView: { opacity: 1 },
-        viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.2 },
-      }
-      : {
-        initial: { opacity: 0, y: 10 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.4, delay },
-      };
-
   return (
     <div
       id="top"
@@ -628,8 +603,7 @@ export default function Portfolio() {
           </div>
 
           {/* Visual anchor - pipeline motif (not a duplicate of SAIL card) */}
-          <motion.aside
-            {...fadeUp(0.1)}
+          <aside
             className="md:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
             aria-label="What I build"
           >
@@ -673,7 +647,7 @@ export default function Portfolio() {
             >
               Open the case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
-          </motion.aside>
+          </aside>
         </section>
 
         {/* About */}
@@ -712,9 +686,8 @@ export default function Portfolio() {
         >
           <div className="space-y-6">
             {EDUCATION.map((ed, index) => (
-              <motion.article
+              <article
                 key={ed.school}
-                {...fadeUpInView(index * 0.06)}
                 className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
               >
                 <div className="md:col-span-2">
@@ -739,7 +712,7 @@ export default function Portfolio() {
                     {ed.detail}
                   </p>
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </Section>
@@ -754,9 +727,8 @@ export default function Portfolio() {
             {SKILLS.map((group) => {
               const Icon = group.icon;
               return (
-                <motion.article
+                <article
                   key={group.group}
-                  {...fadeUpInView(0)}
                   className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
@@ -773,7 +745,7 @@ export default function Portfolio() {
                       </li>
                     ))}
                   </ul>
-                </motion.article>
+                </article>
               );
             })}
           </div>
@@ -785,8 +757,7 @@ export default function Portfolio() {
           title="SAIL"
           kicker="case study"
         >
-          <motion.article
-            {...fadeUpInView(0)}
+          <article
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
           >
             <div>
@@ -932,7 +903,7 @@ export default function Portfolio() {
                 </a>
               </div>
             </div>
-          </motion.article>
+          </article>
         </Section>
 
         {/* Experience */}
@@ -963,9 +934,8 @@ export default function Portfolio() {
                 </div>
               </a>
             ) : (
-              <motion.article
+              <article
                 key={exp.role + exp.company}
-                {...fadeUpInView(index * 0.06)}
                 className="grid md:grid-cols-5 gap-4 md:gap-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
               >
                 <div className="md:col-span-2">
@@ -1009,7 +979,7 @@ export default function Portfolio() {
                     </p>
                   )}
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </Section>
@@ -1022,9 +992,8 @@ export default function Portfolio() {
         >
           <div className="space-y-6">
             {PROJECTS.map((p, idx) => (
-              <motion.article
+              <article
                 key={p.title}
-                {...fadeUpInView(idx * 0.05)}
                 className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col"
               >
                 {p.accolade && (
@@ -1130,7 +1099,7 @@ export default function Portfolio() {
                     </a>
                   )}
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </Section>
@@ -1143,9 +1112,8 @@ export default function Portfolio() {
         >
           <div className="grid gap-6">
             {PUBLICATIONS.map((pub) => (
-              <motion.article
+              <article
                 key={pub.title}
-                {...fadeUpInView(0)}
                 className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
               >
                 <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
@@ -1179,7 +1147,7 @@ export default function Portfolio() {
                     </a>
                   )}
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </Section>
@@ -1205,7 +1173,7 @@ export default function Portfolio() {
             Contact
           </h2>
 
-          <motion.div {...fadeUpInView(0)}>
+          <div>
             <div className="flex flex-wrap items-baseline gap-3 sm:gap-4">
               <a
                 href={LINKS.emailCompose}
@@ -1266,7 +1234,7 @@ export default function Portfolio() {
               </a>
             </div>
 
-          </motion.div>
+          </div>
         </div>
       </section>
 
