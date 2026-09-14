@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
   BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
-  Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail,
+  Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail, BadgeCheck,
   Copy, Check,
 } from "lucide-react";
 
@@ -14,6 +14,9 @@ const PROFILE = {
   thesis:
     "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX. Open to full-time roles now.",
   availability: "ON AIR · open to full-time roles",
+  // Stated without a year on purpose: STEM-OPT depends on an E-Verify employer and an
+  // approved I-983, so the site says what is true today and leaves dates to the forms.
+  authorization: "US work-authorized · no sponsorship required · F-1 OPT, STEM-OPT eligible",
 };
 
 const LINKS = {
@@ -1184,6 +1187,10 @@ export default function Portfolio() {
                 </span>
                 {PROFILE.availability}
               </span>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-xs font-medium border border-slate-300/60 dark:border-slate-700 font-mono">
+                <BadgeCheck className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                {PROFILE.authorization}
+              </span>
             </div>
 
             <h1
@@ -1287,6 +1294,10 @@ export default function Portfolio() {
                 <li className="flex gap-2">
                   <MapPin className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>Based in New York City · open to relocation</span>
+                </li>
+                <li className="flex gap-2">
+                  <BadgeCheck className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
+                  <span>{PROFILE.authorization}</span>
                 </li>
               </ul>
             </div>
