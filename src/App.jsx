@@ -503,6 +503,41 @@ const SectionRail = ({ items }) => {
   );
 };
 
+// Footer clock: home and here. Re-renders on the minute; no aria-live so it never
+// interrupts a screen reader.
+const CLOCK_CITIES = [
+  { city: "Coimbatore", zone: "Asia/Kolkata" },
+  { city: "New York", zone: "America/New_York" },
+];
+
+const clockFormat = (zone) =>
+  new Intl.DateTimeFormat("en-US", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+
+const TwoCityClock = () => {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    let timer;
+    const schedule = () => {
+      timer = setTimeout(() => {
+        setNow(new Date());
+        schedule();
+      }, 60000 - (Date.now() % 60000));
+    };
+    schedule();
+    return () => clearTimeout(timer);
+  }, []);
+  return (
+    <span title="local time" className="tabular-nums">
+      {CLOCK_CITIES.map((c, i) => (
+        <React.Fragment key={c.city}>
+          {i > 0 && " · "}
+          {c.city} {clockFormat(c.zone).format(now)}
+        </React.Fragment>
+      ))}
+    </span>
+  );
+};
+
 // -------------------- MAIN COMPONENT -------------------- //
 
 export default function Portfolio() {
@@ -1400,6 +1435,7 @@ export default function Portfolio() {
             © {new Date().getFullYear()} Nishanth G Palaniswami
             <span className="text-slate-600"> · built solo · React + Vite + Tailwind</span>
           </span>
+          <TwoCityClock />
           <a
             href="#top"
             className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
