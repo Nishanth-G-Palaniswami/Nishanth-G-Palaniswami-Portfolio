@@ -1400,9 +1400,11 @@ export default function Portfolio() {
                 Global Trade Intelligence Platform
               </h3>
               <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Engineer on SAIL&rsquo;s applied data platform. Built the{" "}
+                SAIL builds trade-compliance software for importers: classifying products and
+                calculating the duties they owe. As an engineer on its applied data platform I built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
-                and in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018–2026).
+                (HTS is the Harmonized Tariff Schedule, the US catalog of tariff codes) and the
+                in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018–2026).
                 Co-built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS classification model</strong>{" "}
                 on top that maps a product description to the correct tariff code at inference
@@ -1417,7 +1419,7 @@ export default function Portfolio() {
                   5M<span className="text-accent">+</span>
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-                  Tariff records indexed
+                  Tariff records versioned across 166 releases
                 </div>
               </div>
               <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
@@ -1425,7 +1427,7 @@ export default function Portfolio() {
                   166
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-                  HTS releases tracked (2018–2026)
+                  HTS releases tracked, Jan 2018 to May 2026
                 </div>
               </div>
               <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
@@ -1433,7 +1435,7 @@ export default function Portfolio() {
                   97<span className="text-accent">%</span>
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-                  Pipeline reliability
+                  Scheduled runs completing without manual intervention
                 </div>
               </div>
             </div>
@@ -1457,10 +1459,11 @@ export default function Portfolio() {
                   The approach
                 </div>
                 <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                  A deterministic revision engine ingests and versions every HTS revision
-                  (DuckDB + Supabase, backed by golden tests + PyTest + GitHub Actions),
-                  surfaces normalized changes between any two revisions, and powers
-                  downstream duty calculation. On top of that data layer, a co-built
+                  A deterministic revision engine (Python and SQL over SQLite and Parquet,
+                  served through FastAPI) ingests and versions every HTS revision, surfaces
+                  normalized changes between any two revisions, and powers downstream duty
+                  calculation; golden tests, PyTest and GitHub Actions gate every release,
+                  and the team&rsquo;s DuckDB and Supabase layer consumes the output. On top of that data layer, a co-built
                   classification model maps product descriptions to the right HTS code at
                   inference time. A &ldquo;Product DNA&rdquo; layer persists each classification
                   alongside the SKU it describes, so recurring products aren&rsquo;t
@@ -1475,7 +1478,7 @@ export default function Portfolio() {
                 <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                    <span>5M+ tariff records indexed; 166 HTS releases tracked (Jan 2018 → May 2026)</span>
+                    <span>5M+ tariff records versioned; 166 HTS releases tracked (Jan 2018 to May 2026)</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
@@ -1483,7 +1486,7 @@ export default function Portfolio() {
                   </li>
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                    <span>97% pipeline reliability end-to-end via golden tests + schema validation</span>
+                    <span>97% of scheduled runs complete without manual intervention; golden tests and schema validation catch the rest</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
@@ -1512,7 +1515,7 @@ export default function Portfolio() {
 
             <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                Python · SQL · R · FastAPI · Supabase · DuckDB · Railway · PyTest · GitHub Actions
+                Python · SQL · SQLite · Parquet · FastAPI · PyTest · GitHub Actions · DuckDB + Supabase (team platform) · R (validation harnesses)
               </p>
               <div className="flex flex-wrap gap-4 text-sm">
                 <a
