@@ -360,7 +360,7 @@ const GUARDRAILS = [
   {
     boundary: "Boundary 2 · social posting",
     verdict: "blocked",
-    test: /\b(tweet|post|publish|linkedin|twitter|instagram|facebook|social)\b/i,
+    test: /\b(tweet|post|linkedin|twitter|instagram|facebook|social)\b/i,
     then: "Refused before the tool runs. The agent never posts on my behalf.",
   },
   {
@@ -378,7 +378,7 @@ const GUARDRAILS = [
   {
     boundary: "Boundary 5 · production",
     verdict: "blocked",
-    test: /\b(push|merge|deploy|release|railway up|supabase db push|docker push|vercel)\b/i,
+    test: /\b(push|merge|deploy|release|publish|railway up|supabase db push|docker push|vercel)\b/i,
     then: "Refused. The agent prepares the commit; I push.",
   },
   {
@@ -392,15 +392,28 @@ const GUARDRAILS = [
 const GUARDRAIL_FALLBACK = {
   boundary: "No rule matched",
   verdict: "allowed",
-  then: "Runs and is logged. The hooks only block what matches a boundary.",
+  then: "Runs. The hooks only block what matches a boundary.",
 };
 
-const GUARDRAIL_EXAMPLES = ["git push origin main", "reply to the recruiter", "rm -rf dist", "summarize my inbox"];
+const GUARDRAIL_EXAMPLES = [
+  "reply to the recruiter",
+  "post this on LinkedIn",
+  "pay the invoice",
+  "rm -rf dist",
+  "git push origin main",
+  "summarize my inbox",
+];
+
+const GUARDRAIL_SEVERITY = { blocked: 2, "draft-only": 1, allowed: 0 };
 
 const evaluateGuardrail = (text) => {
   const t = text.trim();
   if (!t) return null;
-  return GUARDRAILS.find((rule) => rule.test.test(t)) || GUARDRAIL_FALLBACK;
+  const matches = GUARDRAILS.filter((rule) => rule.test.test(t));
+  if (matches.length === 0) return GUARDRAIL_FALLBACK;
+  return matches.reduce((worst, rule) =>
+    GUARDRAIL_SEVERITY[rule.verdict] > GUARDRAIL_SEVERITY[worst.verdict] ? rule : worst
+  );
 };
 
 // Career route for the hero: lane 0 is school, lane 1 is work, so the 45-degree
