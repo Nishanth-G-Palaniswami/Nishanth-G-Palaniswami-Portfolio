@@ -49,36 +49,6 @@ const PHOTOS = {
     alt: "Nishanth on the Roosevelt Island waterfront with the Queensboro Bridge behind him",
     caption: "Roosevelt Island, New York",
   },
-  offTheClock: [
-    {
-      src: "/photos/grand-canyon.jpg",
-      width: 768,
-      height: 1024,
-      alt: "Standing arms wide on a rock ledge above the Grand Canyon",
-      caption: "Grand Canyon",
-    },
-    {
-      src: "/photos/devils-bridge-sedona.jpg",
-      width: 768,
-      height: 1024,
-      alt: "A small figure standing on the Devil's Bridge arch in Sedona",
-      caption: "Devil's Bridge, Sedona",
-    },
-    {
-      src: "/photos/lake-powell.jpg",
-      width: 768,
-      height: 1024,
-      alt: "Paddling a yellow kayak below sandstone cliffs on Lake Powell",
-      caption: "Lake Powell, Arizona",
-    },
-    {
-      src: "/photos/skiing.jpg",
-      width: 580,
-      height: 1024,
-      alt: "Skiing down a groomed run at Hunter Mountain in the Catskills",
-      caption: "Hunter Mountain, Catskills",
-    },
-  ],
   got2eat: {
     src: "/photos/base44-demo-day.jpg",
     width: 768,
@@ -89,8 +59,42 @@ const PHOTOS = {
   },
 };
 
-// One optional line above the off-the-clock photos. Empty renders nothing.
-const OFF_THE_CLOCK_LINE = "";
+// Off the clock: three hobbies, one line each. The lines joke about attitude,
+// never about skill or frequency; the user picked every one of them.
+const OFF_THE_CLOCK_LINE = "Proof I go outside.";
+
+const HOBBIES = [
+  {
+    activity: "Hiking",
+    place: "Grand Canyon",
+    line: "No signal, no CI, no regrets.",
+    src: "/photos/grand-canyon.jpg",
+    width: 768,
+    height: 1024,
+    position: "50% 55%",
+    alt: "Hiking: standing arms wide on a rock ledge above the Grand Canyon",
+  },
+  {
+    activity: "Kayaking",
+    place: "Lake Powell, Arizona",
+    line: "The one place I accept latency.",
+    src: "/photos/lake-powell.jpg",
+    width: 768,
+    height: 1024,
+    position: "50% 85%",
+    alt: "Kayaking: paddling a yellow kayak below sandstone cliffs on Lake Powell",
+  },
+  {
+    activity: "Skiing",
+    place: "Hunter Mountain, Catskills",
+    line: "Gravity handles the deployment. I handle the braking.",
+    src: "/photos/skiing.jpg",
+    width: 580,
+    height: 1024,
+    position: "50% 60%",
+    alt: "Skiing: heading down a groomed run at Hunter Mountain in the Catskills",
+  },
+];
 
 const EDUCATION = [
   {
@@ -630,6 +634,28 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
       {photo.caption}
     </figcaption>
   </figure>
+);
+
+const HobbyNote = ({ note }) => (
+  <article className="flex gap-4">
+    <img
+      src={note.src}
+      width={note.width}
+      height={note.height}
+      alt={note.alt}
+      loading="lazy"
+      decoding="async"
+      style={{ objectPosition: note.position }}
+      className="h-24 w-24 flex-shrink-0 object-cover rounded-lg border border-slate-200 dark:border-slate-800"
+    />
+    <div className="min-w-0">
+      <h3 className="font-semibold text-slate-900 dark:text-slate-100">{note.activity}</h3>
+      <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+        {note.place}
+      </p>
+      <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{note.line}</p>
+    </div>
+  </article>
 );
 
 const verdictClasses = {
@@ -1560,16 +1586,14 @@ export default function Portfolio() {
           </div>
         </Section>
 
-        {/* Detours: off the clock, the photos are the facts */}
+        {/* Detours: off the clock, three hobbies, one line each */}
         <Section id="detours" title="Detours" kicker="off the clock">
-          {OFF_THE_CLOCK_LINE && (
-            <p className="mb-6 max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-              {OFF_THE_CLOCK_LINE}
-            </p>
-          )}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-detours>
-            {PHOTOS.offTheClock.map((photo) => (
-              <PhotoFigure key={photo.src} photo={photo} />
+          <p className="mb-8 max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+            {OFF_THE_CLOCK_LINE}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" data-detours>
+            {HOBBIES.map((note) => (
+              <HobbyNote key={note.activity} note={note} />
             ))}
           </div>
         </Section>
