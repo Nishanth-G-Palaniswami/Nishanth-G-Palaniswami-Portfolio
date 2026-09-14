@@ -612,7 +612,7 @@ const SectionRail = ({ items }) => {
   );
 };
 
-const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "", captionClass = "" }) => (
+const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
   <figure className={className}>
     <img
       src={photo.src}
@@ -624,7 +624,7 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "", captionCla
       style={photo.position ? { objectPosition: photo.position } : undefined}
       className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
     />
-    <figcaption className={`mt-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono ${captionClass}`}>
+    <figcaption className="mt-2 text-center text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
       {photo.caption}
     </figcaption>
   </figure>
@@ -1310,7 +1310,7 @@ export default function Portfolio() {
                 </li>
               </ul>
             </div>
-            <PhotoFigure photo={PHOTOS.about} ratio="aspect-[4/3]" className="md:col-span-2" captionClass="text-center" />
+            <PhotoFigure photo={PHOTOS.about} ratio="aspect-[4/3]" className="md:col-span-2" />
           </div>
 
         </Section>
