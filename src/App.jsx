@@ -75,8 +75,8 @@ const PHOTOS = {
       src: "/photos/skiing.jpg",
       width: 580,
       height: 1024,
-      alt: "Skiing down a groomed run toward a wooded mountain",
-      caption: "Skiing",
+      alt: "Skiing down a groomed run at Hunter Mountain in the Catskills",
+      caption: "Hunter Mountain, Catskills",
     },
   ],
   got2eat: {
@@ -84,7 +84,8 @@ const PHOTOS = {
     width: 768,
     height: 1024,
     alt: "Holding the Base44 accelerator check outside the Demo Day finale",
-    caption: "Base44 Accelerator Champions, Demo Day finale",
+    caption: "Base44 Demo Day finale",
+    position: "50% 72%",
   },
 };
 
@@ -622,6 +623,7 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
       alt={photo.alt}
       loading="lazy"
       decoding="async"
+      style={photo.position ? { objectPosition: photo.position } : undefined}
       className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
     />
     <figcaption className="mt-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
@@ -1079,23 +1081,6 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Off the clock: the photos are the facts */}
-          <div className="mt-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-              off the clock
-            </p>
-            <h3 className="mt-2 text-xl md:text-2xl font-semibold tracking-tight font-display">Detours</h3>
-            {OFF_THE_CLOCK_LINE && (
-              <p className="mt-3 max-w-2xl text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                {OFF_THE_CLOCK_LINE}
-              </p>
-            )}
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4" data-detours>
-              {PHOTOS.offTheClock.map((photo) => (
-                <PhotoFigure key={photo.src} photo={photo} />
-              ))}
-            </div>
-          </div>
         </Section>
 
         {/* Education */}
@@ -1380,7 +1365,7 @@ export default function Portfolio() {
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {exp.location}
                   </p>
-                  {exp.photo && <PhotoFigure photo={exp.photo} className="mt-4 max-w-[200px]" />}
+                  {exp.photo && <PhotoFigure photo={exp.photo} ratio="aspect-[4/3]" className="mt-5 max-w-sm" />}
                 </div>
                 <div className="md:col-span-3">
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
@@ -1575,7 +1560,19 @@ export default function Portfolio() {
           </div>
         </Section>
 
-
+        {/* Detours: off the clock, the photos are the facts */}
+        <Section id="detours" title="Detours" kicker="off the clock">
+          {OFF_THE_CLOCK_LINE && (
+            <p className="mb-6 max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+              {OFF_THE_CLOCK_LINE}
+            </p>
+          )}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-detours>
+            {PHOTOS.offTheClock.map((photo) => (
+              <PhotoFigure key={photo.src} photo={photo} />
+            ))}
+          </div>
+        </Section>
       </main>
 
       {/* Contact - full-bleed dark closing moment, breaks the white-card rhythm */}
