@@ -643,15 +643,15 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
 // Reduced motion renders the finished scene. viewBox 2400x400, sliced to cover:
 // wide enough that no viewport up to 2560px crops the peaks, the sun or the rings.
 const RIDGES = [
-  { d: "M0 200 L140 150 L280 190 L420 130 L560 185 L700 120 L840 180 L980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140 L2400 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
-  { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1400 292 L1540 240 L1680 286 L1820 248 L1960 290 L2100 244 L2240 288 L2400 262 L2400 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
-  { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1400 306 L1560 334 L1720 298 L1880 330 L2040 304 L2200 336 L2400 312 L2400 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
+  { d: "M0 150 Q120 95 240 140 Q360 185 480 130 Q600 85 720 135 Q840 180 960 120 Q1080 75 1200 130 Q1320 175 1440 115 Q1560 165 1680 150 Q1800 130 1920 110 Q2040 80 2160 140 Q2280 190 2400 130 L2400 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
+  { d: "M0 205 Q150 170 300 195 Q450 220 600 185 Q750 160 900 200 Q1050 225 1200 190 Q1350 165 1500 205 Q1650 230 1800 185 Q1950 155 2100 200 Q2250 225 2400 190 L2400 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
+  { d: "M0 215 Q200 195 400 212 Q600 225 800 205 Q1000 190 1200 214 Q1400 228 1600 208 Q1800 192 2000 216 Q2200 226 2400 210 L2400 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
 ];
 // The trail traces the back ridge's own silhouette from x=520 (right of the title
 // block), rings on its peaks, and lives in the ridge's parallax group so they
 // move together. Below xl the scene is scaled up and the trail is hidden.
-const TRAIL = "M980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140";
-const TRAIL_STOPS = [[980, 115], [1260, 125], [1540, 110]];
+const TRAIL = "M960 120 Q1080 75 1200 130 Q1320 175 1440 115 Q1560 165 1680 150 Q1800 130 1920 110 Q2040 80 2160 140 Q2280 190 2400 130";
+const TRAIL_STOPS = [[1080, 100], [1440, 115], [2040, 98]];
 
 const DetoursBand = ({ notes, reduce }) => {
   const ref = useRef(null);
@@ -688,8 +688,8 @@ const DetoursBand = ({ notes, reduce }) => {
         className="absolute inset-0 -z-10 h-full w-full"
       >
         <motion.g style={reduce ? undefined : { y: sunY }}>
-          <motion.circle cx="1380" cy="115" r="80" className="hidden sm:block fill-accent/20" {...reveal(0.1, 60)} />
-          <motion.circle cx="1380" cy="115" r="44" className="hidden sm:block fill-accent/80" {...reveal(0.1, 60)} />
+          <motion.circle cx="1320" cy="114" r="54" className="hidden sm:block fill-accent/20" {...reveal(0.1, 60)} />
+          <motion.circle cx="1320" cy="114" r="31" className="hidden sm:block fill-accent/80" {...reveal(0.1, 60)} />
         </motion.g>
         <motion.g style={reduce ? undefined : { y: backY }}>
           <motion.path d={RIDGES[0].d} className={RIDGES[0].cls} {...reveal(RIDGES[0].delay, RIDGES[0].y)} />
@@ -697,14 +697,14 @@ const DetoursBand = ({ notes, reduce }) => {
           <defs>
             <clipPath id="detours-trail-clip">
               {reduce ? (
-                <rect x="980" y="0" width="1420" height="400" />
+                <rect x="960" y="0" width="1440" height="400" />
               ) : (
                 <motion.rect
-                  x="980"
+                  x="960"
                   y="0"
                   height="400"
                   initial={{ width: 0 }}
-                  animate={{ width: inView ? 1420 : 0 }}
+                  animate={{ width: inView ? 1440 : 0 }}
                   transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
                 />
               )}
@@ -745,7 +745,7 @@ const DetoursBand = ({ notes, reduce }) => {
       {/* Ground scrim: the ridges fade out under the notes so the text sits on an even dark ground */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 h-[58%] bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[45%] bg-gradient-to-t from-slate-950/60 to-transparent"
       />
 
       <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
