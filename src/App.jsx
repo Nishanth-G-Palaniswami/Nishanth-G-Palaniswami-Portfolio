@@ -910,17 +910,14 @@ const GuardrailPlayground = () => {
   );
 };
 
-// Footer clock: home and here. Re-renders on the minute; no aria-live so it never
+// Footer clock: New York time. Re-renders on the minute; no aria-live so it never
 // interrupts a screen reader.
-const CLOCK_CITIES = [
-  { city: "Coimbatore", zone: "Asia/Kolkata" },
-  { city: "New York", zone: "America/New_York" },
-];
+const CLOCK_CITIES = [{ city: "New York", zone: "America/New_York" }];
 
 const clockFormat = (zone) =>
   new Intl.DateTimeFormat("en-US", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
 
-const TwoCityClock = () => {
+const LocalClock = () => {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     let timer;
@@ -1858,7 +1855,7 @@ export default function Portfolio() {
             © {new Date().getFullYear()} Nishanth G Palaniswami
             <span className="text-slate-400 dark:text-slate-600"> · built solo · React + Vite + Tailwind</span>
           </span>
-          <TwoCityClock />
+          <LocalClock />
           <a
             href="#top"
             className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
