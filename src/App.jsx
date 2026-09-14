@@ -610,6 +610,7 @@ export default function Portfolio() {
             href="#top"
             className={`flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity rounded-md ${focusRing}`}
           >
+            {/* Route-line N: two stations joined by one line */}
             <svg
               width="24"
               height="24"
@@ -619,18 +620,15 @@ export default function Portfolio() {
               aria-hidden="true"
               className="flex-shrink-0"
             >
-              <circle
-                cx="16"
-                cy="16"
-                r="15"
-                fill="currentColor"
-                className="text-white dark:text-slate-900"
-                stroke="currentColor"
-              />
               <path
-                d="M8 8 L8 24 L12 24 L20 12 L20 24 L24 24 L24 8 L20 8 L12 20 L12 8 Z"
-                className="fill-current"
+                d="M8 25 V7 L24 25 V7"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
+              <circle cx="8" cy="25" r="3.5" strokeWidth="2.5" className="stroke-accent fill-white dark:fill-slate-900" />
+              <circle cx="24" cy="7" r="3.5" strokeWidth="2.5" className="stroke-accent fill-white dark:fill-slate-900" />
             </svg>
             <span className="font-semibold tracking-tight truncate">
               Nishanth G Palaniswami
