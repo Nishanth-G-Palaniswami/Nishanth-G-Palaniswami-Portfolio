@@ -114,40 +114,42 @@ const EDUCATION = [
   },
 ];
 
+// Synced to the resume (FDE version, 2026-09-14). Five resume groups become four
+// cards for the 2-column grid: Geospatial and Mobile folds into the frontend card,
+// GTFS joins Backend & Data. Names and casing follow the resume.
 const SKILLS = [
   {
-    group: "ML & AI",
+    group: "AI & ML",
     icon: Cpu,
     items: [
-      "PyTorch", "Scikit-learn", "Pandas", "NumPy", "LLMs / RAG / GenAI",
-      "Agents / MCP / Claude Agent SDK",
-      "NLP", "Transformers (Hugging Face)", "LoRA / PEFT",
+      "PyTorch", "scikit-learn", "pandas", "Hugging Face Transformers", "LoRA / PEFT",
+      "RAG", "Agents", "MCP", "Claude Agent SDK",
     ],
   },
   {
-    group: "Data & Infrastructure",
+    group: "Backend & Data",
     icon: Database,
     items: [
-      "PySpark", "Dagster / dbt", "Supabase / PostgreSQL", "SQLite", "DuckDB",
-      "Parquet / pyarrow", "FastAPI", "Django", "Deno / Node.js", "REST APIs", "React",
-      "MapLibre GL / GTFS",
+      "FastAPI", "Django", "Node.js", "Deno", "PostgreSQL", "SQLite", "PySpark",
+      "Dagster", "dbt", "DuckDB", "Parquet", "GTFS", "REST APIs",
     ],
   },
   {
-    group: "Languages",
+    group: "Languages, Frontend & Mobile",
     icon: Code2,
-    items: ["Python", "SQL", "JavaScript (ES6+)", "TypeScript", "R", "HTML / CSS", "Git"],
+    items: [
+      "Python", "SQL", "TypeScript", "JavaScript", "React", "Vite", "Next.js", "HTML / CSS",
+      "MapLibre GL", "GeoJSON", "Capacitor",
+    ],
   },
   {
-    group: "Cloud & MLOps",
+    group: "Testing, CI & Cloud",
     icon: Cloud,
     items: [
-      "AWS S3 / EC2 / CloudWatch (deployments)",
-      "Observability", "CI/CD (GitHub Actions)",
-      "Golden tests", "PyTest", "Schema validation",
+      "pytest", "Golden tests", "Schema validation", "Playwright", "GitHub Actions", "Git",
+      "AWS (EC2, S3, CloudWatch)",
     ],
   },
-
 ];
 
 const PUBLICATIONS = [
