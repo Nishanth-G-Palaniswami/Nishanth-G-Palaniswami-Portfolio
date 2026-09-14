@@ -642,14 +642,15 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
 // band scrolls into view; the back ridge and sun drift a little with scroll.
 // Reduced motion renders the finished scene. viewBox 1440x400, sliced to cover.
 const RIDGES = [
-  { d: "M0 250 L120 200 L260 232 L380 168 L520 214 L640 150 L780 208 L900 160 L1040 212 L1180 172 L1320 216 L1440 184 L1440 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
+  { d: "M0 220 L120 170 L260 202 L380 138 L520 184 L640 120 L780 178 L900 130 L1040 182 L1180 142 L1320 186 L1440 154 L1440 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
   { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1440 290 L1440 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
   { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1440 312 L1440 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
 ];
-// The trail rides the back ridge, to the right of the title block, so it never
-// crosses the notes; below lg the scene is scaled up and the trail is hidden.
-const TRAIL = "M520 188 L640 124 L780 182 L900 134 L1040 186 L1180 146 L1320 190 L1440 158";
-const TRAIL_STOPS = [[640, 124], [900, 134], [1180, 146]];
+// The trail traces the back ridge's own silhouette from x=520 (right of the title
+// block), rings on its peaks, and lives in the ridge's parallax group so they
+// move together. Below xl the scene is scaled up and the trail is hidden.
+const TRAIL = "M520 184 L640 120 L780 178 L900 130 L1040 182 L1180 142 L1320 186 L1440 154";
+const TRAIL_STOPS = [[640, 120], [900, 130], [1180, 142]];
 
 const DetoursBand = ({ notes, reduce }) => {
   const ref = useRef(null);
@@ -657,7 +658,7 @@ const DetoursBand = ({ notes, reduce }) => {
   // clipPath content is never laid out, so whileInView cannot fire on the rect;
   // the band's own in-view state drives the trail reveal instead.
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const backY = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const backY = useTransform(scrollYProgress, [0, 1], [12, -12]);
   const sunY = useTransform(scrollYProgress, [0, 1], [36, -36]);
   const reveal = (delay, y) =>
     reduce
@@ -691,54 +692,54 @@ const DetoursBand = ({ notes, reduce }) => {
         </motion.g>
         <motion.g style={reduce ? undefined : { y: backY }}>
           <motion.path d={RIDGES[0].d} className={RIDGES[0].cls} {...reveal(RIDGES[0].delay, RIDGES[0].y)} />
+          {/* The trail is revealed by a widening clip so its dashes survive the animation */}
+          <defs>
+            <clipPath id="detours-trail-clip">
+              {reduce ? (
+                <rect x="0" y="0" width="1440" height="400" />
+              ) : (
+                <motion.rect
+                  x="0"
+                  y="0"
+                  height="400"
+                  initial={{ width: 0 }}
+                  animate={{ width: inView ? 1440 : 0 }}
+                  transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
+                />
+              )}
+            </clipPath>
+          </defs>
+          <path
+            d={TRAIL}
+            fill="none"
+            className="hidden xl:block stroke-accent"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="6 8"
+            clipPath="url(#detours-trail-clip)"
+          />
+          {TRAIL_STOPS.map(([cx, cy], i) => (
+            <motion.circle
+              key={cx}
+              cx={cx}
+              cy={cy}
+              r="7"
+              className="hidden xl:block fill-slate-950 stroke-accent"
+              strokeWidth="3"
+              {...(reduce
+                ? {}
+                : {
+                    initial: { opacity: 0, scale: 0.6 },
+                    whileInView: { opacity: 1, scale: 1 },
+                    viewport: { once: true, amount: 0.3 },
+                    transition: { duration: 0.35, delay: 1.2 + i * 0.25 },
+                  })}
+            />
+          ))}
         </motion.g>
         <motion.path d={RIDGES[1].d} className={RIDGES[1].cls} {...reveal(RIDGES[1].delay, RIDGES[1].y)} />
         <motion.path d={RIDGES[2].d} className={RIDGES[2].cls} {...reveal(RIDGES[2].delay, RIDGES[2].y)} />
-        {/* The trail is revealed by a widening clip so its dashes survive the animation */}
-        <defs>
-          <clipPath id="detours-trail-clip">
-            {reduce ? (
-              <rect x="0" y="0" width="1440" height="400" />
-            ) : (
-              <motion.rect
-                x="0"
-                y="0"
-                height="400"
-                initial={{ width: 0 }}
-                animate={{ width: inView ? 1440 : 0 }}
-                transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
-              />
-            )}
-          </clipPath>
-        </defs>
-        <path
-          d={TRAIL}
-          fill="none"
-          className="hidden lg:block stroke-accent"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeDasharray="6 8"
-          clipPath="url(#detours-trail-clip)"
-        />
-        {TRAIL_STOPS.map(([cx, cy], i) => (
-          <motion.circle
-            key={cx}
-            cx={cx}
-            cy={cy}
-            r="7"
-            className="hidden lg:block fill-slate-950 stroke-accent"
-            strokeWidth="3"
-            {...(reduce
-              ? {}
-              : {
-                  initial: { opacity: 0, scale: 0.6 },
-                  whileInView: { opacity: 1, scale: 1 },
-                  viewport: { once: true, amount: 0.3 },
-                  transition: { duration: 0.35, delay: 1.2 + i * 0.25 },
-                })}
-          />
-        ))}
       </svg>
 
       <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
