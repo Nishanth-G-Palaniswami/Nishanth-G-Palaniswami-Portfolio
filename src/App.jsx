@@ -1856,18 +1856,7 @@ export default function Portfolio() {
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-xs font-mono">
           <span>
             © {new Date().getFullYear()} Nishanth G Palaniswami
-            <span className="text-slate-400 dark:text-slate-600">
-              {" "}· built solo · React + Vite + Tailwind · rev{" "}
-              <a
-                href={`https://github.com/Nishanth-G-Palaniswami/Nishanth-G-Palaniswami-Portfolio/commit/${__BUILD_SHA__}`}
-                target="_blank"
-                rel="noreferrer"
-                className={`hover:text-accent rounded px-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
-              >
-                {__BUILD_REV__}
-              </a>{" "}
-              · built {__BUILD_DATE__}
-            </span>
+            <span className="text-slate-400 dark:text-slate-600"> · built solo · React + Vite + Tailwind</span>
           </span>
           <TwoCityClock />
           <a
