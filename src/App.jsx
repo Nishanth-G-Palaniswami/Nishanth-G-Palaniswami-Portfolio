@@ -914,6 +914,21 @@ export default function Portfolio() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
+  // Deep links: the browser scrolls to the fragment before React has rendered the
+  // target, so a shared /#projects or /#detours link lands at the top. Scroll once
+  // after the first render, instantly, so the section arrives without a long glide.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    target.scrollIntoView();
+    root.style.scrollBehavior = previous;
+  }, []);
+
   const copyEmailAddresses = async () => {
     const text = LINKS.email;
     try {
