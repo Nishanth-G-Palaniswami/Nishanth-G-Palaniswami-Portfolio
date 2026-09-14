@@ -10,3 +10,14 @@ html, body, #root { height: 100%; }
  */
 html { background-color: rgb(248 250 252); } /* slate-50 */
 html.dark { background-color: rgb(15 23 42); } /* slate-900 */
+
+/* Accent token. One hue for the whole site; Tailwind exposes it as `accent`
+ * via rgb(var(--accent) / <alpha-value>). `.on-dark` scopes the dark value to
+ * surfaces that are always dark (the Contact band, the footer) in both themes.
+ */
+:root {
+  --accent-light: 190 66 22;
+  --accent-dark: 247 148 94;
+  --accent: var(--accent-light);
+}
+.dark, .on-dark { --accent: var(--accent-dark); }

@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+      },
       fontFamily: {
         sans: ['"Geist"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],

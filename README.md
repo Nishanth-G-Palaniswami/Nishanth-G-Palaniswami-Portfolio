@@ -42,7 +42,7 @@ Header nav anchors to each section. Contact lives outside `<main>` as a full-ble
 
 - **Fluid-width layout**: `clamp(20rem, min(92vw, 80rem), 80rem)` — scales with viewport, caps at 1280px
 - **Typography as brand**: Geist sans + JetBrains Mono pairs a clean reading face with a technical display face
-- **Restrained color**: Slate base, blue-600 accent, emerald for availability, violet for peer-reviewed work — no gradient text, no glassmorphism, no AI-slop tells
+- **Restrained color**: Slate base, single accent token (signal orange, `--accent` in `src/index.css`), emerald for availability, violet for peer-reviewed work — no gradient text, no glassmorphism, no AI-slop tells
 - **Accessibility**: `focus-visible:` rings on all interactive elements, skip link, reduced-motion support, semantic headings
 - **Honest hierarchy**: SAIL gets a full case-study section; supporting projects live below; each section lives in one clearly-separated card container
 

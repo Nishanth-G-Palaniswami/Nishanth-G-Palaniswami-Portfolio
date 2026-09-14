@@ -286,7 +286,7 @@ const PROJECTS = [
 // -------------------- PRIMITIVES -------------------- //
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900";
 
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
@@ -319,7 +319,7 @@ const Section = ({ id, title, icon, kicker, children }) => (
 
 const accoladeClasses = (tone) =>
   tone === "blue"
-    ? "bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20"
+    ? "bg-accent/10 text-accent border border-accent/20"
     : tone === "violet"
       ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20"
       : "bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700";
@@ -409,7 +409,7 @@ export default function Portfolio() {
       {/* Skip link */}
       <a
         href="#main"
-        className={`sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-blue-600 focus:text-white ${focusRing}`}
+        className={`sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-accent focus:text-white dark:focus:text-slate-950 ${focusRing}`}
       >
         Skip to content
       </a>
@@ -591,7 +591,7 @@ export default function Portfolio() {
                   href={LINKS.emailCompose}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-l-lg px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-inset"
+                  className="inline-flex items-center gap-2 rounded-l-lg px-4 h-11 md:h-10 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                 >
                   <Mail className="h-4 w-4" aria-hidden="true" /> Email
                 </a>
@@ -600,7 +600,7 @@ export default function Portfolio() {
                   onClick={copyEmailAddresses}
                   aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
                   aria-live="polite"
-                  className={`inline-flex items-center justify-center rounded-r-lg h-11 md:h-10 w-11 md:w-10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-inset ${emailCopied
+                  className={`inline-flex items-center justify-center rounded-r-lg h-11 md:h-10 w-11 md:w-10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset ${emailCopied
                     ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
                     : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
@@ -635,7 +635,7 @@ export default function Portfolio() {
 
             <ol className="mt-5 space-y-4">
               <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
                   2024
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
@@ -644,7 +644,7 @@ export default function Portfolio() {
                 </span>
               </li>
               <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
                   2025
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
@@ -653,7 +653,7 @@ export default function Portfolio() {
                 </span>
               </li>
               <li className="flex gap-4">
-                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-blue-700 dark:text-blue-400 tracking-[0.12em] mt-0.5">
+                <span className="w-12 flex-shrink-0 text-[11px] font-mono tabular-nums text-accent tracking-[0.12em] mt-0.5">
                   Now
                 </span>
                 <span className="text-sm text-slate-800 dark:text-slate-200 leading-snug">
@@ -665,7 +665,7 @@ export default function Portfolio() {
 
             <a
               href="#sail"
-              className={`mt-6 inline-flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline underline-offset-4 rounded ${focusRing}`}
+              className={`mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
             >
               Open the case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
@@ -677,7 +677,7 @@ export default function Portfolio() {
           id="about"
           title="About"
           kicker="background"
-          icon={<User className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<User className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid md:grid-cols-5 gap-8 items-start">
             <p className="md:col-span-3 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
@@ -689,11 +689,11 @@ export default function Portfolio() {
               </div>
               <ul className="mt-3 space-y-3 text-sm text-slate-700 dark:text-slate-300">
                 <li className="flex gap-2">
-                  <GraduationCap className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <GraduationCap className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>M.S. Computer Engineering · NYU · May 2026</span>
                 </li>
                 <li className="flex gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <MapPin className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>Based in New York City · open to relocation</span>
                 </li>
               </ul>
@@ -706,7 +706,7 @@ export default function Portfolio() {
           id="education"
           title="Education"
           kicker="credentials"
-          icon={<GraduationCap className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<GraduationCap className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {EDUCATION.map((ed, index) => (
@@ -747,7 +747,7 @@ export default function Portfolio() {
           id="skills"
           title="Skills"
           kicker="what I work with"
-          icon={<Layers className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<Layers className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid md:grid-cols-2 gap-6">
             {SKILLS.map((group) => {
@@ -759,7 +759,7 @@ export default function Portfolio() {
                   className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                    <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
                     <h3 className="font-semibold tracking-tight">{group.group}</h3>
                   </div>
                   <ul className="flex flex-wrap gap-2">
@@ -783,7 +783,7 @@ export default function Portfolio() {
           id="sail"
           title="SAIL"
           kicker="case study"
-          icon={<Rocket className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<Rocket className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <motion.article
             {...fadeUpInView(0)}
@@ -791,7 +791,7 @@ export default function Portfolio() {
           >
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
                   Software Engineer Intern · Sep 2025 – May 2026
                 </div>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-[11px] font-semibold uppercase tracking-wide border border-slate-300/60 dark:border-slate-700 font-mono">
@@ -816,7 +816,7 @@ export default function Portfolio() {
             <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-10">
               <div>
                 <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
-                  5M<span className="text-blue-600 dark:text-blue-400">+</span>
+                  5M<span className="text-accent">+</span>
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
                   Tariff records indexed
@@ -832,7 +832,7 @@ export default function Portfolio() {
               </div>
               <div className="sm:border-l sm:border-slate-200 dark:sm:border-slate-800 sm:pl-8">
                 <div className="text-5xl md:text-6xl font-bold tracking-tight font-display text-slate-900 dark:text-slate-100 tabular-nums">
-                  97<span className="text-blue-600 dark:text-blue-400">%</span>
+                  97<span className="text-accent">%</span>
                 </div>
                 <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
                   Pipeline reliability
@@ -876,19 +876,19 @@ export default function Portfolio() {
                 </div>
                 <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
                   <li className="flex gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                     <span>5M+ tariff records indexed; 166 HTS releases tracked (Jan 2018 → May 2026)</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                     <span>A↔B HTS revision engine at ≥95% accuracy; 1000+ changes surfaced per release</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                     <span>97% pipeline reliability end-to-end via golden tests + schema validation</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                    <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                     <span>Co-built HTS classifier serving production traffic for international-trade customers</span>
                   </li>
                 </ul>
@@ -918,7 +918,7 @@ export default function Portfolio() {
                   href="https://sailgtx.ai"
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                 >
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Visit product
                 </a>
@@ -926,7 +926,7 @@ export default function Portfolio() {
                   href="https://www.sailgtx.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                 >
                   <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
                 </a>
@@ -940,7 +940,7 @@ export default function Portfolio() {
           id="experience"
           title="Experience"
           kicker="roles"
-          icon={<Server className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<Server className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {EXPERIENCE.map((exp, index) => exp.caseStudyHref ? (
@@ -952,7 +952,7 @@ export default function Portfolio() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-baseline gap-3 flex-wrap">
-                    <span className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
                       2025–26
                     </span>
                     <span className="text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -960,7 +960,7 @@ export default function Portfolio() {
                       <span className="text-slate-600 dark:text-slate-400"> (see case study above)</span>
                     </span>
                   </div>
-                  <ArrowUpRight className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <ArrowUpRight className="h-4 w-4 text-accent flex-shrink-0" aria-hidden="true" />
                 </div>
               </a>
             ) : (
@@ -976,7 +976,7 @@ export default function Portfolio() {
                         href={exp.companyHref}
                         target="_blank"
                         rel="noreferrer"
-                        className={`inline-flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                        className={`inline-flex items-center gap-1 hover:text-accent transition-colors rounded ${focusRing}`}
                       >
                         {exp.company}
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -998,7 +998,7 @@ export default function Portfolio() {
                     <ul className="mt-3 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-w-3xl">
                       {exp.impact.map((i) => (
                         <li key={i} className="flex gap-2">
-                          <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                          <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                           <span>{i}</span>
                         </li>
                       ))}
@@ -1020,7 +1020,7 @@ export default function Portfolio() {
           id="projects"
           title="Projects"
           kicker="selected work"
-          icon={<Layers className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<Layers className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {PROJECTS.map((p, idx) => (
@@ -1050,7 +1050,7 @@ export default function Portfolio() {
                 <ul className="mt-4 space-y-1.5 text-sm text-slate-800 dark:text-slate-200">
                   {p.impact.map((i) => (
                     <li key={i} className="flex gap-2">
-                      <span className="text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true">→</span>
+                      <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                       <span>{i}</span>
                     </li>
                   ))}
@@ -1066,7 +1066,7 @@ export default function Portfolio() {
                       href={p.links.product}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Product
                     </a>
@@ -1076,7 +1076,7 @@ export default function Portfolio() {
                       href={p.links.site}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
                     </a>
@@ -1086,7 +1086,7 @@ export default function Portfolio() {
                       href={p.links.github}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <Github className="h-4 w-4" aria-hidden="true" /> Code
                     </a>
@@ -1096,7 +1096,7 @@ export default function Portfolio() {
                       href={p.links.demo}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <ExternalLink className="h-4 w-4" aria-hidden="true" /> Demo
                     </a>
@@ -1106,7 +1106,7 @@ export default function Portfolio() {
                       href={p.links.insta}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <ExternalLink className="h-4 w-4" aria-hidden="true" /> Page
                     </a>
@@ -1116,7 +1116,7 @@ export default function Portfolio() {
                       href={p.links.ppt}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <FileText className="h-4 w-4" aria-hidden="true" /> Slides
                     </a>
@@ -1126,7 +1126,7 @@ export default function Portfolio() {
                       href={p.links.ieee}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <BookOpen className="h-4 w-4" aria-hidden="true" /> IEEE Paper
                     </a>
@@ -1142,7 +1142,7 @@ export default function Portfolio() {
           id="publications"
           title="Publications"
           kicker="peer-reviewed"
-          icon={<BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
+          icon={<BookOpen className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid gap-6">
             {PUBLICATIONS.map((pub) => (
@@ -1151,7 +1151,7 @@ export default function Portfolio() {
                 {...fadeUpInView(0)}
                 className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
               >
-                <div className="text-[11px] uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400 font-mono">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
                   {pub.venue}
                 </div>
                 <h3 className="mt-2 text-lg md:text-xl font-semibold tracking-tight font-display">
@@ -1166,7 +1166,7 @@ export default function Portfolio() {
                       href={pub.links.ieee}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <BookOpen className="h-4 w-4" aria-hidden="true" /> Read on IEEE Xplore
                     </a>
@@ -1176,7 +1176,7 @@ export default function Portfolio() {
                       href={pub.links.github}
                       target="_blank"
                       rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded ${focusRing}`}
+                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                     >
                       <Github className="h-4 w-4" aria-hidden="true" /> Code
                     </a>
@@ -1194,11 +1194,11 @@ export default function Portfolio() {
       <section
         id="contact"
         aria-labelledby="contact-heading"
-        className="scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
+        className="on-dark scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
       >
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-20 md:py-28">
           <div className="flex items-center gap-2 mb-2">
-            <Mail className="h-6 w-6 text-blue-400" aria-hidden="true" />
+            <Mail className="h-6 w-6 text-accent" aria-hidden="true" />
             <h2
               id="contact-heading"
               className="text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
@@ -1216,7 +1216,7 @@ export default function Portfolio() {
                 href={LINKS.emailCompose}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-blue-400 transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-accent transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
               >
                 {LINKS.email}
               </a>
@@ -1225,7 +1225,7 @@ export default function Portfolio() {
                 onClick={copyEmailAddresses}
                 aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
                 aria-live="polite"
-                className={`inline-flex items-center justify-center h-11 md:h-10 w-11 md:w-10 rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${emailCopied
+                className={`inline-flex items-center justify-center h-11 md:h-10 w-11 md:w-10 rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${emailCopied
                   ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
                   : "border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 hover:bg-slate-900"
                   }`}
@@ -1249,7 +1249,7 @@ export default function Portfolio() {
                 href={LINKS.resume}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg bg-white text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg bg-white text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
               >
                 <FileText className="h-4 w-4" aria-hidden="true" /> Resume
               </a>
@@ -1257,7 +1257,7 @@ export default function Portfolio() {
                 href={LINKS.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
               >
                 <Linkedin className="h-4 w-4" aria-hidden="true" /> LinkedIn
               </a>
@@ -1265,7 +1265,7 @@ export default function Portfolio() {
                 href={LINKS.github}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
               >
                 <Github className="h-4 w-4" aria-hidden="true" /> GitHub
               </a>
@@ -1275,7 +1275,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <footer className="bg-slate-950 text-slate-500 border-t border-slate-800">
+      <footer className="on-dark bg-slate-950 text-slate-500 border-t border-slate-800">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-xs font-mono">
           <span>
             © {new Date().getFullYear()} Nishanth G Palaniswami
@@ -1283,7 +1283,7 @@ export default function Portfolio() {
           </span>
           <a
             href="#top"
-            className={`hover:text-blue-400 rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+            className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
           >
             back to top ↑
           </a>
