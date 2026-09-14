@@ -49,6 +49,13 @@ const PHOTOS = {
     alt: "Nishanth on the Roosevelt Island waterfront with the Queensboro Bridge behind him",
     caption: "Roosevelt Island, New York",
   },
+  sail: {
+    src: "/photos/sail-team.jpg",
+    width: 1024,
+    height: 896,
+    alt: "Three people holding a SAIL sign at an event",
+    caption: "With the SAIL team",
+  },
   got2eat: {
     src: "/photos/base44-demo-day.jpg",
     width: 768,
@@ -1475,18 +1482,21 @@ export default function Portfolio() {
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-2">
-                What I own
-              </div>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 grid md:grid-cols-5 gap-6 md:gap-8 items-start">
+              <div className="md:col-span-3">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-2">
+                  What I own
+                </div>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
                 Owned the HTS revision engine end to end: schema, ingestion, 166-release
                 history (2018–2026), golden tests, normalized change detection. Solely
                 built the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
                 and the Product DNA store; co-built (with the CTO) the HTS classification
                 model on top: training data curation, model, inference pipeline,
                 evaluation loops.
-              </p>
+                </p>
+              </div>
+              <PhotoFigure photo={PHOTOS.sail} ratio="aspect-[8/7]" className="md:col-span-2" />
             </div>
 
             <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
