@@ -643,17 +643,20 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
 // Reduced motion renders the finished scene. viewBox 2400x400, sliced to cover:
 // wide enough that no viewport up to 2560px crops the peaks, the sun or the rings.
 const RIDGES = [
-  { d: "M0 150 Q120 95 240 140 Q360 185 480 130 Q600 85 720 135 Q840 180 960 120 Q1080 75 1200 130 Q1320 175 1440 115 Q1560 165 1680 150 Q1800 130 1920 110 Q2040 80 2160 140 Q2280 190 2400 130 L2400 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
-  { d: "M0 205 Q150 170 300 195 Q450 220 600 185 Q750 160 900 200 Q1050 225 1200 190 Q1350 165 1500 205 Q1650 230 1800 185 Q1950 155 2100 200 Q2250 225 2400 190 L2400 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
-  { d: "M0 215 Q200 195 400 212 Q600 225 800 205 Q1000 190 1200 214 Q1400 228 1600 208 Q1800 192 2000 216 Q2200 226 2400 210 L2400 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
+  { d: "M0 175 L110 130 L190 150 L300 95 L380 135 L470 120 L560 160 L640 105 L720 140 L810 118 L900 170 L980 130 L1080 90 L1160 125 L1240 110 L1320 165 L1400 128 L1480 100 L1560 150 L1640 135 L1720 118 L1800 160 L1880 122 L1960 95 L2040 140 L2120 112 L2200 155 L2280 128 L2360 108 L2400 130 L2400 400 L0 400 Z", cls: "fill-accent/30 dark:fill-accent/25", y: 40, delay: 0 },
+  { d: "M0 200 L90 175 L170 195 L260 160 L340 185 L430 170 L520 205 L610 165 L700 190 L790 158 L880 200 L960 172 L1050 150 L1130 185 L1220 168 L1310 205 L1400 176 L1490 155 L1580 195 L1670 170 L1760 160 L1850 200 L1940 165 L2030 152 L2120 190 L2210 168 L2300 205 L2400 178 L2400 400 L0 400 Z", cls: "fill-slate-300 dark:fill-slate-800", y: 28, delay: 0.12 },
+  { d: "M0 215 L120 200 L220 212 L340 190 L460 210 L580 195 L700 218 L820 200 L940 188 L1060 214 L1180 198 L1300 216 L1420 192 L1540 210 L1660 196 L1780 219 L1900 200 L2020 188 L2140 212 L2260 198 L2400 208 L2400 400 L0 400 Z", cls: "fill-slate-200 dark:fill-slate-900", y: 16, delay: 0.24 },
 ];
 // The trail traces the back ridge's own silhouette from x=520 (right of the title
 // block), rings on its peaks, and lives in the ridge's parallax group so they
 // move together. Below xl the scene is scaled up and the trail is hidden.
-const TRAIL = "M960 120 Q1080 75 1200 130 Q1320 175 1440 115 Q1560 165 1680 150 Q1800 130 1920 110 Q2040 80 2160 140 Q2280 190 2400 130";
-const TRAIL_STOPS = [[1080, 100], [1440, 115], [2040, 98]];
+const TRAIL = "M980 130 L1080 90 L1160 125 L1240 110 L1320 165 L1400 128 L1480 100 L1560 150 L1640 135 L1720 118 L1800 160 L1880 122 L1960 95 L2040 140 L2120 112 L2200 155 L2280 128 L2360 108 L2400 130";
+const TRAIL_STOPS = [[1080, 90], [1480, 100], [1960, 95]];
+// Night sky only: a few faint stars, kept right of the title block and below the
+// 2560px crop line so they show at every desktop width.
+const STARS = [[800, 84, 1.2], [1000, 72, 1.5], [1180, 94, 1.0], [1560, 78, 1.1], [1760, 88, 1.3], [1980, 70, 1.5], [2260, 92, 1.2], [2380, 76, 1.0]];
 
-const DetoursBand = ({ notes, reduce }) => {
+const DetoursBand = ({ notes, reduce, dark }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   // clipPath content is never laid out, so whileInView cannot fire on the rect;
@@ -675,11 +678,11 @@ const DetoursBand = ({ notes, reduce }) => {
       ref={ref}
       id="detours"
       aria-labelledby="detours-heading"
-      className="on-dark relative isolate overflow-hidden scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
+      className="relative isolate overflow-hidden scroll-mt-24 bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-t border-slate-200 dark:border-slate-800"
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_70%_60%_at_72%_100%,rgb(var(--accent)/0.45),transparent_70%)]"
+        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_70%_60%_at_72%_100%,rgb(var(--accent)/0.22),transparent_70%)] dark:bg-[radial-gradient(ellipse_70%_60%_at_72%_100%,rgb(var(--accent)/0.45),transparent_70%)]"
       />
       <svg
         aria-hidden="true"
@@ -688,8 +691,40 @@ const DetoursBand = ({ notes, reduce }) => {
         className="absolute inset-0 -z-10 h-full w-full"
       >
         <motion.g style={reduce ? undefined : { y: sunY }}>
-          <motion.circle cx="1320" cy="114" r="54" className="hidden sm:block fill-accent/20" {...reveal(0.1, 60)} />
-          <motion.circle cx="1320" cy="114" r="31" className="hidden sm:block fill-accent/80" {...reveal(0.1, 60)} />
+          {dark ? (
+            <>
+              <defs>
+                <mask id="detours-moon-mask">
+                  <rect x="0" y="0" width="2400" height="400" fill="white" />
+                  <circle cx="1334" cy="104" r="27" fill="black" />
+                </mask>
+              </defs>
+              {STARS.map(([cx, cy, r], i) => (
+                <motion.circle
+                  key={cx}
+                  cx={cx}
+                  cy={cy}
+                  r={r}
+                  className="hidden sm:block fill-slate-200/70"
+                  {...reveal(0.2 + i * 0.05, 6)}
+                />
+              ))}
+              <motion.circle cx="1320" cy="114" r="54" className="hidden sm:block fill-slate-200/10" {...reveal(0.1, 60)} />
+              <motion.circle
+                cx="1320"
+                cy="114"
+                r="31"
+                mask="url(#detours-moon-mask)"
+                className="hidden sm:block fill-slate-200"
+                {...reveal(0.1, 60)}
+              />
+            </>
+          ) : (
+            <>
+              <motion.circle cx="1320" cy="114" r="54" className="hidden sm:block fill-accent/20" {...reveal(0.1, 60)} />
+              <motion.circle cx="1320" cy="114" r="31" className="hidden sm:block fill-accent/80" {...reveal(0.1, 60)} />
+            </>
+          )}
         </motion.g>
         <motion.g style={reduce ? undefined : { y: backY }}>
           <motion.path d={RIDGES[0].d} className={RIDGES[0].cls} {...reveal(RIDGES[0].delay, RIDGES[0].y)} />
@@ -697,14 +732,14 @@ const DetoursBand = ({ notes, reduce }) => {
           <defs>
             <clipPath id="detours-trail-clip">
               {reduce ? (
-                <rect x="960" y="0" width="1440" height="400" />
+                <rect x="980" y="0" width="1420" height="400" />
               ) : (
                 <motion.rect
-                  x="960"
+                  x="980"
                   y="0"
                   height="400"
                   initial={{ width: 0 }}
-                  animate={{ width: inView ? 1440 : 0 }}
+                  animate={{ width: inView ? 1420 : 0 }}
                   transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
                 />
               )}
@@ -726,7 +761,7 @@ const DetoursBand = ({ notes, reduce }) => {
               cx={cx}
               cy={cy}
               r="7"
-              className="hidden xl:block fill-slate-950 stroke-accent"
+              className="hidden xl:block fill-slate-100 dark:fill-slate-950 stroke-accent"
               strokeWidth="3"
               {...(reduce
                 ? {}
@@ -745,21 +780,21 @@ const DetoursBand = ({ notes, reduce }) => {
       {/* Ground scrim: the ridges fade out under the notes so the text sits on an even dark ground */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 h-[45%] bg-gradient-to-t from-slate-950/60 to-transparent"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[45%] bg-gradient-to-t from-slate-100/70 dark:from-slate-950/60 to-transparent"
       />
 
       <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
         <div className="flex items-center gap-2.5">
-          <StationDot fill="bg-slate-950" />
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-300 font-mono">off the clock</p>
+          <StationDot fill="bg-slate-100 dark:bg-slate-950" />
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300 font-mono">off the clock</p>
         </div>
         <h2
           id="detours-heading"
-          className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
+          className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight font-display text-slate-900 dark:text-white"
         >
           Detours
         </h2>
-        <p className="mt-3 text-base md:text-lg text-slate-200 leading-relaxed">{OFF_THE_CLOCK_LINE}</p>
+        <p className="mt-3 text-base md:text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{OFF_THE_CLOCK_LINE}</p>
 
         <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
           {notes.map((note) => (
@@ -772,12 +807,12 @@ const DetoursBand = ({ notes, reduce }) => {
                 loading="lazy"
                 decoding="async"
                 style={{ objectPosition: note.position }}
-                className="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-950"
+                className="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-950"
               />
               <div className="min-w-0">
-                <h3 className="font-semibold text-white">{note.activity}</h3>
-                <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-slate-400 font-mono">{note.place}</p>
-                <p className="mt-1.5 text-sm text-slate-200 leading-relaxed">{note.line}</p>
+                <h3 className="font-semibold text-slate-900 dark:text-white">{note.activity}</h3>
+                <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">{note.place}</p>
+                <p className="mt-1.5 text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{note.line}</p>
               </div>
             </li>
           ))}
@@ -1732,22 +1767,22 @@ export default function Portfolio() {
 
       </main>
 
-      <DetoursBand notes={HOBBIES} reduce={reduce} />
+      <DetoursBand notes={HOBBIES} reduce={reduce} dark={darkMode} />
 
       {/* Contact - full-bleed dark closing moment, breaks the white-card rhythm */}
       <section
         id="contact"
         aria-labelledby="contact-heading"
-        className="on-dark scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
+        className="scroll-mt-24 bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-t border-slate-200 dark:border-slate-800"
       >
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-20 md:py-28">
           <div className="flex items-center gap-2.5">
-            <StationDot fill="bg-slate-950" />
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400 font-mono">get in touch</p>
+            <StationDot fill="bg-slate-100 dark:bg-slate-950" />
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">get in touch</p>
           </div>
           <h2
             id="contact-heading"
-            className="mt-2 mb-10 text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
+            className="mt-2 mb-10 text-2xl md:text-3xl font-semibold tracking-tight font-display text-slate-900 dark:text-white"
           >
             Contact
           </h2>
@@ -1758,7 +1793,7 @@ export default function Portfolio() {
                 href={LINKS.emailCompose}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white hover:text-accent transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-white hover:text-accent transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 {LINKS.email}
               </a>
@@ -1767,9 +1802,9 @@ export default function Portfolio() {
                 onClick={copyEmailAddresses}
                 aria-label={emailCopied ? "Email address copied" : "Copy email address to clipboard"}
                 aria-live="polite"
-                className={`inline-flex items-center justify-center h-11 md:h-10 w-11 md:w-10 rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${emailCopied
-                  ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
-                  : "border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 hover:bg-slate-900"
+                className={`inline-flex items-center justify-center h-11 md:h-10 w-11 md:w-10 rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950 ${emailCopied
+                  ? "border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+                  : "border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 hover:bg-white dark:hover:bg-slate-900"
                   }`}
               >
                 {emailCopied ? (
@@ -1780,7 +1815,7 @@ export default function Portfolio() {
               </button>
             </div>
 
-            <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-300 leading-relaxed">
+            <p className="mt-8 max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
               Open to full-time AI engineering and software roles across agents, data, and
               backend. Happy to chat about agentic systems, audit-ready data pipelines, or
               making models behave reliably in production.
@@ -1791,7 +1826,7 @@ export default function Portfolio() {
                 href={LINKS.resume}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg bg-white text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 h-11 md:h-10 text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 <FileText className="h-4 w-4" aria-hidden="true" /> Resume
               </a>
@@ -1799,7 +1834,7 @@ export default function Portfolio() {
                 href={LINKS.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-white dark:hover:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 <Linkedin className="h-4 w-4" aria-hidden="true" /> LinkedIn
               </a>
@@ -1807,7 +1842,7 @@ export default function Portfolio() {
                 href={LINKS.github}
                 target="_blank"
                 rel="noreferrer"
-                className={`inline-flex items-center gap-2 rounded-lg border border-slate-700 text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-slate-900 hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 px-4 h-11 md:h-10 text-sm hover:bg-white dark:hover:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 <Github className="h-4 w-4" aria-hidden="true" /> GitHub
               </a>
@@ -1817,17 +1852,17 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <footer className="on-dark bg-slate-950 text-slate-500 border-t border-slate-800">
+      <footer className="bg-slate-100 dark:bg-slate-950 text-slate-500 border-t border-slate-200 dark:border-slate-800">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-xs font-mono">
           <span>
             © {new Date().getFullYear()} Nishanth G Palaniswami
-            <span className="text-slate-600">
+            <span className="text-slate-400 dark:text-slate-600">
               {" "}· built solo · React + Vite + Tailwind · rev{" "}
               <a
                 href={`https://github.com/Nishanth-G-Palaniswami/Nishanth-G-Palaniswami-Portfolio/commit/${__BUILD_SHA__}`}
                 target="_blank"
                 rel="noreferrer"
-                className={`hover:text-accent rounded px-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+                className={`hover:text-accent rounded px-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 {__BUILD_REV__}
               </a>{" "}
@@ -1837,7 +1872,7 @@ export default function Portfolio() {
           <TwoCityClock />
           <a
             href="#top"
-            className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
+            className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
           >
             back to top ↑
           </a>
