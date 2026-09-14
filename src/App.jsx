@@ -612,7 +612,7 @@ const SectionRail = ({ items }) => {
   );
 };
 
-const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
+const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "", captionClass = "" }) => (
   <figure className={className}>
     <img
       src={photo.src}
@@ -624,7 +624,7 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
       style={photo.position ? { objectPosition: photo.position } : undefined}
       className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
     />
-    <figcaption className="mt-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+    <figcaption className={`mt-2 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono ${captionClass}`}>
       {photo.caption}
     </figcaption>
   </figure>
@@ -1291,12 +1291,11 @@ export default function Portfolio() {
           kicker="background"
         >
           <div className="grid md:grid-cols-5 gap-8 items-start">
-            <p className="md:col-span-3 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
-              {ABOUT}
-            </p>
-            <div className="md:col-span-2">
-              <PhotoFigure photo={PHOTOS.about} ratio="aspect-[4/3]" />
-              <ul className="mt-5 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+            <div className="md:col-span-3">
+              <p className="text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
+                {ABOUT}
+              </p>
+              <ul className="mt-6 space-y-3 text-sm text-slate-700 dark:text-slate-300">
                 <li className="flex gap-2">
                   <GraduationCap className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>M.S. Computer Engineering · NYU · May 2026</span>
@@ -1311,6 +1310,7 @@ export default function Portfolio() {
                 </li>
               </ul>
             </div>
+            <PhotoFigure photo={PHOTOS.about} ratio="aspect-[4/3]" className="md:col-span-2" captionClass="text-center" />
           </div>
 
         </Section>
