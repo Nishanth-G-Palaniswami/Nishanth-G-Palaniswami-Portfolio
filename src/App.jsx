@@ -6,7 +6,7 @@ import {
   Copy, Check,
 } from "lucide-react";
 
-import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -421,6 +421,7 @@ const NAV_ITEMS = [
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#publications", label: "Publications" },
+  { href: "#detours", label: "Detours" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -636,27 +637,146 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
   </figure>
 );
 
-const HobbyNote = ({ note }) => (
-  <article className="flex gap-4">
-    <img
-      src={note.src}
-      width={note.width}
-      height={note.height}
-      alt={note.alt}
-      loading="lazy"
-      decoding="async"
-      style={{ objectPosition: note.position }}
-      className="h-24 w-24 flex-shrink-0 object-cover rounded-lg border border-slate-200 dark:border-slate-800"
-    />
-    <div className="min-w-0">
-      <h3 className="font-semibold text-slate-900 dark:text-slate-100">{note.activity}</h3>
-      <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
-        {note.place}
-      </p>
-      <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{note.line}</p>
-    </div>
-  </article>
-);
+// Detours band: a full-bleed dusk scene, mountains in the back, three hobby notes
+// in front. The ridges rise, the sun comes up and the trail draws itself once the
+// band scrolls into view; the back ridge and sun drift a little with scroll.
+// Reduced motion renders the finished scene. viewBox 1440x400, sliced to cover.
+const RIDGES = [
+  { d: "M0 250 L120 200 L260 232 L380 168 L520 214 L640 150 L780 208 L900 160 L1040 212 L1180 172 L1320 216 L1440 184 L1440 400 L0 400 Z", cls: "fill-accent/25", y: 40, delay: 0 },
+  { d: "M0 300 L140 262 L280 292 L420 246 L560 288 L700 236 L840 284 L980 244 L1120 288 L1260 250 L1440 290 L1440 400 L0 400 Z", cls: "fill-slate-800", y: 28, delay: 0.12 },
+  { d: "M0 340 L160 318 L300 336 L460 300 L620 332 L760 296 L920 330 L1080 302 L1240 334 L1440 312 L1440 400 L0 400 Z", cls: "fill-slate-900", y: 16, delay: 0.24 },
+];
+const TRAIL = "M0 334 L160 312 L300 330 L460 294 L620 326 L760 290 L920 324 L1080 296 L1240 328 L1440 306";
+const TRAIL_STOPS = [[460, 294], [760, 290], [1080, 296]];
+
+const DetoursBand = ({ notes, reduce }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  // clipPath content is never laid out, so whileInView cannot fire on the rect;
+  // the band's own in-view state drives the trail reveal instead.
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const backY = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const sunY = useTransform(scrollYProgress, [0, 1], [36, -36]);
+  const reveal = (delay, y) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.3 },
+          transition: { duration: 0.7, delay, ease: "easeOut" },
+        };
+  return (
+    <section
+      ref={ref}
+      id="detours"
+      aria-labelledby="detours-heading"
+      className="on-dark relative isolate overflow-hidden scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_70%_60%_at_72%_100%,rgb(var(--accent)/0.45),transparent_70%)]"
+      />
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 1440 400"
+        preserveAspectRatio="xMidYMax slice"
+        className="absolute inset-0 -z-10 h-full w-full"
+      >
+        <motion.g style={reduce ? undefined : { y: sunY }}>
+          <motion.circle cx="1100" cy="150" r="92" className="fill-accent/20" {...reveal(0.1, 60)} />
+          <motion.circle cx="1100" cy="150" r="44" className="fill-accent/80" {...reveal(0.1, 60)} />
+        </motion.g>
+        <motion.g style={reduce ? undefined : { y: backY }}>
+          <motion.path d={RIDGES[0].d} className={RIDGES[0].cls} {...reveal(RIDGES[0].delay, RIDGES[0].y)} />
+        </motion.g>
+        <motion.path d={RIDGES[1].d} className={RIDGES[1].cls} {...reveal(RIDGES[1].delay, RIDGES[1].y)} />
+        <motion.path d={RIDGES[2].d} className={RIDGES[2].cls} {...reveal(RIDGES[2].delay, RIDGES[2].y)} />
+        {/* The trail is revealed by a widening clip so its dashes survive the animation */}
+        <defs>
+          <clipPath id="detours-trail-clip">
+            {reduce ? (
+              <rect x="0" y="0" width="1440" height="400" />
+            ) : (
+              <motion.rect
+                x="0"
+                y="0"
+                height="400"
+                initial={{ width: 0 }}
+                animate={{ width: inView ? 1440 : 0 }}
+                transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
+              />
+            )}
+          </clipPath>
+        </defs>
+        <path
+          d={TRAIL}
+          fill="none"
+          className="stroke-accent"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray="6 8"
+          clipPath="url(#detours-trail-clip)"
+        />
+        {TRAIL_STOPS.map(([cx, cy], i) => (
+          <motion.circle
+            key={cx}
+            cx={cx}
+            cy={cy}
+            r="7"
+            className="fill-slate-950 stroke-accent"
+            strokeWidth="3"
+            {...(reduce
+              ? {}
+              : {
+                  initial: { opacity: 0, scale: 0.6 },
+                  whileInView: { opacity: 1, scale: 1 },
+                  viewport: { once: true, amount: 0.3 },
+                  transition: { duration: 0.35, delay: 1.2 + i * 0.25 },
+                })}
+          />
+        ))}
+      </svg>
+
+      <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
+        <div className="flex items-center gap-2.5">
+          <StationDot fill="bg-slate-950" />
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-300 font-mono">off the clock</p>
+        </div>
+        <h2
+          id="detours-heading"
+          className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
+        >
+          Detours
+        </h2>
+        <p className="mt-3 text-base md:text-lg text-slate-200 leading-relaxed">{OFF_THE_CLOCK_LINE}</p>
+
+        <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
+          {notes.map((note) => (
+            <li key={note.activity} className="flex items-start gap-4">
+              <img
+                src={note.src}
+                width={note.width}
+                height={note.height}
+                alt={note.alt}
+                loading="lazy"
+                decoding="async"
+                style={{ objectPosition: note.position }}
+                className="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-950"
+              />
+              <div className="min-w-0">
+                <h3 className="font-semibold text-white">{note.activity}</h3>
+                <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-slate-400 font-mono">{note.place}</p>
+                <p className="mt-1.5 text-sm text-slate-200 leading-relaxed">{note.line}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+};
 
 const verdictClasses = {
   allowed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
@@ -879,7 +999,7 @@ export default function Portfolio() {
           </a>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex rail:hidden items-center gap-5 text-sm" aria-label="Primary">
+          <nav className="hidden xl:flex rail:hidden items-center gap-4 text-sm" aria-label="Primary">
             {NAV_ITEMS.map((n) => (
               <a
                 key={n.href}
@@ -919,7 +1039,7 @@ export default function Portfolio() {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
-              className={`lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              className={`xl:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               aria-controls="mobile-nav"
@@ -938,7 +1058,7 @@ export default function Portfolio() {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="lg:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            className="xl:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
@@ -1586,18 +1706,9 @@ export default function Portfolio() {
           </div>
         </Section>
 
-        {/* Detours: off the clock, three hobbies, one line each */}
-        <Section id="detours" title="Detours" kicker="off the clock">
-          <p className="mb-8 max-w-2xl text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-            {OFF_THE_CLOCK_LINE}
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" data-detours>
-            {HOBBIES.map((note) => (
-              <HobbyNote key={note.activity} note={note} />
-            ))}
-          </div>
-        </Section>
       </main>
+
+      <DetoursBand notes={HOBBIES} reduce={reduce} />
 
       {/* Contact - full-bleed dark closing moment, breaks the white-card rhythm */}
       <section
