@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-  ExternalLink, Github, Linkedin, FileText, Server, Menu, X,
-  Layers, BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
-  Cpu, Database, Cloud, Code2, GraduationCap, User, Rocket, Mail, BadgeCheck,
+  ExternalLink, Github, Linkedin, FileText, Menu, X,
+  BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
+  Cpu, Database, Cloud, Code2, GraduationCap, Rocket, Mail,
   Copy, Check,
 } from "lucide-react";
 
@@ -299,19 +299,23 @@ const NAV_ITEMS = [
   { href: "#contact", label: "Contact" },
 ];
 
-const Section = ({ id, title, icon, kicker, children }) => (
+const StationDot = ({ fill = "bg-white dark:bg-slate-900", className = "" }) => (
+  <span
+    aria-hidden="true"
+    className={`inline-block h-3 w-3 flex-shrink-0 rounded-full border-2 border-accent ${fill} ${className}`}
+  />
+);
+
+const Section = ({ id, title, kicker, children }) => (
   <section id={id} className="scroll-mt-20 py-10 md:py-14">
     <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)]">
-      <div className="flex items-center gap-3 mb-2">
-        {icon}
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight font-display">{title}</h2>
-      </div>
-      {kicker && (
-        <p className="mb-8 text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
+      <div className="flex items-center gap-2.5">
+        <StationDot />
+        <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
           {kicker}
         </p>
-      )}
-      {!kicker && <div className="mb-8" />}
+      </div>
+      <h2 className="mt-2 mb-8 text-2xl md:text-3xl font-semibold tracking-tight font-display">{title}</h2>
       {children}
     </div>
   </section>
@@ -677,7 +681,6 @@ export default function Portfolio() {
           id="about"
           title="About"
           kicker="background"
-          icon={<User className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid md:grid-cols-5 gap-8 items-start">
             <p className="md:col-span-3 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
@@ -706,7 +709,6 @@ export default function Portfolio() {
           id="education"
           title="Education"
           kicker="credentials"
-          icon={<GraduationCap className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {EDUCATION.map((ed, index) => (
@@ -747,7 +749,6 @@ export default function Portfolio() {
           id="skills"
           title="Skills"
           kicker="what I work with"
-          icon={<Layers className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid md:grid-cols-2 gap-6">
             {SKILLS.map((group) => {
@@ -783,7 +784,6 @@ export default function Portfolio() {
           id="sail"
           title="SAIL"
           kicker="case study"
-          icon={<Rocket className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <motion.article
             {...fadeUpInView(0)}
@@ -940,7 +940,6 @@ export default function Portfolio() {
           id="experience"
           title="Experience"
           kicker="roles"
-          icon={<Server className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {EXPERIENCE.map((exp, index) => exp.caseStudyHref ? (
@@ -1020,7 +1019,6 @@ export default function Portfolio() {
           id="projects"
           title="Projects"
           kicker="selected work"
-          icon={<Layers className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="space-y-6">
             {PROJECTS.map((p, idx) => (
@@ -1142,7 +1140,6 @@ export default function Portfolio() {
           id="publications"
           title="Publications"
           kicker="peer-reviewed"
-          icon={<BookOpen className="h-6 w-6 text-accent" aria-hidden="true" />}
         >
           <div className="grid gap-6">
             {PUBLICATIONS.map((pub) => (
@@ -1197,18 +1194,16 @@ export default function Portfolio() {
         className="on-dark scroll-mt-24 bg-slate-950 text-slate-100 border-t border-slate-800"
       >
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-20 md:py-28">
-          <div className="flex items-center gap-2 mb-2">
-            <Mail className="h-6 w-6 text-accent" aria-hidden="true" />
-            <h2
-              id="contact-heading"
-              className="text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
-            >
-              Contact
-            </h2>
+          <div className="flex items-center gap-2.5">
+            <StationDot fill="bg-slate-950" />
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-400 font-mono">get in touch</p>
           </div>
-          <p className="mb-10 text-xs uppercase tracking-[0.2em] text-slate-400 font-mono">
-            get in touch
-          </p>
+          <h2
+            id="contact-heading"
+            className="mt-2 mb-10 text-2xl md:text-3xl font-semibold tracking-tight font-display text-white"
+          >
+            Contact
+          </h2>
 
           <motion.div {...fadeUpInView(0)}>
             <div className="flex flex-wrap items-baseline gap-3 sm:gap-4">
