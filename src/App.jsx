@@ -650,7 +650,7 @@ const RIDGES = [
 // The trail traces the back ridge's own silhouette from x=520 (right of the title
 // block), rings on its peaks, and lives in the ridge's parallax group so they
 // move together. Below xl the scene is scaled up and the trail is hidden.
-const TRAIL = "M800 163 L840 180 L980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140";
+const TRAIL = "M980 115 L1120 178 L1260 125 L1400 182 L1540 110 L1680 176 L1820 130 L1960 184 L2100 118 L2240 180 L2400 140";
 const TRAIL_STOPS = [[980, 115], [1260, 125], [1540, 110]];
 
 const DetoursBand = ({ notes, reduce }) => {
@@ -697,14 +697,14 @@ const DetoursBand = ({ notes, reduce }) => {
           <defs>
             <clipPath id="detours-trail-clip">
               {reduce ? (
-                <rect x="800" y="0" width="1600" height="400" />
+                <rect x="980" y="0" width="1420" height="400" />
               ) : (
                 <motion.rect
-                  x="800"
+                  x="980"
                   y="0"
                   height="400"
                   initial={{ width: 0 }}
-                  animate={{ width: inView ? 1600 : 0 }}
+                  animate={{ width: inView ? 1420 : 0 }}
                   transition={{ duration: 1.4, delay: 0.5, ease: "easeInOut" }}
                 />
               )}
@@ -742,6 +742,11 @@ const DetoursBand = ({ notes, reduce }) => {
         <motion.path d={RIDGES[1].d} className={RIDGES[1].cls} {...reveal(RIDGES[1].delay, RIDGES[1].y)} />
         <motion.path d={RIDGES[2].d} className={RIDGES[2].cls} {...reveal(RIDGES[2].delay, RIDGES[2].y)} />
       </svg>
+      {/* Ground scrim: the ridges fade out under the notes so the text sits on an even dark ground */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[58%] bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent"
+      />
 
       <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
         <div className="flex items-center gap-2.5">
