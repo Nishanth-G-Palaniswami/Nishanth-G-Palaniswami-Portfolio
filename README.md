@@ -110,9 +110,15 @@ const LINKS = {
   emailCompose: `https://mail.google.com/mail/?view=cm&fs=1&to=...&su=...`,
   github: "https://github.com/...",
   linkedin: "https://linkedin.com/in/...",
-  resume: "https://drive.google.com/file/d/.../view",
+  resume: "/resume.pdf",
 };
 ```
+
+### Updating the resume
+The site serves `public/resume.pdf` at `/resume.pdf`. The editing copy lives in Google Drive.
+1. Replace the file in Drive with "Manage versions" (a fresh upload changes the file ID and breaks the sync).
+2. `npm run resume` pulls it into `public/resume.pdf` and says whether it changed.
+3. Commit and push; Netlify redeploys.
 
 ### Sections as data
 - `ABOUT` — about-paragraph string
