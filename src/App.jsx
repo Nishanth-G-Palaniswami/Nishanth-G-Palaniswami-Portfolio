@@ -14,9 +14,10 @@ const PROFILE = {
   thesis:
     "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX. Open to full-time roles now.",
   availability: "ON AIR · open to full-time roles",
-  // Stated without a year on purpose: STEM-OPT depends on an E-Verify employer and an
-  // approved I-983, so the site says what is true today and leaves dates to the forms.
-  authorization: "US work-authorized · no sponsorship required · F-1 OPT, STEM-OPT eligible",
+  // Stated without a year or a sponsorship promise on purpose: STEM-OPT depends on an
+  // E-Verify employer and an approved I-983, and H-1B comes up after it, so the site
+  // says what is true today and leaves dates to the application forms.
+  authorization: "US work-authorized · F-1 OPT, STEM-OPT eligible",
 };
 
 const LINKS = {
@@ -162,33 +163,20 @@ const SKILLS = [
   },
 ];
 
-const PUBLICATIONS = [
-  {
-    title: "American Sign Language Alphabet Recognition Using Teachable Machine",
-    venue: "IEEE ICCCNT 2024",
-    summary:
-      "Co-authored published pipeline translating ASL alphabet signs into real-time text and speech, built on Teachable Machine. 99% alphabet-set accuracy reported in the paper.",
-    links: {
-      ieee: "https://ieeexplore.ieee.org/document/10725877",
-      github:
-        "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
-    },
-  },
-];
-
 const EXPERIENCE = [
   {
     role: "AI Engineer",
-    company: "Got2eat (Base44 Accelerator Champions)",
+    company: "Got2eat",
+    accolade: "Base44 Accelerator Champions · Top 2 of 44",
     description: "A community map of complete meals under $15 in New York, on the web and iOS.",
-    companyHref: "https://got2eat.site",
+    companyHref: "https://got2eat.app",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
     photo: PHOTOS.got2eat,
     impact: [
       "Built a server-side LLM assistant turning meal and transit requests into validated app filters with fail-closed rate limits",
       "Engineered GTFS-derived subway + PATH routing and MapLibre layers with door-to-door one-transfer ETAs",
-      "Shipped React 19/TypeScript and Deno features for a community map of meals under $15, live at got2eat.site and on iOS (TestFlight)",
+      "Shipped React 19/TypeScript and Deno features for a community map of meals under $15, live at got2eat.app and on iOS (TestFlight)",
       "Developed a B2B partner dashboard for listings, deals, and occupancy; launched a loyalty-card pilot from partner feedback",
     ],
     stack: ["React 19", "TypeScript", "Deno", "MapLibre GL", "GTFS", "Capacitor"],
@@ -261,6 +249,7 @@ const PROJECTS = [
   },
   {
     title: "voicebot · Local Push-to-Talk Dictation",
+    compact: true,
     accolade: { label: "Local ML · 2026", tone: "slate" },
     summary:
       "Fully offline dictation tool: hold a key, speak, release, and cleaned text is typed into whatever app has focus. Whisper STT + a local LLM cleanup pass, both on-device; nothing leaves the machine.",
@@ -280,7 +269,7 @@ const PROJECTS = [
     compact: true,
     accolade: { label: "IEEE Published · ICCCNT 2024", tone: "violet" },
     summary:
-      "Real-time ASL alphabet → text → speech pipeline built on Teachable Machine. Co-authored, peer-reviewed, and published in IEEE ICCCNT 2024.",
+      "Real-time ASL alphabet → text → speech pipeline built on Teachable Machine. Co-authored and published as \"American Sign Language Alphabet Recognition Using Teachable Machine\" at IEEE ICCCNT 2024.",
     stackLine: "Python · OpenCV · Teachable Machine",
     impact: [
       "99% alphabet-set accuracy reported in the paper",
@@ -294,8 +283,7 @@ const PROJECTS = [
   },
   {
     title: "MetroScan · NYC Subway Analytics",
-    compact: true,
-    accolade: { label: "PySpark · 2024", tone: "slate" },
+    accolade: { label: "Data Engineering · 2024", tone: "slate" },
     summary:
       "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
     stackLine: "PySpark · Spark MLlib · Parquet",
@@ -315,7 +303,7 @@ const PROJECTS = [
   {
     title: "RoBERTa + LoRA · Parameter-Efficient Text Classification",
     compact: true,
-    accolade: { label: "PEFT · 2025", tone: "slate" },
+    accolade: { label: "Fine-tuning · 2025", tone: "slate" },
     summary:
       "Fine-tuned RoBERTa-base for 4-way news topic classification (AG News) using LoRA adapters, matching near-full-fine-tune accuracy while training under 1% of the model's weights. NYU Deep Learning group project.",
     stackLine: "PyTorch · Hugging Face Transformers · PEFT (LoRA)",
@@ -431,15 +419,24 @@ const ROUTE_STOPS = [
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900";
 
+// Header nav and drawer: the five stops a recruiter actually uses.
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#publications", label: "Publications" },
+  { href: "#contact", label: "Contact" },
+];
+
+// Left rail (1600px and up): every section, in page order.
+const RAIL_ITEMS = [
+  { href: "#about", label: "About" },
+  { href: "#sail", label: "Case Study" },
+  { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Projects" },
   { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
-  { href: "#detours", label: "Detours" },
+  { href: "#detours", label: "Outside Work" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -655,7 +652,7 @@ const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
   </figure>
 );
 
-// Detours band: a full-bleed dusk scene, mountains in the back, three hobby notes
+// Outside Work band (section id "detours"): a full-bleed dusk scene, mountains in the back, three hobby notes
 // in front. The ridges rise, the sun comes up and the trail draws itself once the
 // band scrolls into view; the back ridge and sun drift a little with scroll.
 // Reduced motion renders the finished scene. viewBox 2400x400, sliced to cover:
@@ -810,7 +807,7 @@ const DetoursBand = ({ notes, reduce, dark }) => {
           id="detours-heading"
           className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight font-display text-slate-900 dark:text-white"
         >
-          Detours
+          Outside Work
         </h2>
         <p className="mt-3 text-base md:text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{OFF_THE_CLOCK_LINE}</p>
 
@@ -853,12 +850,15 @@ const PROJECT_LINKS = [
   ["ieee", "IEEE Paper", BookOpen],
 ];
 
-const ProjectLinks = ({ links, className = "" }) => (
+// `title` gives every link a distinct accessible name ("Code: MetroScan") while the
+// visible label stays short.
+const ProjectLinks = ({ links, title, className = "" }) => (
   <div className={`flex flex-wrap gap-4 text-sm ${className}`}>
     {PROJECT_LINKS.filter(([key]) => links?.[key]).map(([key, label, Icon]) => (
       <a
         key={key}
         href={links[key]}
+        aria-label={title ? `${label}: ${title.split(" · ")[0]}` : undefined}
         target="_blank"
         rel="noreferrer"
         className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
@@ -878,9 +878,12 @@ const verdictClasses = {
 const GuardrailPlayground = () => {
   const [text, setText] = useState("");
   const [result, setResult] = useState(null);
+  const [hint, setHint] = useState("");
   const run = (value) => {
     setText(value);
-    setResult(evaluateGuardrail(value));
+    const verdict = evaluateGuardrail(value);
+    setResult(verdict);
+    setHint(verdict ? "" : "Type a command above, or pick a sample.");
   };
   return (
     <div className="mt-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
@@ -927,6 +930,9 @@ const GuardrailPlayground = () => {
         ))}
       </div>
       <div className="mt-4 min-h-[3.5rem]" aria-live="polite" data-guardrail-result>
+        {hint && !result && (
+          <p className="text-sm text-slate-600 dark:text-slate-400">{hint}</p>
+        )}
         {result && (
           <div className="flex flex-col gap-1.5">
             <div className="flex flex-wrap items-center gap-2">
@@ -1102,7 +1108,7 @@ export default function Portfolio() {
           </a>
 
           {/* Desktop nav */}
-          <nav className="hidden xl:flex rail:hidden items-center gap-4 text-sm" aria-label="Primary">
+          <nav className="hidden lg:flex rail:hidden items-center gap-4 text-sm" aria-label="Primary">
             {NAV_ITEMS.map((n) => (
               <a
                 key={n.href}
@@ -1142,7 +1148,7 @@ export default function Portfolio() {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
-              className={`xl:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
+              className={`lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               aria-controls="mobile-nav"
@@ -1161,7 +1167,7 @@ export default function Portfolio() {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="xl:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            className="lg:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
@@ -1206,7 +1212,7 @@ export default function Portfolio() {
         />
       </header>
 
-      <SectionRail items={NAV_ITEMS} />
+      <SectionRail items={RAIL_ITEMS} />
 
       <main id="main" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-12 md:py-20">
         {/* Hero */}
@@ -1304,7 +1310,7 @@ export default function Portfolio() {
               href="#sail"
               className={`mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
             >
-              Open the case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              Open the SAIL case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
           </aside>
         </section>
@@ -1328,10 +1334,6 @@ export default function Portfolio() {
                 <li className="flex gap-2">
                   <MapPin className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
                   <span>Based in New York City · open to relocation</span>
-                </li>
-                <li className="flex gap-2">
-                  <BadgeCheck className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" aria-hidden="true" />
-                  <span>{PROFILE.authorization}</span>
                 </li>
               </ul>
             </div>
@@ -1549,6 +1551,16 @@ export default function Portfolio() {
                       exp.company
                     )}
                   </p>
+                  {exp.accolade && (
+                    <span
+                      className={
+                        "mt-2 inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide font-mono " +
+                        accoladeClasses("slate")
+                      }
+                    >
+                      {exp.accolade}
+                    </span>
+                  )}
                   {exp.description && (
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{exp.description}</p>
                   )}
@@ -1628,7 +1640,7 @@ export default function Portfolio() {
                   {p.stackLine}
                 </p>
 
-                <ProjectLinks links={p.links} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
+                <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
               </article>
             ))}
 
@@ -1642,65 +1654,35 @@ export default function Portfolio() {
                   <li key={p.title} className="py-4 grid gap-2 md:grid-cols-5 md:gap-6">
                     <div className="md:col-span-2">
                       <h3 className="font-semibold tracking-tight font-display">{p.title}</h3>
-                      <p className="mt-1 text-xs font-mono text-slate-500 dark:text-slate-400">
-                        {p.accolade ? p.accolade.label + " · " : ""}
-                        {p.stackLine}
-                      </p>
+                      {p.accolade && (
+                        <span
+                          className={
+                            "mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide font-mono " +
+                            accoladeClasses(p.accolade.tone)
+                          }
+                        >
+                          {p.accolade.tone === "violet" && (
+                            <BookOpen className="h-3 w-3" aria-hidden="true" />
+                          )}
+                          {p.accolade.label}
+                        </span>
+                      )}
+                      <p className="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">{p.stackLine}</p>
                     </div>
-                    <p className="md:col-span-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{p.summary}</p>
-                    <ProjectLinks links={p.links} className="md:col-span-5" />
+                    <div className="md:col-span-3">
+                      <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{p.summary}</p>
+                      {p.impact?.[0] && (
+                        <p className="mt-2 text-sm text-slate-800 dark:text-slate-200 flex gap-2">
+                          <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
+                          <span>{p.impact[0]}</span>
+                        </p>
+                      )}
+                    </div>
+                    <ProjectLinks links={p.links} title={p.title} className="md:col-span-5" />
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-        </Section>
-
-        {/* Publications */}
-        <Section
-          id="publications"
-          title="Publications"
-          kicker="peer-reviewed"
-        >
-          <div className="grid gap-6">
-            {PUBLICATIONS.map((pub) => (
-              <article
-                key={pub.title}
-                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
-              >
-                <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
-                  {pub.venue}
-                </div>
-                <h3 className="mt-2 text-lg md:text-xl font-semibold tracking-tight font-display">
-                  {pub.title}
-                </h3>
-                <p className="mt-3 text-sm md:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                  {pub.summary}
-                </p>
-                <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 text-sm">
-                  {pub.links?.ieee && (
-                    <a
-                      href={pub.links.ieee}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <BookOpen className="h-4 w-4" aria-hidden="true" /> Read on IEEE Xplore
-                    </a>
-                  )}
-                  {pub.links?.github && (
-                    <a
-                      href={pub.links.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
-                    >
-                      <Github className="h-4 w-4" aria-hidden="true" /> Code
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
           </div>
         </Section>
 
@@ -1802,9 +1784,7 @@ export default function Portfolio() {
           <div>
             <div className="flex flex-wrap items-baseline gap-3 sm:gap-4">
               <a
-                href={LINKS.emailCompose}
-                target="_blank"
-                rel="noreferrer"
+                href={`mailto:${LINKS.email}`}
                 className={`inline-block text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 dark:text-white hover:text-accent transition-colors break-all md:break-normal rounded font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
               >
                 {LINKS.email}
@@ -1864,11 +1844,11 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <footer className="bg-slate-100 dark:bg-slate-950 text-slate-500 border-t border-slate-200 dark:border-slate-800">
+      <footer className="bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between text-xs font-mono">
           <span>
             © {new Date().getFullYear()} Nishanth G Palaniswami
-            <span className="text-slate-400 dark:text-slate-600"> · built solo · React + Vite + Tailwind</span>
+            <span> · React + Vite + Tailwind</span>
           </span>
           <LocalClock />
           <a

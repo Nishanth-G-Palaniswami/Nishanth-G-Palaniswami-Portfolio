@@ -11,6 +11,11 @@ html, body, #root { height: 100%; }
 html { background-color: rgb(248 250 252); } /* slate-50 */
 html.dark { background-color: rgb(15 23 42); } /* slate-900 */
 
+/* Smooth in-page scrolling only for people who have not asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
 /* Accent token. One hue for the whole site; Tailwind exposes it as `accent`
  * via rgb(var(--accent) / <alpha-value>).
  */

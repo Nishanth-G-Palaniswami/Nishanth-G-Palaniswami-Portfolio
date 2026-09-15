@@ -124,19 +124,18 @@ The site serves `public/resume.pdf` at `/resume.pdf`. The editing copy lives in 
 - `ABOUT` — about-paragraph string
 - `EDUCATION` — array of degree objects (optional `logo` field — see the NYU entry)
 - `SKILLS` — array of groups; each group has `{ group, icon, items }`
-- `PUBLICATIONS` — peer-reviewed work with title, venue, summary, links
 - `EXPERIENCE` — prior roles with period, location, impact bullets, stack
 - `PROJECTS` — supporting projects (SAIL is its own dedicated Section in the JSX, not inside this array)
 
 ### Nav
+Two lists. `NAV_ITEMS` is the header nav and the mobile drawer (five stops). `RAIL_ITEMS` is the
+left rail at 1600px and wider and lists every section in page order.
 ```js
 const NAV_ITEMS = [
   { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#sail", label: "SAIL" },
-  { href: "#projects", label: "Projects" },
-  { href: "#publications", label: "Publications" },
+  { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Projects" },
   { href: "#contact", label: "Contact" },
 ];
 ```
