@@ -37,7 +37,7 @@ Best,
   )}`,
   github: "https://github.com/Nishanth-G-Palaniswami",
   linkedin: "https://www.linkedin.com/in/nishanth-g-palaniswami",
-  resume: "/resume.pdf",
+  resume: "https://drive.google.com/file/d/1xSsXeuJOPBaVGLctq1r0azfFToLEzv9L/view",
 };
 
 const ABOUT = `I'm Nishanth, an AI engineer who builds systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
