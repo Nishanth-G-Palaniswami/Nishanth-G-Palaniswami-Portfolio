@@ -693,7 +693,7 @@ const DetoursBand = ({ notes, reduce, dark }) => {
       ref={ref}
       id="detours"
       aria-labelledby="detours-heading"
-      className="relative isolate overflow-hidden scroll-mt-24 bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-t border-slate-200 dark:border-slate-800"
+      className="relative isolate overflow-hidden scroll-mt-24 flex flex-col justify-end min-h-[calc(100vw/6)] bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-t border-slate-200 dark:border-slate-800"
     >
       <div
         aria-hidden="true"
@@ -798,7 +798,7 @@ const DetoursBand = ({ notes, reduce, dark }) => {
         className="absolute inset-x-0 bottom-0 -z-10 h-[45%] bg-gradient-to-t from-slate-100/70 dark:from-slate-950/60 to-transparent"
       />
 
-      <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-14 md:py-16">
+      <div className="mx-auto w-full max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 pt-14 pb-10 md:pt-16 md:pb-12">
         <div className="flex items-center gap-2.5">
           <StationDot fill="bg-slate-100 dark:bg-slate-950" />
           <p className="text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300 font-mono">off the clock</p>
