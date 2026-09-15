@@ -12,7 +12,7 @@ const PROFILE = {
   name: "Nishanth G Palaniswami",
   role: "AI Engineer · LLM Agents & Data Pipelines",
   thesis:
-    "I build agentic AI systems and audit-ready data pipelines, and the tests that keep them honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX. Open to full-time roles now.",
+    "I build systems that have to be right, not just impressive: agentic AI systems, audit-ready data pipelines, and the tests that keep both honest. NYU MSCE '26 · AI Engineer @ got2eat · previously SAIL GTX.",
   availability: "ON AIR · open to full-time roles",
   // Stated without a year or a sponsorship promise on purpose: STEM-OPT depends on an
   // E-Verify employer and an approved I-983, and H-1B comes up after it, so the site
@@ -41,7 +41,7 @@ Best,
   resume: "/resume.pdf",
 };
 
-const ABOUT = `I'm Nishanth, an AI engineer who builds systems that have to be right, not just impressive. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
+const ABOUT = `I'm Nishanth, an AI engineer. I like owning the layers that make software trustworthy: data pipelines with versioned ingestion, agentic systems with tested guardrails, and the golden tests and CI that catch regressions before users do. My work sits where engineering meets AI: turning ambiguity into systems that are clear, reproducible, and production-ready.`;
 
 // Photos live in public/photos (longest edge 1024px, JPEG q82, no EXIF).
 // Captions state only what the frame shows; the user confirms each one.
@@ -121,7 +121,7 @@ const EDUCATION = [
     school: "PSG College of Technology",
     logo: "/psg-logo.png",
     period: "August 2020 – June 2024",
-    detail: "Published research (IEEE ICCCNT 2024). Creative Director - PSG Radio Hub (Guinness World Records contribution).",
+    detail: "Published research (IEEE ICCCNT 2024). Creative Director, PSG Radio Hub.",
   },
 ];
 
@@ -168,7 +168,7 @@ const EXPERIENCE = [
     role: "AI Engineer",
     company: "Got2eat",
     accolade: "Base44 Accelerator Champions · Top 2 of 44",
-    description: "A community map of complete meals under $15 in New York, on the web and iOS.",
+    description: "A community map of complete meals under $15, on the web and iOS.",
     companyHref: "https://got2eat.app",
     period: "August 2026 – Present",
     location: "Remote · New York, NY",
@@ -193,7 +193,7 @@ const EXPERIENCE = [
     period: "April 2023 – May 2024",
     location: "Hybrid · Coimbatore, India",
     impact: [
-      "Built 15+ full-stack web projects using Python, Django, HTML, CSS, and JavaScript, including Edliy.com, an EdTech platform where I provisioned 500+ schools with teacher and class accounts in its first 90 days",
+      "Built 15+ full-stack Python/Django web projects, including Edliy.com, an EdTech platform; provisioned teacher and class accounts for 500+ schools within 90 days of launch",
       "Automated CI/CD pipelines for 15+ Python/Django + REST API web apps, reducing build time by 25%",
       "Managed AWS EC2/S3 backends with CloudWatch monitoring, sustaining 99% uptime",
     ],
@@ -205,9 +205,9 @@ const EXPERIENCE = [
     period: "February 2023 – March 2023",
     location: "Chennai, India",
     impact: [
-      "Spearheaded a responsive mobile dashboard and UI using React & JavaScript for an automated irrigation and agricultural drone system",
-      "Solved IoT sensor data pipelines using ESP32 microcontrollers and wireless modules",
-      "Preprocessed real-time sensor data and streamlined ML pipelines to optimize irrigation schedules",
+      "Built a responsive React dashboard for an automated irrigation and agricultural drone system",
+      "Built IoT sensor data pipelines on ESP32 microcontrollers and wireless modules",
+      "Preprocessed real-time sensor data for ML models that optimized irrigation schedules",
     ],
     stack: ["React", "JavaScript", "ESP32", "PyTorch", "Scikit-learn"],
   },
@@ -219,7 +219,7 @@ const PROJECTS = [
     accolade: { label: "Agentic AI · 2026", tone: "slate" },
     widget: "guardrails",
     summary:
-      "Self-built agentic system on top of Claude Code that reads my Gmail, Slack, GitHub, and Calendar, drafts replies into a review folder, and persists context as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
+      "A permissioned local agent over Gmail, Slack, Calendar and GitHub: 19 regression-tested guardrails, hybrid local retrieval, and draft-only outbound actions, with context persisted as Markdown in an Obsidian vault. Open-sourced as a starter kit.",
     stackLine: "Python · Claude Agent SDK · MCP · sqlite-vec · fastembed (ONNX)",
     impact: [
       "19 deterministic guardrails across 5 permission boundaries, CI-regression-tested after a prompt-injection bypass",
@@ -1365,14 +1365,14 @@ export default function Portfolio() {
               </h3>
               <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
                 SAIL builds trade-compliance software for importers: classifying products and
-                calculating the duties they owe. As an engineer on its applied data platform I built the{" "}
+                calculating the duties they owe. As an engineer on its applied data platform, I built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
                 (HTS is the Harmonized Tariff Schedule, the US catalog of tariff codes) and the
-                in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018–2026).
-                Co-built the{" "}
+                in-house pipeline behind 5M+ tariff records across 166 HTS releases (2018 to 2026).
+                I co-built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS classification model</strong>{" "}
-                on top that maps a product description to the correct tariff code at inference
-                time.
+                that sits on top of it and maps a product description to a recommended tariff
+                code at inference time.
               </p>
             </div>
 
@@ -1426,12 +1426,12 @@ export default function Portfolio() {
                   A deterministic revision engine (Python and SQL over SQLite and Parquet,
                   served through FastAPI) ingests and versions every HTS revision, surfaces
                   normalized changes between any two revisions, and powers downstream duty
-                  calculation; golden tests, PyTest and GitHub Actions gate every release,
+                  calculation; golden tests, pytest and GitHub Actions gate every release,
                   and the team&rsquo;s DuckDB and Supabase layer consumes the output. On top of that data layer, a co-built
-                  classification model maps product descriptions to the right HTS code at
-                  inference time. A &ldquo;Product DNA&rdquo; layer persists each classification
-                  alongside the SKU it describes, so recurring products aren&rsquo;t
-                  re-classified from scratch on every run.
+                  classification model maps product descriptions to a recommended HTS code at
+                  inference time. A per-SKU memory the team calls Product DNA stores each
+                  classification next to the product it describes, so recurring products
+                  aren&rsquo;t re-classified from scratch on every run.
                 </p>
               </div>
 
@@ -1442,11 +1442,7 @@ export default function Portfolio() {
                 <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                    <span>5M+ tariff records versioned; 166 HTS releases tracked (Jan 2018 to May 2026)</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                    <span>A↔B HTS revision engine at ≥95% accuracy; 1000+ changes surfaced per release</span>
+                    <span>A-to-B HTS revision engine at 95% accuracy; 1,000+ changes surfaced per release</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
@@ -1463,11 +1459,11 @@ export default function Portfolio() {
             <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 grid md:grid-cols-5 gap-6 md:gap-8 items-start">
               <div className="md:col-span-3">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-2">
-                  What I own
+                  What I owned
                 </div>
                 <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                Owned the HTS revision engine end to end: schema, ingestion, 166-release
-                history (2018–2026), golden tests, normalized change detection. Solely
+                Owned the HTS revision engine end to end: schema, ingestion, the full
+                release history, golden tests, normalized change detection. Solely
                 built the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
                 and the Product DNA store; co-built (with the CTO) the HTS classification
                 model on top: training data curation, model, inference pipeline,
@@ -1479,7 +1475,7 @@ export default function Portfolio() {
 
             <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                Python · SQL · SQLite · Parquet · FastAPI · PyTest · GitHub Actions · DuckDB + Supabase (team platform) · R (validation harnesses)
+                Python · SQL · SQLite · Parquet · FastAPI · pytest · GitHub Actions · DuckDB + Supabase (team platform) · R (validation harnesses)
               </p>
               <div className="flex flex-wrap gap-4 text-sm">
                 <a
