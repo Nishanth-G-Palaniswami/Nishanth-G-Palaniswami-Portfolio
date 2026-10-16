@@ -277,8 +277,6 @@ const PROJECTS = [
     ],
     links: {
       ieee: "https://ieeexplore.ieee.org/document/10725877",
-      github:
-        "https://github.com/Nishanth-G-Palaniswami/American-Sign-Language-Alphabet-Recognition-Using-Teachable-Machine",
     },
   },
   {
@@ -289,13 +287,13 @@ const PROJECTS = [
     stackLine: "PySpark · Spark MLlib · Parquet",
     impact: [
       "110M raw rows engineered into a 16M-row hourly feature table",
-      "GBT RMSE ≈ 104 on delay-proxy prediction",
+      "GBT RMSE 104 on hourly ridership prediction (117 for linear regression)",
       "Detected post-COVID ridership recovery + 8 AM / 5 PM peaks",
       "PCA + KMeans clustered stations into usage typologies",
     ],
     links: {
       github:
-        "https://github.com/Nishanth-G-Palaniswami/MetroScan-NYC-Subway-Ridership-and-Delay-Detection",
+        "https://github.com/Nishanth-G-Palaniswami/metroscan-nyc-subway-ridership",
       demo: "https://colab.research.google.com/drive/1VbhLZuXFlg1NgOVsxAKEhIlwHzWL-WXS?usp=sharing",
       ppt: "https://docs.google.com/presentation/d/1o2ho5Qf1a4Axyc0mWregmTxmuISYSep_uROid4kJ_xI/edit?usp=sharing",
     },
