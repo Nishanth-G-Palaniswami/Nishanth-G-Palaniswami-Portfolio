@@ -8,6 +8,8 @@ import {
 
 import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
 
+import TryIt from "./TryIt";
+
 const PROFILE = {
   name: "Nishanth G Palaniswami",
   role: "AI Engineer · LLM Agents & Data Pipelines",
@@ -347,75 +349,6 @@ const PROJECTS = [
   },
 ];
 
-// Guardrail playground: a client-side mirror of the five security boundaries in
-// the second brain's USER.md. First matching rule wins; no match means the real
-// PreToolUse hooks would let the call through.
-const GUARDRAILS = [
-  {
-    boundary: "Boundary 1 · outbound messages",
-    verdict: "draft-only",
-    test: /\b(send|reply|respond|email|e-mail|message|dm|slack)\b/i,
-    then: "Written to drafts/active/ for review. Nothing leaves without a human pressing send.",
-  },
-  {
-    boundary: "Boundary 2 · social posting",
-    verdict: "blocked",
-    test: /\b(tweet|post|linkedin|twitter|instagram|facebook|social)\b/i,
-    then: "Refused before the tool runs. The agent never posts on my behalf.",
-  },
-  {
-    boundary: "Boundary 3 · money",
-    verdict: "blocked",
-    test: /\b(pay|payment|charge|purchase|buy|stripe|paypal|billing|invoice|wire)\b/i,
-    then: "Refused. No financial data, no purchases, no exceptions.",
-  },
-  {
-    boundary: "Boundary 4 · deletion",
-    verdict: "blocked",
-    test: /\b(rm|del|delete|remove|drop|trash|erase|purge|wipe)\b|--force|-D\b/i,
-    then: "Refused. Deletes and force pushes are mine to run.",
-  },
-  {
-    boundary: "Boundary 5 · production",
-    verdict: "blocked",
-    test: /\b(push|merge|deploy|release|publish|railway up|supabase db push|docker push|vercel)\b/i,
-    then: "Refused. The agent prepares the commit; I push.",
-  },
-  {
-    boundary: "Read scope",
-    verdict: "allowed",
-    test: /\b(read|list|search|find|summarize|summarise|show|check|status|inbox|calendar|what|who|when)\b/i,
-    then: "Runs. Reading Gmail, Slack, GitHub, and Calendar is inside the advisor's lane.",
-  },
-];
-
-const GUARDRAIL_FALLBACK = {
-  boundary: "No rule matched",
-  verdict: "allowed",
-  then: "Runs. The hooks only block what matches a boundary.",
-};
-
-const GUARDRAIL_EXAMPLES = [
-  "reply to the recruiter",
-  "post this on LinkedIn",
-  "pay the invoice",
-  "rm -rf dist",
-  "git push origin main",
-  "summarize my inbox",
-];
-
-const GUARDRAIL_SEVERITY = { blocked: 2, "draft-only": 1, allowed: 0 };
-
-const evaluateGuardrail = (text) => {
-  const t = text.trim();
-  if (!t) return null;
-  const matches = GUARDRAILS.filter((rule) => rule.test.test(t));
-  if (matches.length === 0) return GUARDRAIL_FALLBACK;
-  return matches.reduce((worst, rule) =>
-    GUARDRAIL_SEVERITY[rule.verdict] > GUARDRAIL_SEVERITY[worst.verdict] ? rule : worst
-  );
-};
-
 // Career route for the hero: lane 0 is school, lane 1 is work, so the 45-degree
 // jogs in the line mean something. Facts mirror Education and Experience below.
 const ROUTE_STOPS = [
@@ -439,6 +372,7 @@ const focusRing =
 
 // Header nav and drawer: the five stops a recruiter actually uses.
 const NAV_ITEMS = [
+  { href: "#try", label: "Try it" },
   { href: "#about", label: "About" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
@@ -448,6 +382,7 @@ const NAV_ITEMS = [
 
 // Left rail (1600px and up): every section, in page order.
 const RAIL_ITEMS = [
+  { href: "#try", label: "Try it" },
   { href: "#about", label: "About" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
@@ -887,100 +822,6 @@ const ProjectLinks = ({ links, title, className = "" }) => (
   </div>
 );
 
-const verdictClasses = {
-  allowed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
-  blocked: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20",
-  "draft-only": "bg-accent/10 text-accent border-accent/20",
-};
-
-const GuardrailPlayground = () => {
-  const [text, setText] = useState("");
-  const [result, setResult] = useState(null);
-  const [hint, setHint] = useState("");
-  const run = (value) => {
-    setText(value);
-    const verdict = evaluateGuardrail(value);
-    setResult(verdict);
-    setHint(verdict ? "" : "Type a command above, or pick a sample.");
-  };
-  return (
-    <div className="mt-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
-      <label
-        htmlFor="guardrail-input"
-        className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono"
-      >
-        Try the guardrails
-      </label>
-      <form
-        className="mt-2 flex gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          run(text);
-        }}
-      >
-        <input
-          id="guardrail-input"
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="try: git push origin main"
-          autoComplete="off"
-          spellCheck="false"
-          className={`min-w-0 flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 h-10 text-sm font-mono text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 ${focusRing}`}
-        />
-        <button
-          type="submit"
-          className={`inline-flex items-center rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 h-10 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
-        >
-          Run
-        </button>
-      </form>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {GUARDRAIL_EXAMPLES.map((example) => (
-          <button
-            key={example}
-            type="button"
-            onClick={() => run(example)}
-            className={`rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2.5 py-2 md:py-1 text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500 transition-colors ${focusRing}`}
-          >
-            {example}
-          </button>
-        ))}
-      </div>
-      <div className="mt-4 min-h-[3.5rem]" aria-live="polite" data-guardrail-result>
-        {hint && !result && (
-          <p className="text-sm text-slate-600 dark:text-slate-400">{hint}</p>
-        )}
-        {result && (
-          <div className="flex flex-col gap-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide border font-mono ${verdictClasses[result.verdict]}`}
-              >
-                {result.verdict}
-              </span>
-              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{result.boundary}</span>
-            </div>
-            <p className="text-sm text-slate-700 dark:text-slate-300">{result.then}</p>
-          </div>
-        )}
-      </div>
-      <p className="mt-3 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-        Mirrors the five boundaries in my second brain&rsquo;s USER.md. The real checks are Python
-        PreToolUse hooks, regression-tested in CI.{" "}
-        <a
-          href="https://github.com/Nishanth-G-Palaniswami/second-brain"
-          target="_blank"
-          rel="noreferrer"
-          className={`inline-flex items-center ${tapTarget} underline underline-offset-4 hover:text-accent transition-colors rounded ${focusRing}`}
-        >
-          See the rules
-        </a>
-      </p>
-    </div>
-  );
-};
-
 // Footer clock: New York time. Re-renders on the minute; no aria-live so it never
 // interrupts a screen reader.
 const CLOCK_CITIES = [{ city: "New York", zone: "America/New_York" }];
@@ -1334,6 +1175,11 @@ export default function Portfolio() {
           </aside>
         </section>
 
+        {/* Try it: the replay and the guardrail console run real logic in the browser */}
+        <Section id="try" title="Try it" kicker="real logic, running here">
+          <TryIt />
+        </Section>
+
         {/* About */}
         <Section
           id="about"
@@ -1661,7 +1507,14 @@ export default function Portfolio() {
                   ))}
                 </ul>
 
-                {p.widget === "guardrails" && <GuardrailPlayground />}
+                {p.widget === "guardrails" && (
+                  <a
+                    href="#try"
+                    className={`mt-4 inline-flex items-center gap-1 ${tapTarget} text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
+                  >
+                    Run its real guardrails at the top of the page <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                )}
 
                 <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
                   {p.stackLine}
