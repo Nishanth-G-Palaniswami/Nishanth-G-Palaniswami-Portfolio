@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
-  BookOpen, Sun, Moon, Calendar, MapPin, ArrowUp, ArrowUpRight,
+  BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
   Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail, BadgeCheck,
   Copy, Check, ChevronDown,
 } from "lucide-react";
 
 import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
 
-import TryIt from "./TryIt";
+import { CallReplay, GuardrailConsole } from "./ProjectDemos";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -215,6 +215,9 @@ const EXPERIENCE = [
   },
 ];
 
+// Running demos, keyed by a project's `widget`.
+const DEMOS = { replay: CallReplay, guardrails: GuardrailConsole };
+
 const PROJECTS = [
   {
     title: "Second Brain · Personal Agentic Co-Pilot",
@@ -234,6 +237,20 @@ const PROJECTS = [
     },
   },
   {
+    title: "InterVoiceAI · Resume-Grounded Phone Interviewer",
+    widget: "replay",
+    accolade: { label: "Hackathon · Winning team · 2026", tone: "blue" },
+    summary:
+      "Phone interviewer that asks questions drawn from the caller's resume and writes a recruiter-only record with integrity signals. Team of three, one evening, on the Take2 hackathon starter; I built the interviewer and the call record.",
+    stackLine: "Python · LiveKit Agents · FastAPI · pytest",
+    impact: [
+      "Interview rules live in code, not the prompt: no answer is recorded until the agent asks an unscripted follow-up",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI",
+    },
+  },
+  {
     title: "Census Trade Warehouse · Orchestrated ELT",
     accolade: { label: "Data Engineering · 2026", tone: "slate" },
     summary:
@@ -247,20 +264,6 @@ const PROJECTS = [
     ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/census-trade-warehouse",
-    },
-  },
-  {
-    title: "InterVoiceAI · Resume-Grounded Phone Interviewer",
-    compact: true,
-    accolade: { label: "Hackathon · Winning team · 2026", tone: "blue" },
-    summary:
-      "Phone interviewer that asks questions drawn from the caller's resume and writes a recruiter-only record with integrity signals. Team of three, one evening, on the Take2 hackathon starter; I built the interviewer and the call record.",
-    stackLine: "Python · LiveKit Agents · FastAPI · pytest",
-    impact: [
-      "Interview rules live in code, not the prompt: no answer is recorded until the agent asks an unscripted follow-up",
-    ],
-    links: {
-      github: "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI",
     },
   },
   {
@@ -372,7 +375,6 @@ const focusRing =
 
 // Header nav and drawer: the five stops a recruiter actually uses.
 const NAV_ITEMS = [
-  { href: "#try", label: "Try it" },
   { href: "#about", label: "About" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
@@ -382,7 +384,6 @@ const NAV_ITEMS = [
 
 // Left rail (1600px and up): every section, in page order.
 const RAIL_ITEMS = [
-  { href: "#try", label: "Try it" },
   { href: "#about", label: "About" },
   { href: "#sail", label: "Case Study" },
   { href: "#experience", label: "Experience" },
@@ -1175,11 +1176,6 @@ export default function Portfolio() {
           </aside>
         </section>
 
-        {/* Try it: the replay and the guardrail console run real logic in the browser */}
-        <Section id="try" title="Try it" kicker="real logic, running here">
-          <TryIt />
-        </Section>
-
         {/* About */}
         <Section
           id="about"
@@ -1475,54 +1471,56 @@ export default function Portfolio() {
           kicker="selected work"
         >
           <div className="space-y-6">
-            {PROJECTS.filter((p) => !p.compact).map((p) => (
-              <article
-                key={p.title}
-                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col"
-              >
-                {p.accolade && (
-                  <span
-                    className={
-                      "self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide mb-3 font-mono " +
-                      accoladeClasses(p.accolade.tone)
-                    }
-                  >
-                    {p.accolade.tone === "violet" && (
-                      <BookOpen className="h-3 w-3" aria-hidden="true" />
+            {PROJECTS.filter((p) => !p.compact).map((p) => {
+              // A project with a demo shows it beside its claims: the demo is the evidence.
+              const Demo = DEMOS[p.widget];
+              return (
+                <article
+                  key={p.title}
+                  className={`rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 ${Demo ? "lg:grid lg:grid-cols-5 lg:items-start lg:gap-8" : ""}`}
+                >
+                  <div className={`flex flex-col ${Demo ? "lg:col-span-2" : ""}`}>
+                    {p.accolade && (
+                      <span
+                        className={
+                          "self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide mb-3 font-mono " +
+                          accoladeClasses(p.accolade.tone)
+                        }
+                      >
+                        {p.accolade.tone === "violet" && (
+                          <BookOpen className="h-3 w-3" aria-hidden="true" />
+                        )}
+                        {p.accolade.label}
+                      </span>
                     )}
-                    {p.accolade.label}
-                  </span>
-                )}
-                <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
-                <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>
-                  {p.summary}
-                </p>
+                    <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
+                    <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>
+                      {p.summary}
+                    </p>
 
-                <ul className={`mt-4 space-y-1.5 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
-                  {p.impact.map((i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                      <span>{i}</span>
-                    </li>
-                  ))}
-                </ul>
+                    <ul className={`mt-4 space-y-1.5 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
+                      {p.impact.map((i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-                {p.widget === "guardrails" && (
-                  <a
-                    href="#try"
-                    className={`mt-4 inline-flex items-center gap-1 ${tapTarget} text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
-                  >
-                    Run its real guardrails at the top of the page <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                )}
+                    <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+                      {p.stackLine}
+                    </p>
 
-                <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
-                  {p.stackLine}
-                </p>
-
-                <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
-              </article>
-            ))}
+                    <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
+                  </div>
+                  {Demo && (
+                    <div className="mt-6 min-w-0 lg:col-span-3 lg:mt-0">
+                      <Demo />
+                    </div>
+                  )}
+                </article>
+              );
+            })}
 
             {/* Smaller projects, one row each */}
             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">

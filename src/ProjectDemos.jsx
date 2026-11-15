@@ -128,7 +128,7 @@ const ToolLine = ({ step, result, refused }) => {
   );
 };
 
-const CallReplay = () => {
+export const CallReplay = () => {
   const frames = useMemo(buildFrames, []);
   const [shown, setShown] = useState(1);
   const [playing, setPlaying] = useState(false);
@@ -167,16 +167,16 @@ const CallReplay = () => {
   );
 
   return (
-    <div className={panel}>
+    <div className={panel} data-demo="replay">
       <PanelHead
         dot={dot}
         title={
           <>
-            InterVoiceAI<span className="hidden sm:inline text-slate-400"> · phone screen replay</span>
+            InterVoiceAI<span className="hidden sm:inline lg:hidden xl:inline text-slate-400"> · phone screen replay</span>
           </>
         }
         meta={
-          <span className="font-mono text-[11px] tabular-nums text-slate-400">
+          <span className="hidden sm:inline font-mono text-[11px] tabular-nums text-slate-400">
             {String(shown).padStart(2, "0")}/{frames.length}
           </span>
         }
@@ -257,6 +257,12 @@ const CallReplay = () => {
           </li>
         )}
       </ol>
+
+      <p className="border-t border-slate-800 px-4 py-3 text-xs leading-relaxed text-slate-400">
+        A logged test run from hackathon night: the agent questions the repo&rsquo;s fictional sample nurse while an
+        LLM plays a difficult caller. Each tool result is computed by the agent&rsquo;s own logic, ported from the
+        commit that ran.
+      </p>
     </div>
   );
 };
@@ -278,7 +284,7 @@ const SAMPLES = {
 // Cut long samples in the middle: the end of a URL is where two samples differ.
 const middleTrim = (s, max = 44) => (s.length <= max ? s : `${s.slice(0, 18)}…${s.slice(-(max - 19))}`);
 
-const GuardrailConsole = () => {
+export const GuardrailConsole = () => {
   const [tool, setTool] = useState("Bash");
   // Opens on one real result so the console is never an empty box.
   const [text, setText] = useState(SAMPLES.Bash[0]);
@@ -292,7 +298,7 @@ const GuardrailConsole = () => {
   const dot = <StatusDot tone={ran ? (ran.hit ? "bg-rose-400" : "bg-emerald-400") : "bg-slate-500"} />;
 
   return (
-    <div className={panel}>
+    <div className={panel} data-demo="guardrails">
       <PanelHead
         dot={dot}
         title={
@@ -402,28 +408,3 @@ const GuardrailConsole = () => {
     </div>
   );
 };
-
-// -------------------- the section body -------------------- //
-
-export default function TryIt() {
-  return (
-    <>
-      <p className="-mt-2 mb-8 max-w-3xl text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
-        Two systems, running in your browser. On the left, a real test run from the voice agent hackathon, where my
-        team of three built InterVoiceAI on the Take2 starter: the interviewer I wrote, questioning the repo&rsquo;s
-        fictional sample nurse while an LLM played a difficult caller. Each tool result is computed by the
-        agent&rsquo;s own logic, ported from the commit that ran. On the right, my Second Brain&rsquo;s guardrails.
-      </p>
-      {/* min-w-0 everywhere: long tool calls and URLs must wrap, never widen the column.
-          items-start: the replay grows as it plays instead of opening as an empty box. */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
-        <div className="min-w-0 lg:col-span-3">
-          <CallReplay />
-        </div>
-        <div className="min-w-0 lg:col-span-2">
-          <GuardrailConsole />
-        </div>
-      </div>
-    </>
-  );
-}
