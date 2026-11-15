@@ -10,6 +10,7 @@ import { flushSync } from "react-dom";
 import { motion, AnimatePresence, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
 
 import { CallReplay, GuardrailConsole } from "./ProjectDemos";
+import { PhotoButton } from "./PhotoViewer";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -87,6 +88,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 55%",
     alt: "Hiking: standing arms wide on a rock ledge above the Grand Canyon",
+    post: {
+      place: "Grand Canyon, Arizona",
+      text: ["How cool was the Grand Canyon?"],
+      notes: [
+        "277 river miles long and more than a mile deep.",
+        "The oldest rocks at the bottom are up to about 1.8 billion years old.",
+      ],
+    },
   },
   {
     activity: "Kayaking",
@@ -97,6 +106,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 85%",
     alt: "Kayaking: paddling a yellow kayak below sandstone cliffs on Lake Powell",
+    post: {
+      place: "Lake Powell, Arizona",
+      text: ["Down at water level, the sandstone walls look even taller."],
+      notes: [
+        "Lake Powell is a reservoir: Glen Canyon Dam backed the Colorado River up 186 miles.",
+        "When full, its shoreline runs about 1,960 miles, longer than the mainland US Pacific coast.",
+      ],
+    },
   },
   {
     activity: "Skiing",
@@ -107,6 +124,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 60%",
     alt: "Skiing: heading down a groomed run at Hunter Mountain in the Catskills",
+    post: {
+      place: "Hunter Mountain, Catskills",
+      text: ["Catskills snow day at Hunter."],
+      notes: [
+        "Hunter's summit is 4,040 ft, the second-highest peak in the Catskills after Slide Mountain.",
+        "The ski area drops about 1,600 vertical feet from top to base.",
+      ],
+    },
   },
 ];
 
@@ -615,18 +640,10 @@ const SectionRail = ({ items, active, fill }) => {
   );
 };
 
+// Every framed photo opens bigger on click (PhotoViewer.jsx).
 const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
   <figure className={className}>
-    <img
-      src={photo.src}
-      width={photo.width}
-      height={photo.height}
-      alt={photo.alt}
-      loading="lazy"
-      decoding="async"
-      style={photo.position ? { objectPosition: photo.position } : undefined}
-      className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
-    />
+    <PhotoButton photo={photo} className="w-full" imgClassName={ratio} />
     <figcaption className="mt-2 text-center text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
       {photo.caption}
     </figcaption>
@@ -795,15 +812,12 @@ const DetoursBand = ({ notes, reduce, dark }) => {
         <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
           {notes.map((note) => (
             <li key={note.activity} className="flex items-start gap-4">
-              <img
-                src={note.src}
-                width={note.width}
-                height={note.height}
-                alt={note.alt}
-                loading="lazy"
-                decoding="async"
-                style={{ objectPosition: note.position }}
-                className="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-950"
+              <PhotoButton
+                photo={{ ...note, caption: `${note.activity} · ${note.place}` }}
+                round
+                className="h-16 w-16 flex-shrink-0"
+                frameClassName="h-16 w-16 ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-950"
+                imgClassName="h-16 w-16"
               />
               <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white">{note.activity}</h3>
