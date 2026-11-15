@@ -3,7 +3,7 @@ import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
   BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
   Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail, BadgeCheck,
-  Copy, Check,
+  Copy, Check, ChevronDown,
 } from "lucide-react";
 
 import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
@@ -248,6 +248,20 @@ const PROJECTS = [
     },
   },
   {
+    title: "InterVoiceAI · Resume-Grounded Phone Interviewer",
+    compact: true,
+    accolade: { label: "Hackathon · Winning team · 2026", tone: "blue" },
+    summary:
+      "Phone interviewer that asks questions drawn from the caller's resume and writes a recruiter-only record with integrity signals. Team of three, one evening, on the Take2 hackathon starter; I built the interviewer and the call record.",
+    stackLine: "Python · LiveKit Agents · FastAPI · pytest",
+    impact: [
+      "Interview rules live in code, not the prompt: no answer is recorded until the agent asks an unscripted follow-up",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI",
+    },
+  },
+  {
     title: "voicebot · Local Push-to-Talk Dictation",
     compact: true,
     accolade: { label: "Local ML · 2026", tone: "slate" },
@@ -413,6 +427,12 @@ const ROUTE_STOPS = [
 ];
 
 // -------------------- PRIMITIVES -------------------- //
+
+// Card body copy: 15px on phones, where 14px read small; 14px from md up as before.
+const bodyCopy = "text-[15px] md:text-sm";
+
+// Phones get 44px-tall tap areas on small text links; md and up keep the compact look.
+const tapTarget = "min-h-[44px] md:min-h-0";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900";
@@ -851,7 +871,7 @@ const PROJECT_LINKS = [
 // `title` gives every link a distinct accessible name ("Code: MetroScan") while the
 // visible label stays short.
 const ProjectLinks = ({ links, title, className = "" }) => (
-  <div className={`flex flex-wrap gap-4 text-sm ${className}`}>
+  <div className={`flex flex-wrap gap-x-5 gap-y-0 md:gap-4 text-sm ${className}`}>
     {PROJECT_LINKS.filter(([key]) => links?.[key]).map(([key, label, Icon]) => (
       <a
         key={key}
@@ -859,7 +879,7 @@ const ProjectLinks = ({ links, title, className = "" }) => (
         aria-label={title ? `${label}: ${title.split(" · ")[0]}` : undefined}
         target="_blank"
         rel="noreferrer"
-        className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
+        className={`inline-flex items-center gap-1.5 ${tapTarget} text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
       >
         <Icon className="h-4 w-4" aria-hidden="true" /> {label}
       </a>
@@ -921,7 +941,7 @@ const GuardrailPlayground = () => {
             key={example}
             type="button"
             onClick={() => run(example)}
-            className={`rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2.5 py-1 text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500 transition-colors ${focusRing}`}
+            className={`rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2.5 py-2 md:py-1 text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500 transition-colors ${focusRing}`}
           >
             {example}
           </button>
@@ -952,7 +972,7 @@ const GuardrailPlayground = () => {
           href="https://github.com/Nishanth-G-Palaniswami/second-brain"
           target="_blank"
           rel="noreferrer"
-          className={`underline underline-offset-4 hover:text-accent transition-colors rounded ${focusRing}`}
+          className={`inline-flex items-center ${tapTarget} underline underline-offset-4 hover:text-accent transition-colors rounded ${focusRing}`}
         >
           See the rules
         </a>
@@ -999,6 +1019,7 @@ export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [sailDetailsOpen, setSailDetailsOpen] = useState(false);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
@@ -1306,7 +1327,7 @@ export default function Portfolio() {
 
             <a
               href="#sail"
-              className={`mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
+              className={`mt-6 inline-flex items-center gap-1 ${tapTarget} text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
             >
               Open the SAIL case study <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
@@ -1350,19 +1371,15 @@ export default function Portfolio() {
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8"
           >
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
-                  Software Engineer Intern · Sep 2025 – May 2026
-                </div>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 text-[11px] font-semibold uppercase tracking-wide border border-slate-300/60 dark:border-slate-700 font-mono">
-                  Cornell Tech Runway–backed
-                </span>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-mono">
+                Software Engineer Intern · Sep 2025 – May 2026
               </div>
               <h3 className="mt-3 text-2xl md:text-3xl font-semibold tracking-tight font-display">
                 Global Trade Intelligence Platform
               </h3>
               <p className="mt-6 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
-                SAIL builds trade-compliance software for importers: classifying products and
+                SAIL, a Cornell Tech Runway-backed startup, builds trade-compliance software for
+                importers: classifying products and
                 calculating the duties they owe. As an engineer on its applied data platform, I built the{" "}
                 <strong className="text-slate-900 dark:text-slate-100">HTS revision engine</strong>{" "}
                 (HTS is the Harmonized Tariff Schedule, the US catalog of tariff codes) and the
@@ -1402,12 +1419,14 @@ export default function Portfolio() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 mt-10 pt-8 border-t border-slate-100 dark:border-slate-800">
-              <div>
+            {/* Phones show the impact first and fold the problem and approach behind a toggle;
+                from md up all three columns are always open. */}
+            <div className="flex flex-col gap-8 md:grid md:grid-cols-3 mt-10 pt-8 border-t border-slate-100 dark:border-slate-800">
+              <div id="sail-problem" className={`order-3 md:order-none ${sailDetailsOpen ? "block" : "hidden"} md:block`}>
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
                   The problem
                 </div>
-                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                <p className={`${bodyCopy} text-slate-700 dark:text-slate-300 leading-relaxed`}>
                   International-trade teams operate inside a 10,000-category tariff schedule that
                   changes every few weeks. Every revision shifts duty rates and product
                   classifications, but most teams don&rsquo;t know what changed, and most tools
@@ -1416,11 +1435,11 @@ export default function Portfolio() {
                 </p>
               </div>
 
-              <div>
+              <div id="sail-approach" className={`order-4 md:order-none ${sailDetailsOpen ? "block" : "hidden"} md:block`}>
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
                   The approach
                 </div>
-                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                <p className={`${bodyCopy} text-slate-700 dark:text-slate-300 leading-relaxed`}>
                   A deterministic revision engine (Python and SQL over SQLite and Parquet,
                   served through FastAPI) ingests and versions every HTS revision, surfaces
                   normalized changes between any two revisions, and powers downstream duty
@@ -1433,11 +1452,11 @@ export default function Portfolio() {
                 </p>
               </div>
 
-              <div>
+              <div className="order-1 md:order-none">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-3">
                   The impact
                 </div>
-                <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
+                <ul className={`space-y-2 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
                   <li className="flex gap-2">
                     <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                     <span>A-to-B HTS revision engine at 95% accuracy; 1,000+ changes surfaced per release</span>
@@ -1452,6 +1471,20 @@ export default function Portfolio() {
                   </li>
                 </ul>
               </div>
+
+              <button
+                type="button"
+                onClick={() => setSailDetailsOpen((v) => !v)}
+                aria-expanded={sailDetailsOpen}
+                aria-controls="sail-problem sail-approach"
+                className={`order-2 md:hidden self-start inline-flex items-center gap-1.5 min-h-[44px] text-sm font-medium text-accent rounded ${focusRing}`}
+              >
+                {sailDetailsOpen ? "Hide the problem and approach" : "Read the problem and approach"}
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform ${sailDetailsOpen ? "rotate-180" : ""}`}
+                  aria-hidden="true"
+                />
+              </button>
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 grid md:grid-cols-5 gap-6 md:gap-8 items-start">
@@ -1459,7 +1492,7 @@ export default function Portfolio() {
                 <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono mb-2">
                   What I owned
                 </div>
-                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                <p className={`${bodyCopy} text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl`}>
                 Owned the HTS revision engine end to end: schema, ingestion, the full
                 release history, golden tests, normalized change detection. Solely
                 built the duty-calculation pipeline (Python, SQLite, Parquet, FastAPI)
@@ -1480,7 +1513,7 @@ export default function Portfolio() {
                   href="https://sailgtx.ai"
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
+                  className={`inline-flex items-center gap-1.5 ${tapTarget} text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                 >
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> Visit product
                 </a>
@@ -1488,7 +1521,7 @@ export default function Portfolio() {
                   href="https://www.sailgtx.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className={`inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
+                  className={`inline-flex items-center gap-1.5 ${tapTarget} text-slate-700 dark:text-slate-300 hover:text-accent transition-colors rounded ${focusRing}`}
                 >
                   <ExternalLink className="h-4 w-4" aria-hidden="true" /> Company
                 </a>
@@ -1536,7 +1569,7 @@ export default function Portfolio() {
                         href={exp.companyHref}
                         target="_blank"
                         rel="noreferrer"
-                        className={`inline-flex items-center gap-1 hover:text-accent transition-colors rounded ${focusRing}`}
+                        className={`inline-flex items-center gap-1 ${tapTarget} hover:text-accent transition-colors rounded ${focusRing}`}
                       >
                         {exp.company}
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -1556,7 +1589,7 @@ export default function Portfolio() {
                     </span>
                   )}
                   {exp.description && (
-                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{exp.description}</p>
+                    <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>{exp.description}</p>
                   )}
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                     <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> {exp.period}
@@ -1569,7 +1602,7 @@ export default function Portfolio() {
                 <div className="md:col-span-3">
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100">{exp.role}</h3>
                   {exp.impact && exp.impact.length > 0 && (
-                    <ul className="mt-3 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-w-3xl">
+                    <ul className={`mt-3 space-y-1.5 ${bodyCopy} text-slate-700 dark:text-slate-300 max-w-3xl`}>
                       {exp.impact.map((i) => (
                         <li key={i} className="flex gap-2">
                           <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
@@ -1615,11 +1648,11 @@ export default function Portfolio() {
                   </span>
                 )}
                 <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>
                   {p.summary}
                 </p>
 
-                <ul className="mt-4 space-y-1.5 text-sm text-slate-800 dark:text-slate-200">
+                <ul className={`mt-4 space-y-1.5 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
                   {p.impact.map((i) => (
                     <li key={i} className="flex gap-2">
                       <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
@@ -1664,9 +1697,9 @@ export default function Portfolio() {
                       <p className="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">{p.stackLine}</p>
                     </div>
                     <div className="md:col-span-3">
-                      <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{p.summary}</p>
+                      <p className={`${bodyCopy} text-slate-700 dark:text-slate-300 leading-relaxed`}>{p.summary}</p>
                       {p.impact?.[0] && (
-                        <p className="mt-2 text-sm text-slate-800 dark:text-slate-200 flex gap-2">
+                        <p className={`mt-2 ${bodyCopy} text-slate-800 dark:text-slate-200 flex gap-2`}>
                           <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
                           <span>{p.impact[0]}</span>
                         </p>
@@ -1710,7 +1743,7 @@ export default function Portfolio() {
                 </div>
                 <div className="md:col-span-3">
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100">{ed.degree}</h3>
-                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                  <p className={`mt-3 ${bodyCopy} text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl`}>
                     {ed.detail}
                   </p>
                 </div>
@@ -1847,7 +1880,7 @@ export default function Portfolio() {
           <LocalClock />
           <a
             href="#top"
-            className={`hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
+            className={`self-start md:self-auto inline-flex items-center ${tapTarget} hover:text-accent rounded px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 dark:focus-visible:ring-offset-slate-950`}
           >
             back to top ↑
           </a>
