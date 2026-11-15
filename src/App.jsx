@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   ExternalLink, Github, Linkedin, FileText, Menu, X,
-  BookOpen, Sun, Moon, Calendar, MapPin, ArrowUpRight,
+  BookOpen, Sun, Moon, Calendar, MapPin, ArrowUp, ArrowUpRight,
   Cpu, Database, Cloud, Code2, GraduationCap, Route, Mail, BadgeCheck,
   Copy, Check, ChevronDown,
 } from "lucide-react";
@@ -1512,7 +1512,7 @@ export default function Portfolio() {
                     href="#try"
                     className={`mt-4 inline-flex items-center gap-1 ${tapTarget} text-sm font-medium text-accent hover:underline underline-offset-4 rounded ${focusRing}`}
                   >
-                    Run its real guardrails at the top of the page <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    Run its real guardrails at the top of the page <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 )}
 

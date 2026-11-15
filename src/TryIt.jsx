@@ -5,22 +5,28 @@ import { AGENT_SOURCE, applyStep, startCall } from "./demos/interviewGate";
 import { DEMO_CANDIDATE, DEMO_INTEGRITY, DEMO_PLAN, DEMO_SCRIPT } from "./demos/demoCall";
 import { GUARDRAILS_SOURCE, checkToolCall } from "./demos/guardrails";
 
-// Panels are dark consoles in both themes, so they carry their own focus ring.
+// Panels are dark consoles in both themes: they pin the site's --accent to its
+// dark-theme value, so `accent` utilities inside read right on light pages too.
+const panel =
+  "flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 text-slate-200 [--accent:var(--accent-dark)]";
+
+// Same reason: the panels carry their own focus ring.
 const ring =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(247_148_94)] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
 
 // New lines settle in; the keyframe lives in index.css.
 const lineIn = "motion-safe:animate-[line-in_200ms_cubic-bezier(0.22,1,0.36,1)_both]";
 
 // Secondary actions; each use sets its own height and text color.
-const outlineBtn = `inline-flex items-center justify-center gap-1.5 rounded-md border border-slate-700 px-3 text-sm hover:border-slate-500 hover:text-slate-100 disabled:opacity-40 disabled:hover:border-slate-700 ${ring}`;
+const press = "motion-safe:transition-[color,background-color,border-color,opacity,transform] motion-safe:duration-150 motion-safe:ease-out enabled:active:scale-[0.97]";
+const outlineBtn = `inline-flex items-center justify-center gap-1.5 rounded-md border border-slate-700 px-3 text-sm hover:border-slate-500 hover:text-slate-100 disabled:opacity-40 disabled:hover:border-slate-700 ${press} ${ring}`;
 
 // Short SHA when the source link is pinned to a commit.
 const commitOf = (url) => url.match(/\/blob\/([0-9a-f]{7})[0-9a-f]{33}\//)?.[1] ?? null;
 
 const StatusDot = ({ tone, pulse = false }) => (
   <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
-    {pulse && <span className="absolute inline-flex h-full w-full rounded-full bg-[rgb(247_148_94)] opacity-60 motion-safe:animate-ping" />}
+    {pulse && <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />}
     <span className={`relative inline-flex h-2 w-2 rounded-full ${tone}`} />
   </span>
 );
@@ -40,7 +46,7 @@ const PanelHead = ({ dot, title, meta, file, href }) => {
           href={href}
           target="_blank"
           rel="noreferrer"
-          className={`inline-flex items-center gap-1 min-h-[44px] md:min-h-0 font-mono text-xs text-slate-300 hover:text-[rgb(247_148_94)] rounded ${ring}`}
+          className={`inline-flex items-center gap-1 min-h-[44px] md:min-h-0 font-mono text-xs text-slate-300 hover:text-accent rounded ${ring}`}
         >
           {file}
           {sha && <span className="hidden sm:inline text-slate-400">@{sha}</span>}
@@ -153,7 +159,7 @@ const CallReplay = () => {
   };
 
   const dot = playing ? (
-    <StatusDot tone="bg-[rgb(247_148_94)]" pulse />
+    <StatusDot tone="bg-accent" pulse />
   ) : done ? (
     <StatusDot tone="bg-emerald-400" />
   ) : (
@@ -161,7 +167,7 @@ const CallReplay = () => {
   );
 
   return (
-    <div className="flex flex-col rounded-xl border border-slate-800 bg-slate-950 text-slate-200 overflow-hidden">
+    <div className={panel}>
       <PanelHead
         dot={dot}
         title={
@@ -178,41 +184,44 @@ const CallReplay = () => {
         href={AGENT_SOURCE}
       />
 
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 px-4 py-3">
-        <button
-          type="button"
-          onClick={() => (done ? restart() : setPlaying((p) => !p))}
-          className={`inline-flex items-center gap-2 rounded-md bg-[rgb(247_148_94)] px-3 h-11 md:h-9 text-sm font-medium text-slate-950 hover:opacity-90 motion-safe:transition-transform motion-safe:duration-100 active:scale-[0.97] ${ring}`}
-        >
-          {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
-          {done ? "Replay" : playing ? "Pause" : shown === 1 ? "Play the call" : "Resume"}
-        </button>
-        <button type="button" onClick={() => setShown((n) => Math.min(frames.length, n + 1))} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
-          <SkipForward className="h-4 w-4" aria-hidden="true" /> Step
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setPlaying(false);
-            setShown(1);
-          }}
-          className={`${outlineBtn} h-11 md:h-9 text-slate-300`}
-        >
-          <RotateCcw className="h-4 w-4" aria-hidden="true" /> Reset
-        </button>
-      </div>
+      {/* Controls and plan share one band: spacing separates them, not another rule. */}
+      <div className="flex flex-col gap-3 border-b border-slate-800 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => (done ? restart() : setPlaying((p) => !p))}
+            className={`inline-flex items-center gap-2 rounded-md bg-accent px-3 h-11 md:h-9 text-sm font-medium text-slate-950 hover:opacity-90 ${press} ${ring}`}
+          >
+            {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
+            {done ? "Replay" : playing ? "Pause" : shown === 1 ? "Play the call" : "Resume"}
+          </button>
+          <button type="button" onClick={() => setShown((n) => Math.min(frames.length, n + 1))} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
+            <SkipForward className="h-4 w-4" aria-hidden="true" /> Step
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPlaying(false);
+              setShown(1);
+            }}
+            className={`${outlineBtn} h-11 md:h-9 text-slate-300`}
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden="true" /> Reset
+          </button>
+        </div>
 
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 px-4 py-2.5 font-mono text-[11px]">
-        <span className="text-slate-400">plan</span>
-        {current.answers.length === 0 ? (
-          <span className="text-slate-400">no application matched yet</span>
-        ) : (
-          current.answers.map((a) => (
-            <span key={a.question.id} className={`rounded border px-2 py-0.5 ${chipClass(a)}`} title={a.question.text}>
-              {a.question.id} · {chipLabel(a)}
-            </span>
-          ))
-        )}
+        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+          <span className="text-slate-400">plan</span>
+          {current.answers.length === 0 ? (
+            <span className="text-slate-400">no application matched yet</span>
+          ) : (
+            current.answers.map((a) => (
+              <span key={a.question.id} className={`rounded border px-2 py-0.5 ${chipClass(a)}`} title={a.question.text}>
+                {a.question.id} · {chipLabel(a)}
+              </span>
+            ))
+          )}
+        </div>
       </div>
 
       <ol ref={logRef} aria-live="polite" className="max-h-[55vh] overflow-y-auto px-4 py-4 space-y-3 text-sm lg:max-h-[26rem]">
@@ -221,7 +230,7 @@ const CallReplay = () => {
             <ToolLine key={i} step={step} result={result} refused={refused} />
           ) : (
             <li key={i} className={`grid grid-cols-[4rem_minmax(0,1fr)] md:grid-cols-[4.5rem_minmax(0,1fr)] gap-2 ${lineIn}`}>
-              <span className={`font-mono text-[11px] uppercase tracking-[0.18em] pt-0.5 ${step.kind === "agent" ? "text-[rgb(247_148_94)]" : "text-slate-400"}`}>
+              <span className={`font-mono text-[11px] uppercase tracking-[0.18em] pt-0.5 ${step.kind === "agent" ? "text-accent" : "text-slate-400"}`}>
                 {step.kind === "agent" ? "Nia" : "Caller"}
               </span>
               <span className={step.kind === "agent" ? "text-slate-100" : "text-slate-300"}>{step.text}</span>
@@ -229,7 +238,7 @@ const CallReplay = () => {
           )
         )}
         {done && (
-          <li className={`mt-2 rounded-lg border border-slate-800 bg-slate-900/60 p-3 font-mono text-xs leading-relaxed ${lineIn}`}>
+          <li className={`mt-2 rounded-lg bg-slate-900/60 p-3 font-mono text-xs leading-relaxed ${lineIn}`}>
             <div className="text-slate-200">
               saved record · outcome <span className="text-slate-50">{current.outcome}</span> ·{" "}
               {current.answers.filter((a) => a.recorded).length} of {current.answers.length} answers recorded
@@ -283,7 +292,7 @@ const GuardrailConsole = () => {
   const dot = <StatusDot tone={ran ? (ran.hit ? "bg-rose-400" : "bg-emerald-400") : "bg-slate-500"} />;
 
   return (
-    <div className="flex flex-col rounded-xl border border-slate-800 bg-slate-950 text-slate-200 overflow-hidden">
+    <div className={panel}>
       <PanelHead
         dot={dot}
         title={
@@ -308,7 +317,7 @@ const GuardrailConsole = () => {
                 setRan(null);
                 setText("");
               }}
-              className={`rounded px-3 h-10 md:h-7 ${tool === t ? "bg-slate-800 text-slate-100" : "text-slate-400 hover:text-slate-200"} ${ring}`}
+              className={`rounded px-3 h-10 md:h-7 ${tool === t ? "bg-slate-800 text-slate-100" : "text-slate-400 hover:text-slate-200"} ${press} ${ring}`}
             >
               {t}
             </button>
@@ -326,7 +335,7 @@ const GuardrailConsole = () => {
             {tool === "Bash" ? "Shell command" : "File path"}
           </label>
           <div className="flex min-w-0 flex-1 items-center rounded-md border border-slate-700 bg-slate-900 px-3 focus-within:border-slate-500">
-            <span aria-hidden="true" className="mr-2 font-mono text-sm text-[rgb(247_148_94)]">
+            <span aria-hidden="true" className="mr-2 font-mono text-sm text-accent">
               {tool === "Bash" ? "$" : "›"}
             </span>
             <input
@@ -351,7 +360,7 @@ const GuardrailConsole = () => {
               type="button"
               onClick={() => run(s)}
               title={s}
-              className={`max-w-full truncate rounded border border-slate-800 bg-slate-900 px-2 py-2 md:py-1 font-mono text-[11px] text-slate-400 hover:border-slate-600 hover:text-slate-200 ${ring}`}
+              className={`max-w-full truncate rounded border border-slate-800 bg-slate-900 px-2 py-2 md:py-1 font-mono text-[11px] text-slate-400 hover:border-slate-600 hover:text-slate-200 ${press} ${ring}`}
             >
               {middleTrim(s)}
             </button>
@@ -359,7 +368,7 @@ const GuardrailConsole = () => {
         </div>
       </div>
 
-      <div aria-live="polite" className="mx-4 mt-4 min-h-[9.5rem] flex-1 rounded-lg border border-slate-800 bg-black/30 p-3 font-mono text-xs leading-relaxed [overflow-wrap:anywhere]">
+      <div aria-live="polite" className="mx-4 mt-4 min-h-[9.5rem] flex-1 rounded-lg bg-slate-900/60 p-3 font-mono text-xs leading-relaxed [overflow-wrap:anywhere]">
         {ran ? (
           <>
             <div className="text-slate-400">$ guardrails.py {JSON.stringify(ran.input)}{ran.tool === "Bash" ? "" : ` ${ran.tool}`}</div>
