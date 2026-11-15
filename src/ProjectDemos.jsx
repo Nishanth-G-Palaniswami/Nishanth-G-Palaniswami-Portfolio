@@ -8,7 +8,7 @@ import { GUARDRAILS_SOURCE, checkToolCall } from "./demos/guardrails";
 // Panels are dark consoles in both themes: they pin the site's --accent to its
 // dark-theme value, so `accent` utilities inside read right on light pages too.
 const panel =
-  "flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 text-slate-200 [--accent:var(--accent-dark)]";
+  "flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950 text-slate-200 [--accent:var(--accent-dark)] lg:flex-1";
 
 // Same reason: the panels carry their own focus ring.
 const ring =
@@ -194,7 +194,7 @@ export const CallReplay = () => {
           >
             {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
             {/* "Play" alone on phones keeps the three controls on one row inside a card */}
-            {done ? "Replay" : playing ? "Pause" : shown === 1 ? <>Play<span className="hidden sm:inline"> the call</span></> : "Resume"}
+            {done ? "Replay" : playing ? "Pause" : shown === 1 ? <span>Play<span className="hidden sm:inline"> the call</span></span> : "Resume"}
           </button>
           <button type="button" onClick={() => setShown((n) => Math.min(frames.length, n + 1))} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
             <SkipForward className="h-4 w-4" aria-hidden="true" /> Step
@@ -226,7 +226,7 @@ export const CallReplay = () => {
         </div>
       </div>
 
-      <ol ref={logRef} aria-live="polite" className="max-h-[55vh] overflow-y-auto px-4 py-4 space-y-3 text-sm lg:max-h-[26rem]">
+      <ol ref={logRef} aria-live="polite" className="max-h-[55vh] overflow-y-auto px-4 py-4 space-y-3 text-sm lg:max-h-[26rem] lg:flex-1">
         {frames.slice(0, shown).map(({ step, result, refused }, i) =>
           step.kind === "tool" ? (
             <ToolLine key={i} step={step} result={result} refused={refused} />

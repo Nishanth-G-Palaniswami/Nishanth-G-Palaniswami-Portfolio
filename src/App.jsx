@@ -1477,7 +1477,7 @@ export default function Portfolio() {
               return (
                 <article
                   key={p.title}
-                  className={`rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 ${Demo ? "lg:grid lg:grid-cols-5 lg:items-start lg:gap-8" : ""}`}
+                  className={`rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 ${Demo ? "lg:grid lg:grid-cols-5 lg:gap-8" : ""}`}
                 >
                   <div className={`flex flex-col ${Demo ? "lg:col-span-2" : ""}`}>
                     {p.accolade && (
@@ -1513,8 +1513,10 @@ export default function Portfolio() {
 
                     <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
                   </div>
+                  {/* The demo column stretches to the card's height and the panel fills it, so the
+                      panel's bottom edge meets the text column's; it grows downward as a call plays. */}
                   {Demo && (
-                    <div className="mt-6 min-w-0 lg:col-span-3 lg:mt-0">
+                    <div className="mt-6 min-w-0 lg:col-span-3 lg:mt-0 lg:flex lg:flex-col">
                       <Demo />
                     </div>
                   )}
