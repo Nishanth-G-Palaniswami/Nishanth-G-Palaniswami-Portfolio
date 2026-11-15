@@ -6,7 +6,8 @@ import {
   Copy, Check, ChevronDown,
 } from "lucide-react";
 
-import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
+import { flushSync } from "react-dom";
+import { motion, AnimatePresence, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
 
 import { CallReplay, GuardrailConsole } from "./ProjectDemos";
 
@@ -405,6 +406,22 @@ const StationDot = ({ fill = "bg-white dark:bg-slate-900", className = "" }) => 
 const ROUTE_ROW = 44;
 const ROUTE_LANE_X = [8, 16];
 
+// The line starts fast and settles into the last stop. Each station appears when the
+// line reaches it, so its delay is read off the same curve.
+const ROUTE_DRAW = 1.1;
+const ROUTE_EASE = [0.25, 1, 0.5, 1];
+const easeTimeAt = ([x1, y1, x2, y2], progress) => {
+  const bez = (a, b, s) => 3 * a * s * (1 - s) ** 2 + 3 * b * s * s * (1 - s) + s ** 3;
+  let lo = 0;
+  let hi = 1;
+  for (let k = 0; k < 24; k++) {
+    const s = (lo + hi) / 2;
+    if (bez(y1, y2, s) < progress) lo = s;
+    else hi = s;
+  }
+  return bez(x1, x2, (lo + hi) / 2);
+};
+
 const routePath = (stops) =>
   stops
     .map((stop, i) => {
@@ -421,7 +438,10 @@ const routePath = (stops) =>
 
 const RouteDiagram = ({ stops, reduce }) => {
   const height = ROUTE_ROW * stops.length;
-  const stagger = stops.length > 1 ? 1.1 / (stops.length - 1) : 0;
+  // Capped at 99%: the curve's last 1% is about 2px and takes a third of the draw, so the
+  // final station would otherwise light up well after the line looks finished.
+  const arrival = (i) =>
+    stops.length > 1 ? ROUTE_DRAW * easeTimeAt(ROUTE_EASE, Math.min(i / (stops.length - 1), 0.99)) : 0;
   return (
     <div className="relative mt-5">
       <svg
@@ -440,7 +460,7 @@ const RouteDiagram = ({ stops, reduce }) => {
           strokeLinejoin="round"
           initial={reduce ? false : { pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.1, ease: "easeInOut" }}
+          transition={{ duration: ROUTE_DRAW, ease: ROUTE_EASE }}
         />
       </svg>
       <ol className="relative">
@@ -452,7 +472,7 @@ const RouteDiagram = ({ stops, reduce }) => {
               style={{ marginLeft: ROUTE_LANE_X[stop.lane] - 6 }}
               initial={reduce ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.15 + i * stagger, duration: 0.2 }}
+              transition={{ delay: arrival(i), duration: 0.2 }}
             >
               {stop.terminal ? (
                 <>
@@ -932,6 +952,25 @@ export default function Portfolio() {
     }
   }, [darkMode]);
 
+  // The whole page crossfades as one picture (View Transitions). The DOM has to change
+  // inside the callback, so the class flips there and React renders synchronously.
+  // Per-element color transitions are paused meanwhile so they don't fade a second time.
+  // Without the API, or under reduced motion, the theme switches instantly.
+  const toggleTheme = () => {
+    const next = !darkMode;
+    if (!document.startViewTransition || reduce) {
+      setDarkMode(next);
+      return;
+    }
+    const root = document.documentElement;
+    root.classList.add("theme-switching");
+    const vt = document.startViewTransition(() => {
+      root.classList.toggle("dark", next);
+      flushSync(() => setDarkMode(next));
+    });
+    vt.finished.finally(() => root.classList.remove("theme-switching"));
+  };
+
   return (
     <div
       id="top"
@@ -945,7 +984,8 @@ export default function Portfolio() {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/85 backdrop-blur">
+      {/* Phones get a solid header: the blur is the one measurable scroll cost there. */}
+      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 md:bg-white/80 md:dark:bg-slate-900/85 md:backdrop-blur">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex items-center justify-between">
           <a
             href="#top"
@@ -1008,7 +1048,7 @@ export default function Portfolio() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleTheme}
               className={`hidden sm:inline-flex items-center justify-center h-11 w-11 md:h-9 md:w-9 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               aria-pressed={darkMode}
@@ -1048,12 +1088,17 @@ export default function Portfolio() {
           </div>
         </div>
 
-        {/* Mobile nav drawer */}
-        {mobileNavOpen && (
-          <nav
+        {/* Mobile nav drawer: it overlays the page instead of pushing it down, so its
+            exit fade never changes the page height under a link's jump. */}
+        <AnimatePresence>
+          {mobileNavOpen && (
+          <motion.nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="lg:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            className="lg:hidden absolute inset-x-0 top-full border-y border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg shadow-slate-900/10 dark:shadow-black/40"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0, transition: reduce ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] } }}
+            exit={{ opacity: 0, y: -8, transition: reduce ? { duration: 0 } : { duration: 0.15, ease: "easeIn" } }}
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
@@ -1073,7 +1118,7 @@ export default function Portfolio() {
               <li className="mt-1 pt-2 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
-                  onClick={() => setDarkMode(!darkMode)}
+                  onClick={toggleTheme}
                   className={`w-full flex items-center justify-between px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
                   aria-pressed={darkMode}
                 >
@@ -1091,8 +1136,9 @@ export default function Portfolio() {
                 </button>
               </li>
             </ul>
-          </nav>
-        )}
+          </motion.nav>
+          )}
+        </AnimatePresence>
         {/* Scroll progress where the rail does not fit */}
         <motion.span
           aria-hidden="true"

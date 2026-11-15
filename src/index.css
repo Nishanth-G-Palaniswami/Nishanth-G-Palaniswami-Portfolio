@@ -33,3 +33,12 @@ html.dark { background-color: rgb(15 23 42); } /* slate-900 */
   --accent: var(--accent-light);
 }
 .dark { --accent: var(--accent-dark); }
+
+/* Theme switch: the page crossfades as one picture. While it runs, per-element
+ * color transitions are paused so nothing fades twice.
+ */
+.theme-switching *, .theme-switching *::before, .theme-switching *::after { transition: none !important; }
+::view-transition-old(root), ::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease-out;
+}
