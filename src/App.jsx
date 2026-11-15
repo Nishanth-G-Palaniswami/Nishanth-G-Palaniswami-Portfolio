@@ -503,11 +503,12 @@ const accoladeClasses = (tone) =>
       ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20"
       : "bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700";
 
-// Strip-map rail (1600px and wider). The active station is the last section whose
-// top has crossed the activation line (header height + 32px); the last station wins
-// at the end of the page so short closing sections still light up. The fill is a
-// piecewise-linear map of scrollY onto the evenly spaced stations.
-const SectionRail = ({ items }) => {
+// Which section the reader is in. The active section is the last one whose top has
+// crossed the activation line (header height + 32px); the last one wins at the end of
+// the page so short closing sections still light up. `fill` is a piecewise-linear map
+// of scrollY onto evenly spaced stations. The header nav and the rail both read it,
+// so they can never disagree.
+const useSectionTracker = (items) => {
   const { scrollY } = useScroll();
   const fill = useMotionValue(0);
   const [active, setActive] = useState(-1);
@@ -549,6 +550,11 @@ const SectionRail = ({ items }) => {
 
   useMotionValueEvent(scrollY, "change", update);
 
+  return { active, fill };
+};
+
+// Strip-map rail (1600px and wider), driven by useSectionTracker.
+const SectionRail = ({ items, active, fill }) => {
   return (
     <nav aria-label="Section progress" className="hidden rail:block fixed left-4 top-1/2 z-20 -translate-y-1/2">
       <div className="relative">
@@ -864,6 +870,8 @@ export default function Portfolio() {
   const [sailDetailsOpen, setSailDetailsOpen] = useState(false);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
+  const { active: railActive, fill: railFill } = useSectionTracker(RAIL_ITEMS);
+  const currentHref = railActive >= 0 ? RAIL_ITEMS[railActive].href : null;
 
   // Deep links: the browser scrolls to the fragment before React has rendered the
   // target, so a shared /#projects or /#detours link lands at the top. Scroll once
@@ -970,15 +978,32 @@ export default function Portfolio() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex rail:hidden items-center gap-4 text-sm" aria-label="Primary">
-            {NAV_ITEMS.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className={`px-1 py-1 rounded hover:underline underline-offset-4 ${focusRing}`}
-              >
-                {n.label}
-              </a>
-            ))}
+            {NAV_ITEMS.map((n) => {
+              const current = n.href === currentHref;
+              return (
+                <a
+                  key={n.href}
+                  href={n.href}
+                  aria-current={current ? "location" : undefined}
+                  className={`relative px-1 py-1 rounded transition-colors duration-150 ${
+                    current
+                      ? "text-slate-900 dark:text-white"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  } ${focusRing}`}
+                >
+                  {n.label}
+                  {/* One bar, shared by layoutId, so it slides from the last section to this one. */}
+                  {current && (
+                    <motion.span
+                      layoutId="nav-current"
+                      aria-hidden="true"
+                      className="absolute inset-x-1 -bottom-0.5 h-0.5 rounded-full bg-accent"
+                      transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 520, damping: 42 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -1036,7 +1061,10 @@ export default function Portfolio() {
                   <a
                     href={n.href}
                     onClick={() => setMobileNavOpen(false)}
-                    className={`block px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
+                    aria-current={n.href === currentHref ? "location" : undefined}
+                    className={`block px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                      n.href === currentHref ? "text-accent font-medium" : ""
+                    } ${focusRing}`}
                   >
                     {n.label}
                   </a>
@@ -1073,7 +1101,7 @@ export default function Portfolio() {
         />
       </header>
 
-      <SectionRail items={RAIL_ITEMS} />
+      <SectionRail items={RAIL_ITEMS} active={railActive} fill={railFill} />
 
       <main id="main" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-12 md:py-20">
         {/* Hero */}

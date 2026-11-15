@@ -134,6 +134,50 @@ export const CallReplay = () => {
   const [playing, setPlaying] = useState(false);
   const firstRefusal = useMemo(() => frames.findIndex((f) => f.refused), [frames]);
   const logRef = useRef(null);
+  const panelRef = useRef(null);
+  // Autoplay: the call starts once, the first time the panel is mostly on screen, and
+  // pauses while it is scrolled away so nobody comes back to a finished call. Any
+  // press of Play, Step or Reset hands control to the reader. Never with reduced motion.
+  const auto = useRef({ armed: true, pausedByScroll: false });
+  const playingRef = useRef(playing);
+  useEffect(() => {
+    playingRef.current = playing;
+  }, [playing]);
+  const takeControl = () => {
+    auto.current.armed = false;
+    auto.current.pausedByScroll = false;
+  };
+
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el || !("IntersectionObserver" in window)) return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        // Pixels, not ratio: the panel grows as it plays, so a reader watching its top
+        // half would otherwise "leave" it. Two thresholds so it never flickers:
+        // start or resume when half the panel (or 40% of the screen) is visible,
+        // pause only once less than 120px of it is left on screen.
+        const a = auto.current;
+        const visible = entry.intersectionRect.height;
+        const enough = Math.min(entry.boundingClientRect.height * 0.5, window.innerHeight * 0.4);
+        if (visible >= enough) {
+          if (a.armed && !prefersReducedMotion()) {
+            a.armed = false;
+            setPlaying(true);
+          } else if (a.pausedByScroll) {
+            a.pausedByScroll = false;
+            setPlaying(true);
+          }
+        } else if (visible < Math.min(120, enough) && playingRef.current) {
+          a.pausedByScroll = true;
+          setPlaying(false);
+        }
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const done = shown >= frames.length;
   const current = frames[shown - 1].state;
 
@@ -167,7 +211,7 @@ export const CallReplay = () => {
   );
 
   return (
-    <div className={panel} data-demo="replay">
+    <div ref={panelRef} className={panel} data-demo="replay">
       <PanelHead
         dot={dot}
         title={
@@ -189,19 +233,27 @@ export const CallReplay = () => {
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => (done ? restart() : setPlaying((p) => !p))}
+            onClick={() => {
+              takeControl();
+              if (done) restart();
+              else setPlaying((p) => !p);
+            }}
             className={`inline-flex items-center gap-2 rounded-md bg-accent px-3 h-11 md:h-9 text-sm font-medium text-slate-950 hover:opacity-90 ${press} ${ring}`}
           >
             {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
             {/* "Play" alone on phones keeps the three controls on one row inside a card */}
             {done ? "Replay" : playing ? "Pause" : shown === 1 ? <span>Play<span className="hidden sm:inline"> the call</span></span> : "Resume"}
           </button>
-          <button type="button" onClick={() => setShown((n) => Math.min(frames.length, n + 1))} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
+          <button type="button" onClick={() => {
+              takeControl();
+              setShown((n) => Math.min(frames.length, n + 1));
+            }} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
             <SkipForward className="h-4 w-4" aria-hidden="true" /> Step
           </button>
           <button
             type="button"
             onClick={() => {
+              takeControl();
               setPlaying(false);
               setShown(1);
             }}
