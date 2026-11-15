@@ -193,7 +193,8 @@ export const CallReplay = () => {
             className={`inline-flex items-center gap-2 rounded-md bg-accent px-3 h-11 md:h-9 text-sm font-medium text-slate-950 hover:opacity-90 ${press} ${ring}`}
           >
             {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
-            {done ? "Replay" : playing ? "Pause" : shown === 1 ? "Play the call" : "Resume"}
+            {/* "Play" alone on phones keeps the three controls on one row inside a card */}
+            {done ? "Replay" : playing ? "Pause" : shown === 1 ? <>Play<span className="hidden sm:inline"> the call</span></> : "Resume"}
           </button>
           <button type="button" onClick={() => setShown((n) => Math.min(frames.length, n + 1))} disabled={done} className={`${outlineBtn} h-11 md:h-9 text-slate-300`}>
             <SkipForward className="h-4 w-4" aria-hidden="true" /> Step
@@ -204,9 +205,10 @@ export const CallReplay = () => {
               setPlaying(false);
               setShown(1);
             }}
-            className={`${outlineBtn} h-11 md:h-9 text-slate-300`}
+            className={`${outlineBtn} h-11 min-w-[44px] md:h-9 text-slate-300`}
           >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" /> Reset
+            {/* Icon-only on phones so the controls fit one row in a card; the label stays for screen readers. */}
+            <RotateCcw className="h-4 w-4" aria-hidden="true" /> <span className="sr-only sm:not-sr-only">Reset</span>
           </button>
         </div>
 
@@ -359,7 +361,7 @@ export const GuardrailConsole = () => {
           </button>
         </form>
 
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-2 md:gap-1.5">
           {SAMPLES[tool].map((s) => (
             <button
               key={s}
