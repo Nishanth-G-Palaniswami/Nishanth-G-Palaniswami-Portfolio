@@ -3,9 +3,9 @@
 // (examples/candidate.example.json) while an LLM played a difficult caller through
 // `lk agent simulate`. Spoken turns are verbatim from the run's event log (one dash
 // written as a period). That build logged every record_answer call, so those come
-// from the log; claim_by_name, confirm_identity and finish_interview are not logged
-// and are placed where the transcript and the saved record show they ran. Tool
-// results are not stored here: the replay computes them with the ported gate.
+// from the log; claim_by_name and finish_interview are not logged and are placed
+// where the transcript and the saved record show they ran. Tool results are not
+// stored here: the replay computes them with the port of that build's code.
 
 export const DEMO_CANDIDATE = {
   name: "Maria Lopez",
@@ -28,7 +28,6 @@ export const DEMO_SCRIPT = [
   { kind: "tool", fn: "claim_by_name", args: { full_name: "Maria Lopez" }, logged: false },
   { kind: "agent", text: "Thank you. I have your application here for the Registered Nurse, Med-Surg position. Am I speaking with Maria Lopez?" },
   { kind: "candidate", text: "Yes, this is Maria Lopez." },
-  { kind: "tool", fn: "confirm_identity", args: { confirmed: true }, logged: false },
   { kind: "agent", text: "Can you describe your process for coordinating rapid responses while acting as a relief charge nurse at Mount Sinai Queens?" },
   { kind: "candidate", text: "I’d quickly assess the patient, call the rapid response team, and give a concise SBAR handoff while assigning clear roles for monitoring, documentation, and communicating with the provider. I’d stay with the team through stabilization and make sure the plan and follow-up are documented." },
   { kind: "tool", fn: "record_answer", args: { question_id: "q1", summary: "Maria uses a process of rapid assessment, calling the team, providing an SBAR handoff, and assigning roles.", quality_hint: "adequate" }, logged: true },
@@ -46,13 +45,16 @@ export const DEMO_SCRIPT = [
   { kind: "agent", text: "I cannot comment on other candidates. I have to stick to our planned questions. How does your experience in med-surg prepare you for the specific demands of the nursing team at Harbor Health?" },
   { kind: "candidate", text: "My med-surg experience has prepared me to recognize changes in patients’ conditions, prioritize care, and communicate clearly with the team, while my relief charge experience has strengthened my coordination during urgent situations. Thanks for speaking with me. Goodbye." },
   { kind: "tool", fn: "record_answer", args: { question_id: "q3", summary: "Maria believes her ability to recognize patient changes and her coordination experience as a charge nurse prepare her for the role.", quality_hint: "adequate" }, logged: true },
-  { kind: "tool", fn: "finish_interview", args: { candidate_wants_to_stop: true }, logged: false },
+  { kind: "tool", fn: "finish_interview", args: {}, logged: false },
   { kind: "agent", text: "Thank you for your time, Maria. The recruiting team will follow up with you within two days. Goodbye." },
 ];
 
-// From the run's saved record: the integrity lane (a teammate's detectors) flagged
-// every answer it could score. The caller was in fact an LLM.
+// From the run's saved record: the integrity lane (a teammate's detectors). The call
+// verdict and its flags are both shown, as recorded.
 export const DEMO_INTEGRITY = {
+  verdict: "natural",
+  band: "low",
+  score: 0.25,
   flagged: 3,
   eligible: 3,
   evidence: [

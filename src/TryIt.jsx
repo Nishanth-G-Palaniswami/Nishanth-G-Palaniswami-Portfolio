@@ -104,7 +104,6 @@ const CallReplay = () => {
             </span>
           ))
         )}
-        {current.identityConfirmed && <span className="rounded border border-emerald-500/40 px-2 py-0.5 text-emerald-300">identity ok</span>}
       </div>
 
       <ol ref={logRef} aria-live="polite" className="h-[22rem] md:h-[26rem] overflow-y-auto px-4 py-4 space-y-3 text-sm">
@@ -137,8 +136,9 @@ const CallReplay = () => {
               {current.answers.filter((a) => a.recorded).length} of {current.answers.length} answers recorded
             </div>
             <div className="mt-2 text-slate-400">
-              integrity lane (a teammate&rsquo;s detectors): flagged {DEMO_INTEGRITY.flagged} of {DEMO_INTEGRITY.eligible} scored
-              answers. The caller was an LLM.
+              integrity lane (a teammate&rsquo;s detectors): call verdict {DEMO_INTEGRITY.verdict} (score{" "}
+              {DEMO_INTEGRITY.score}, {DEMO_INTEGRITY.band} band), with flags on {DEMO_INTEGRITY.flagged} of{" "}
+              {DEMO_INTEGRITY.eligible} scored answers. The caller was an LLM.
             </div>
             <ul className="mt-1 text-slate-500">
               {DEMO_INTEGRITY.evidence.map((e) => (
@@ -318,9 +318,10 @@ export default function TryIt() {
   return (
     <>
       <p className="-mt-2 mb-8 max-w-3xl text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
-        Two systems I built, running in your browser. The call is a real test run from the hackathon: my agent
-        interviewing the repo&rsquo;s fictional sample nurse while an LLM played a difficult caller. Every tool result is
-        computed live by the agent&rsquo;s gate logic, ported from the source.
+        Two systems, running in your browser. On the left, a real test run from the voice agent hackathon, where my
+        team of three built InterVoiceAI on the Take2 starter: the interviewer I wrote, questioning the repo&rsquo;s
+        fictional sample nurse while an LLM played a difficult caller. Each tool result is computed by the
+        agent&rsquo;s own logic, ported from the commit that ran. On the right, my Second Brain&rsquo;s guardrails.
       </p>
       {/* min-w-0 everywhere: long tool calls and URLs must wrap, never widen the column */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">

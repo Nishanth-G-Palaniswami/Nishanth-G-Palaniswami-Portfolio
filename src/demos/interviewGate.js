@@ -1,11 +1,14 @@
-// The InterVoiceAI interview gates, ported from src/my_agent.py
-// (github.com/Nishanth-G-Palaniswami/InterVoiceAI). The decisions and the strings
-// each tool returns to the model are the agent's own; only the Python is now JS.
-// Every function is pure: it takes a call state and returns the next state plus
-// the tool result the model would read.
+// The InterVoiceAI interview tools, ported from src/my_agent.py as it stood when the
+// replayed run happened: commit c4601cd (2026-11-06 22:43 UTC) on the demo branch of
+// github.com/Nishanth-G-Palaniswami/InterVoiceAI. The decisions and the strings each
+// tool returns to the model are the agent's own; only the Python is now JS. Later
+// commits added confirm_identity and made finish_interview refuse while answers are
+// pending; neither existed in this run, so neither is here.
+// Every function is pure: it takes a call state and returns the next state plus the
+// tool result the model would read.
 
 export const AGENT_SOURCE =
-  "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI/blob/main/src/my_agent.py";
+  "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI/blob/c4601cd21077a31e5f5ea0ebc8e10665b89b5551/src/my_agent.py";
 
 const FOLLOW_UP =
   "Not recorded yet. Ask one short follow-up about a specific detail the candidate " +
@@ -16,55 +19,26 @@ const FOLLOW_UP =
 const pyRepr = (s) =>
   s.includes("'") && !s.includes('"') ? `"${s}"` : `'${s.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
 
-const planAnswers = (plan) =>
-  plan.map((question) => ({ question, followUpRequested: false, recorded: false, qualityHint: "" }));
-
 /** An unknown caller: no application and no plan until claim_by_name finds one. */
-export const startCall = () => ({
-  answers: [],
-  userMessages: 0,
-  identityBaseline: 0,
-  identityConfirmed: null,
-  outcome: null,
-});
+export const startCall = () => ({ answers: [], outcome: null });
 
-/**
- * claim_by_name when the name matches an application that already has a plan. The
- * identity check then counts only candidate turns after this point.
- */
-export const claimByName = (state, candidate, plan) => ({
-  state: { ...state, answers: planAnswers(plan), identityBaseline: state.userMessages },
-  refused: false,
-  result:
-    `Found ${candidate.name}, applying for ${candidate.role}. Ask them to confirm that is ` +
-    "them, wait for the answer, then call confirm_identity.",
-});
-
-/** A candidate turn landed in the session history. */
-export const candidateSpoke = (state) => ({ ...state, userMessages: state.userMessages + 1 });
-
-const cloneAnswers = (state) => state.answers.map((a) => ({ ...a }));
-
-export const confirmIdentity = (state, confirmed) => {
-  if (state.userMessages <= state.identityBaseline) {
-    return {
-      state,
-      refused: true,
-      result:
-        "Not yet: the candidate has not answered the identity check. Ask them to " +
-        "confirm, wait for the answer, then call confirm_identity.",
-    };
-  }
-  const next = { ...state, identityConfirmed: confirmed };
-  if (!confirmed || state.answers.length === 0) {
-    return { state: next, refused: false, result: "Ask for the full name they applied with, then call claim_by_name." };
-  }
-  const first = state.answers[0].question;
-  return { state: next, refused: false, result: `Identity confirmed. Ask ${first.id} exactly as written: ${first.text}` };
+/** claim_by_name when the name matches an application that already has a plan. */
+export const claimByName = (state, candidate, plan) => {
+  const first = plan[0];
+  return {
+    state: {
+      ...state,
+      answers: plan.map((question) => ({ question, followUpRequested: false, recorded: false, qualityHint: "" })),
+    },
+    refused: false,
+    result:
+      `Found ${candidate.name}, applying for ${candidate.role}. Confirm that is them, ` +
+      `then ask ${first.id} exactly as written: ${first.text}`,
+  };
 };
 
 export const recordAnswer = (state, questionId, qualityHint) => {
-  const answers = cloneAnswers(state);
+  const answers = state.answers.map((a) => ({ ...a }));
   const index = answers.findIndex((a) => a.question.id === questionId);
   if (index < 0) {
     return {
@@ -90,40 +64,18 @@ export const recordAnswer = (state, questionId, qualityHint) => {
   };
 };
 
-/**
- * Plays one script step against the gate. Candidate turns only advance the
- * history; tool steps return the result the model would have read.
- */
-export const applyStep = (state, step, { candidate, plan }) => {
-  if (step.kind === "candidate") return { state: candidateSpoke(state) };
-  if (step.kind !== "tool") return { state };
-  const { fn, args } = step;
-  if (fn === "claim_by_name") return claimByName(state, candidate, plan);
-  if (fn === "confirm_identity") return confirmIdentity(state, args.confirmed);
-  if (fn === "record_answer") return recordAnswer(state, args.question_id, args.quality_hint);
-  if (fn === "finish_interview") return finishInterview(state, args.candidate_wants_to_stop);
-  throw new Error(`unknown tool ${fn}`);
-};
+/** finish_interview in this build: always saves, "completed" only if every answer is recorded. */
+export const finishInterview = (state) => ({
+  state: { ...state, outcome: state.answers.every((a) => a.recorded) ? "completed" : "stopped" },
+  refused: false,
+  result: "Saved. Thank the candidate, say the recruiting team will follow up within two days, then end the call.",
+});
 
-export const finishInterview = (state, candidateWantsToStop) => {
-  const pending = state.answers.filter((a) => !a.recorded);
-  if (pending.length > 0 && !candidateWantsToStop) {
-    const first = pending[0];
-    const step = first.followUpRequested
-      ? "ask its follow-up, then call record_answer again"
-      : "ask it, then call record_answer";
-    return {
-      state,
-      refused: true,
-      result:
-        `Not finished: ${first.question.id} is not recorded yet. ` +
-        `${step[0].toUpperCase()}${step.slice(1)}: ${first.question.text} ` +
-        "Call finish_interview with candidate_wants_to_stop=true only if the candidate asked to stop.",
-    };
-  }
-  return {
-    state: { ...state, outcome: pending.length ? "stopped" : "completed" },
-    refused: false,
-    result: "Saved. Thank the candidate, say the recruiting team will follow up within two days, then end the call.",
-  };
+/** Plays one script step. Spoken turns change nothing; tool steps return their result. */
+export const applyStep = (state, step, { candidate, plan }) => {
+  if (step.kind !== "tool") return { state };
+  if (step.fn === "claim_by_name") return claimByName(state, candidate, plan);
+  if (step.fn === "record_answer") return recordAnswer(state, step.args.question_id, step.args.quality_hint);
+  if (step.fn === "finish_interview") return finishInterview(state);
+  throw new Error(`unknown tool ${step.fn}`);
 };
