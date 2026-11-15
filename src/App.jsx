@@ -301,13 +301,14 @@ const PROJECTS = [
   },
   {
     title: "MetroScan · NYC Subway Analytics",
+    compact: true,
     accolade: { label: "Data Engineering · 2024", tone: "slate" },
     summary:
       "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
     stackLine: "PySpark · Spark MLlib · Parquet",
     impact: [
-      "110M raw rows engineered into a 16M-row hourly feature table",
       "GBT RMSE 104 on hourly ridership prediction (117 for linear regression)",
+      "110M raw rows engineered into a 16M-row hourly feature table",
       "Detected post-COVID ridership recovery + 8 AM / 5 PM peaks",
       "PCA + KMeans clustered stations into usage typologies",
     ],
