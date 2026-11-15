@@ -70,10 +70,13 @@ const buildFrames = () => {
   });
 };
 
-// How long the line on screen stays before the next one: skim pace, about five
-// seconds to the first refusal, and a held beat on every refusal so it registers.
-const holdFor = ({ step, refused }) =>
-  step.kind === "tool" ? (refused ? 1800 : 450) : Math.min(1500, 250 + 5 * step.text.length);
+// How long the line on screen stays before the next one. Skim pace until the
+// first refusal (about four seconds in), reading pace after it, and a held beat
+// on every refusal so it registers.
+const holdFor = ({ step, refused }, lead) => {
+  if (step.kind === "tool") return refused ? 2000 : lead ? 450 : 900;
+  return lead ? Math.min(1100, 200 + 4 * step.text.length) : Math.min(4000, 600 + 11 * step.text.length);
+};
 
 const chipClass = (a) =>
   a.recorded
@@ -123,8 +126,8 @@ const CallReplay = () => {
   const frames = useMemo(buildFrames, []);
   const [shown, setShown] = useState(1);
   const [playing, setPlaying] = useState(false);
+  const firstRefusal = useMemo(() => frames.findIndex((f) => f.refused), [frames]);
   const logRef = useRef(null);
-  const lastCount = useRef(0);
   const done = shown >= frames.length;
   const current = frames[shown - 1].state;
 
@@ -133,26 +136,15 @@ const CallReplay = () => {
       if (done) setPlaying(false);
       return undefined;
     }
-    const t = setTimeout(() => setShown((n) => n + 1), holdFor(frames[shown - 1]));
+    const t = setTimeout(() => setShown((n) => n + 1), holdFor(frames[shown - 1], shown - 1 < firstRefusal));
     return () => clearTimeout(t);
-  }, [playing, shown, done, frames]);
+  }, [playing, shown, done, frames, firstRefusal]);
 
-  // Wide screens: the log is its own scroll box; keep its end in view.
-  // Narrower: the log grows in the page; follow the newest line only while the
-  // reader is watching the end of it, never pull them back from elsewhere.
+  // The log grows with the call up to its cap, then scrolls inside the panel,
+  // so the controls stay on screen with it. Keep its end in view.
   useEffect(() => {
     const el = logRef.current;
-    if (!el) return;
-    const before = lastCount.current;
-    lastCount.current = el.children.length;
-    if (el.children.length <= before || before === 0) return;
-    const behavior = prefersReducedMotion() ? "auto" : "smooth";
-    if (window.matchMedia("(min-width: 1024px)").matches) {
-      el.scrollTo({ top: el.scrollHeight, behavior });
-      return;
-    }
-    const r = el.children[before - 1].getBoundingClientRect();
-    if (r.top < window.innerHeight && r.bottom > 0) el.lastElementChild.scrollIntoView({ block: "nearest", behavior });
+    if (el && shown > 1) el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }, [shown]);
 
   const restart = () => {
@@ -223,7 +215,7 @@ const CallReplay = () => {
         )}
       </div>
 
-      <ol ref={logRef} aria-live="polite" className="px-4 py-4 space-y-3 text-sm lg:max-h-[26rem] lg:overflow-y-auto">
+      <ol ref={logRef} aria-live="polite" className="max-h-[55vh] overflow-y-auto px-4 py-4 space-y-3 text-sm lg:max-h-[26rem]">
         {frames.slice(0, shown).map(({ step, result, refused }, i) =>
           step.kind === "tool" ? (
             <ToolLine key={i} step={step} result={result} refused={refused} />
@@ -296,7 +288,8 @@ const GuardrailConsole = () => {
         dot={dot}
         title={
           <>
-            Second Brain<span className="hidden sm:inline text-slate-400"> · pre-tool</span> guardrails
+            {/* The file link beside it already says guardrails; the full name only where the column fits it. */}
+            Second Brain<span className="hidden sm:inline lg:hidden xl:inline text-slate-400"> · pre-tool guardrails</span>
           </>
         }
         file="guardrails.py"
