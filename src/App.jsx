@@ -6,7 +6,11 @@ import {
   Copy, Check, ChevronDown,
 } from "lucide-react";
 
-import { motion, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
+import { flushSync } from "react-dom";
+import { motion, AnimatePresence, useReducedMotion, useScroll, useMotionValue, useMotionValueEvent, useTransform, useInView } from "framer-motion";
+
+import { CallReplay, GuardrailConsole } from "./ProjectDemos";
+import { PhotoButton } from "./PhotoViewer";
 
 const PROFILE = {
   name: "Nishanth G Palaniswami",
@@ -84,6 +88,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 55%",
     alt: "Hiking: standing arms wide on a rock ledge above the Grand Canyon",
+    post: {
+      place: "Grand Canyon, Arizona",
+      text: ["How cool was the Grand Canyon?"],
+      notes: [
+        "277 river miles long and more than a mile deep.",
+        "The oldest rocks at the bottom are up to about 1.8 billion years old.",
+      ],
+    },
   },
   {
     activity: "Kayaking",
@@ -94,6 +106,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 85%",
     alt: "Kayaking: paddling a yellow kayak below sandstone cliffs on Lake Powell",
+    post: {
+      place: "Lake Powell, Arizona",
+      text: ["Down at water level, the sandstone walls look even taller."],
+      notes: [
+        "Lake Powell is a reservoir: Glen Canyon Dam backed the Colorado River up 186 miles.",
+        "When full, its shoreline runs about 1,960 miles, longer than the mainland US Pacific coast.",
+      ],
+    },
   },
   {
     activity: "Skiing",
@@ -104,6 +124,14 @@ const HOBBIES = [
     height: 1024,
     position: "50% 60%",
     alt: "Skiing: heading down a groomed run at Hunter Mountain in the Catskills",
+    post: {
+      place: "Hunter Mountain, Catskills",
+      text: ["Catskills snow day at Hunter."],
+      notes: [
+        "Hunter's summit is 4,040 ft, the second-highest peak in the Catskills after Slide Mountain.",
+        "The ski area drops about 1,600 vertical feet from top to base.",
+      ],
+    },
   },
 ];
 
@@ -213,6 +241,9 @@ const EXPERIENCE = [
   },
 ];
 
+// Running demos, keyed by a project's `widget`.
+const DEMOS = { replay: CallReplay, guardrails: GuardrailConsole };
+
 const PROJECTS = [
   {
     title: "Second Brain · Personal Agentic Co-Pilot",
@@ -232,6 +263,20 @@ const PROJECTS = [
     },
   },
   {
+    title: "InterVoiceAI · Resume-Grounded Phone Interviewer",
+    widget: "replay",
+    accolade: { label: "Hackathon · Winning team · 2026", tone: "blue" },
+    summary:
+      "Phone interviewer that asks questions drawn from the caller's resume and writes a recruiter-only record with integrity signals. Team of three, one evening, on the Take2 hackathon starter; I built the interviewer and the call record.",
+    stackLine: "Python · LiveKit Agents · FastAPI · pytest",
+    impact: [
+      "Interview rules live in code, not the prompt: no answer is recorded until the agent asks an unscripted follow-up",
+    ],
+    links: {
+      github: "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI",
+    },
+  },
+  {
     title: "Census Trade Warehouse · Orchestrated ELT",
     accolade: { label: "Data Engineering · 2026", tone: "slate" },
     summary:
@@ -245,20 +290,6 @@ const PROJECTS = [
     ],
     links: {
       github: "https://github.com/Nishanth-G-Palaniswami/census-trade-warehouse",
-    },
-  },
-  {
-    title: "InterVoiceAI · Resume-Grounded Phone Interviewer",
-    compact: true,
-    accolade: { label: "Hackathon · Winning team · 2026", tone: "blue" },
-    summary:
-      "Phone interviewer that asks questions drawn from the caller's resume and writes a recruiter-only record with integrity signals. Team of three, one evening, on the Take2 hackathon starter; I built the interviewer and the call record.",
-    stackLine: "Python · LiveKit Agents · FastAPI · pytest",
-    impact: [
-      "Interview rules live in code, not the prompt: no answer is recorded until the agent asks an unscripted follow-up",
-    ],
-    links: {
-      github: "https://github.com/Nishanth-G-Palaniswami/InterVoiceAI",
     },
   },
   {
@@ -295,13 +326,14 @@ const PROJECTS = [
   },
   {
     title: "MetroScan · NYC Subway Analytics",
+    compact: true,
     accolade: { label: "Data Engineering · 2024", tone: "slate" },
     summary:
       "PySpark pipeline engineering a 110M-row raw MTA ridership feed (2020–2024) into a 16M-row hourly feature table, built in a 2-person agile team. Modeled delay-like patterns, clustered stations by usage, flagged disruption events with rolling-window anomaly detection.",
     stackLine: "PySpark · Spark MLlib · Parquet",
     impact: [
-      "110M raw rows engineered into a 16M-row hourly feature table",
       "GBT RMSE 104 on hourly ridership prediction (117 for linear regression)",
+      "110M raw rows engineered into a 16M-row hourly feature table",
       "Detected post-COVID ridership recovery + 8 AM / 5 PM peaks",
       "PCA + KMeans clustered stations into usage typologies",
     ],
@@ -346,75 +378,6 @@ const PROJECTS = [
     },
   },
 ];
-
-// Guardrail playground: a client-side mirror of the five security boundaries in
-// the second brain's USER.md. First matching rule wins; no match means the real
-// PreToolUse hooks would let the call through.
-const GUARDRAILS = [
-  {
-    boundary: "Boundary 1 · outbound messages",
-    verdict: "draft-only",
-    test: /\b(send|reply|respond|email|e-mail|message|dm|slack)\b/i,
-    then: "Written to drafts/active/ for review. Nothing leaves without a human pressing send.",
-  },
-  {
-    boundary: "Boundary 2 · social posting",
-    verdict: "blocked",
-    test: /\b(tweet|post|linkedin|twitter|instagram|facebook|social)\b/i,
-    then: "Refused before the tool runs. The agent never posts on my behalf.",
-  },
-  {
-    boundary: "Boundary 3 · money",
-    verdict: "blocked",
-    test: /\b(pay|payment|charge|purchase|buy|stripe|paypal|billing|invoice|wire)\b/i,
-    then: "Refused. No financial data, no purchases, no exceptions.",
-  },
-  {
-    boundary: "Boundary 4 · deletion",
-    verdict: "blocked",
-    test: /\b(rm|del|delete|remove|drop|trash|erase|purge|wipe)\b|--force|-D\b/i,
-    then: "Refused. Deletes and force pushes are mine to run.",
-  },
-  {
-    boundary: "Boundary 5 · production",
-    verdict: "blocked",
-    test: /\b(push|merge|deploy|release|publish|railway up|supabase db push|docker push|vercel)\b/i,
-    then: "Refused. The agent prepares the commit; I push.",
-  },
-  {
-    boundary: "Read scope",
-    verdict: "allowed",
-    test: /\b(read|list|search|find|summarize|summarise|show|check|status|inbox|calendar|what|who|when)\b/i,
-    then: "Runs. Reading Gmail, Slack, GitHub, and Calendar is inside the advisor's lane.",
-  },
-];
-
-const GUARDRAIL_FALLBACK = {
-  boundary: "No rule matched",
-  verdict: "allowed",
-  then: "Runs. The hooks only block what matches a boundary.",
-};
-
-const GUARDRAIL_EXAMPLES = [
-  "reply to the recruiter",
-  "post this on LinkedIn",
-  "pay the invoice",
-  "rm -rf dist",
-  "git push origin main",
-  "summarize my inbox",
-];
-
-const GUARDRAIL_SEVERITY = { blocked: 2, "draft-only": 1, allowed: 0 };
-
-const evaluateGuardrail = (text) => {
-  const t = text.trim();
-  if (!t) return null;
-  const matches = GUARDRAILS.filter((rule) => rule.test.test(t));
-  if (matches.length === 0) return GUARDRAIL_FALLBACK;
-  return matches.reduce((worst, rule) =>
-    GUARDRAIL_SEVERITY[rule.verdict] > GUARDRAIL_SEVERITY[worst.verdict] ? rule : worst
-  );
-};
 
 // Career route for the hero: lane 0 is school, lane 1 is work, so the 45-degree
 // jogs in the line mean something. Facts mirror Education and Experience below.
@@ -469,6 +432,22 @@ const StationDot = ({ fill = "bg-white dark:bg-slate-900", className = "" }) => 
 const ROUTE_ROW = 44;
 const ROUTE_LANE_X = [8, 16];
 
+// The line starts fast and settles into the last stop. Each station appears when the
+// line reaches it, so its delay is read off the same curve.
+const ROUTE_DRAW = 1.1;
+const ROUTE_EASE = [0.25, 1, 0.5, 1];
+const easeTimeAt = ([x1, y1, x2, y2], progress) => {
+  const bez = (a, b, s) => 3 * a * s * (1 - s) ** 2 + 3 * b * s * s * (1 - s) + s ** 3;
+  let lo = 0;
+  let hi = 1;
+  for (let k = 0; k < 24; k++) {
+    const s = (lo + hi) / 2;
+    if (bez(y1, y2, s) < progress) lo = s;
+    else hi = s;
+  }
+  return bez(x1, x2, (lo + hi) / 2);
+};
+
 const routePath = (stops) =>
   stops
     .map((stop, i) => {
@@ -485,7 +464,10 @@ const routePath = (stops) =>
 
 const RouteDiagram = ({ stops, reduce }) => {
   const height = ROUTE_ROW * stops.length;
-  const stagger = stops.length > 1 ? 1.1 / (stops.length - 1) : 0;
+  // Capped at 99%: the curve's last 1% is about 2px and takes a third of the draw, so the
+  // final station would otherwise light up well after the line looks finished.
+  const arrival = (i) =>
+    stops.length > 1 ? ROUTE_DRAW * easeTimeAt(ROUTE_EASE, Math.min(i / (stops.length - 1), 0.99)) : 0;
   return (
     <div className="relative mt-5">
       <svg
@@ -504,7 +486,7 @@ const RouteDiagram = ({ stops, reduce }) => {
           strokeLinejoin="round"
           initial={reduce ? false : { pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.1, ease: "easeInOut" }}
+          transition={{ duration: ROUTE_DRAW, ease: ROUTE_EASE }}
         />
       </svg>
       <ol className="relative">
@@ -516,7 +498,7 @@ const RouteDiagram = ({ stops, reduce }) => {
               style={{ marginLeft: ROUTE_LANE_X[stop.lane] - 6 }}
               initial={reduce ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.15 + i * stagger, duration: 0.2 }}
+              transition={{ delay: arrival(i), duration: 0.2 }}
             >
               {stop.terminal ? (
                 <>
@@ -567,11 +549,12 @@ const accoladeClasses = (tone) =>
       ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20"
       : "bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700";
 
-// Strip-map rail (1600px and wider). The active station is the last section whose
-// top has crossed the activation line (header height + 32px); the last station wins
-// at the end of the page so short closing sections still light up. The fill is a
-// piecewise-linear map of scrollY onto the evenly spaced stations.
-const SectionRail = ({ items }) => {
+// Which section the reader is in. The active section is the last one whose top has
+// crossed the activation line (header height + 32px); the last one wins at the end of
+// the page so short closing sections still light up. `fill` is a piecewise-linear map
+// of scrollY onto evenly spaced stations. The header nav and the rail both read it,
+// so they can never disagree.
+const useSectionTracker = (items) => {
   const { scrollY } = useScroll();
   const fill = useMotionValue(0);
   const [active, setActive] = useState(-1);
@@ -613,6 +596,11 @@ const SectionRail = ({ items }) => {
 
   useMotionValueEvent(scrollY, "change", update);
 
+  return { active, fill };
+};
+
+// Strip-map rail (1600px and wider), driven by useSectionTracker.
+const SectionRail = ({ items, active, fill }) => {
   return (
     <nav aria-label="Section progress" className="hidden rail:block fixed left-4 top-1/2 z-20 -translate-y-1/2">
       <div className="relative">
@@ -652,18 +640,10 @@ const SectionRail = ({ items }) => {
   );
 };
 
+// Every framed photo opens bigger on click (PhotoViewer.jsx).
 const PhotoFigure = ({ photo, ratio = "aspect-[3/4]", className = "" }) => (
   <figure className={className}>
-    <img
-      src={photo.src}
-      width={photo.width}
-      height={photo.height}
-      alt={photo.alt}
-      loading="lazy"
-      decoding="async"
-      style={photo.position ? { objectPosition: photo.position } : undefined}
-      className={`w-full ${ratio} object-cover rounded-xl border border-slate-200 dark:border-slate-800`}
-    />
+    <PhotoButton photo={photo} className="w-full" imgClassName={ratio} />
     <figcaption className="mt-2 text-center text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono">
       {photo.caption}
     </figcaption>
@@ -832,15 +812,12 @@ const DetoursBand = ({ notes, reduce, dark }) => {
         <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
           {notes.map((note) => (
             <li key={note.activity} className="flex items-start gap-4">
-              <img
-                src={note.src}
-                width={note.width}
-                height={note.height}
-                alt={note.alt}
-                loading="lazy"
-                decoding="async"
-                style={{ objectPosition: note.position }}
-                className="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-950"
+              <PhotoButton
+                photo={{ ...note, caption: `${note.activity} · ${note.place}` }}
+                round
+                className="h-16 w-16 flex-shrink-0"
+                frameClassName="h-16 w-16 ring-2 ring-accent/70 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-950"
+                imgClassName="h-16 w-16"
               />
               <div className="min-w-0">
                 <h3 className="font-semibold text-slate-900 dark:text-white">{note.activity}</h3>
@@ -887,100 +864,6 @@ const ProjectLinks = ({ links, title, className = "" }) => (
   </div>
 );
 
-const verdictClasses = {
-  allowed: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
-  blocked: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20",
-  "draft-only": "bg-accent/10 text-accent border-accent/20",
-};
-
-const GuardrailPlayground = () => {
-  const [text, setText] = useState("");
-  const [result, setResult] = useState(null);
-  const [hint, setHint] = useState("");
-  const run = (value) => {
-    setText(value);
-    const verdict = evaluateGuardrail(value);
-    setResult(verdict);
-    setHint(verdict ? "" : "Type a command above, or pick a sample.");
-  };
-  return (
-    <div className="mt-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
-      <label
-        htmlFor="guardrail-input"
-        className="text-[11px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 font-mono"
-      >
-        Try the guardrails
-      </label>
-      <form
-        className="mt-2 flex gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          run(text);
-        }}
-      >
-        <input
-          id="guardrail-input"
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="try: git push origin main"
-          autoComplete="off"
-          spellCheck="false"
-          className={`min-w-0 flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 h-10 text-sm font-mono text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 ${focusRing}`}
-        />
-        <button
-          type="submit"
-          className={`inline-flex items-center rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 h-10 text-sm font-medium hover:opacity-90 transition-opacity ${focusRing}`}
-        >
-          Run
-        </button>
-      </form>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {GUARDRAIL_EXAMPLES.map((example) => (
-          <button
-            key={example}
-            type="button"
-            onClick={() => run(example)}
-            className={`rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2.5 py-2 md:py-1 text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-500 transition-colors ${focusRing}`}
-          >
-            {example}
-          </button>
-        ))}
-      </div>
-      <div className="mt-4 min-h-[3.5rem]" aria-live="polite" data-guardrail-result>
-        {hint && !result && (
-          <p className="text-sm text-slate-600 dark:text-slate-400">{hint}</p>
-        )}
-        {result && (
-          <div className="flex flex-col gap-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide border font-mono ${verdictClasses[result.verdict]}`}
-              >
-                {result.verdict}
-              </span>
-              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{result.boundary}</span>
-            </div>
-            <p className="text-sm text-slate-700 dark:text-slate-300">{result.then}</p>
-          </div>
-        )}
-      </div>
-      <p className="mt-3 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-        Mirrors the five boundaries in my second brain&rsquo;s USER.md. The real checks are Python
-        PreToolUse hooks, regression-tested in CI.{" "}
-        <a
-          href="https://github.com/Nishanth-G-Palaniswami/second-brain"
-          target="_blank"
-          rel="noreferrer"
-          className={`inline-flex items-center ${tapTarget} underline underline-offset-4 hover:text-accent transition-colors rounded ${focusRing}`}
-        >
-          See the rules
-        </a>
-      </p>
-    </div>
-  );
-};
-
 // Footer clock: New York time. Re-renders on the minute; no aria-live so it never
 // interrupts a screen reader.
 const CLOCK_CITIES = [{ city: "New York", zone: "America/New_York" }];
@@ -1022,6 +905,8 @@ export default function Portfolio() {
   const [sailDetailsOpen, setSailDetailsOpen] = useState(false);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
+  const { active: railActive, fill: railFill } = useSectionTracker(RAIL_ITEMS);
+  const currentHref = railActive >= 0 ? RAIL_ITEMS[railActive].href : null;
 
   // Deep links: the browser scrolls to the fragment before React has rendered the
   // target, so a shared /#projects or /#detours link lands at the top. Scroll once
@@ -1082,6 +967,25 @@ export default function Portfolio() {
     }
   }, [darkMode]);
 
+  // The whole page crossfades as one picture (View Transitions). The DOM has to change
+  // inside the callback, so the class flips there and React renders synchronously.
+  // Per-element color transitions are paused meanwhile so they don't fade a second time.
+  // Without the API, or under reduced motion, the theme switches instantly.
+  const toggleTheme = () => {
+    const next = !darkMode;
+    if (!document.startViewTransition || reduce) {
+      setDarkMode(next);
+      return;
+    }
+    const root = document.documentElement;
+    root.classList.add("theme-switching");
+    const vt = document.startViewTransition(() => {
+      root.classList.toggle("dark", next);
+      flushSync(() => setDarkMode(next));
+    });
+    vt.finished.finally(() => root.classList.remove("theme-switching"));
+  };
+
   return (
     <div
       id="top"
@@ -1095,7 +999,8 @@ export default function Portfolio() {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/85 backdrop-blur">
+      {/* Phones get a solid header: the blur is the one measurable scroll cost there. */}
+      <header className="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 md:bg-white/80 md:dark:bg-slate-900/85 md:backdrop-blur">
         <div className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex items-center justify-between">
           <a
             href="#top"
@@ -1128,20 +1033,37 @@ export default function Portfolio() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex rail:hidden items-center gap-4 text-sm" aria-label="Primary">
-            {NAV_ITEMS.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className={`px-1 py-1 rounded hover:underline underline-offset-4 ${focusRing}`}
-              >
-                {n.label}
-              </a>
-            ))}
+            {NAV_ITEMS.map((n) => {
+              const current = n.href === currentHref;
+              return (
+                <a
+                  key={n.href}
+                  href={n.href}
+                  aria-current={current ? "location" : undefined}
+                  className={`relative px-1 py-1 rounded transition-colors duration-150 ${
+                    current
+                      ? "text-slate-900 dark:text-white"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  } ${focusRing}`}
+                >
+                  {n.label}
+                  {/* One bar, shared by layoutId, so it slides from the last section to this one. */}
+                  {current && (
+                    <motion.span
+                      layoutId="nav-current"
+                      aria-hidden="true"
+                      className="absolute inset-x-1 -bottom-0.5 h-0.5 rounded-full bg-accent"
+                      transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 520, damping: 42 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleTheme}
               className={`hidden sm:inline-flex items-center justify-center h-11 w-11 md:h-9 md:w-9 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${focusRing}`}
               aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               aria-pressed={darkMode}
@@ -1181,12 +1103,17 @@ export default function Portfolio() {
           </div>
         </div>
 
-        {/* Mobile nav drawer */}
-        {mobileNavOpen && (
-          <nav
+        {/* Mobile nav drawer: it overlays the page instead of pushing it down, so its
+            exit fade never changes the page height under a link's jump. */}
+        <AnimatePresence>
+          {mobileNavOpen && (
+          <motion.nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="lg:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            className="lg:hidden absolute inset-x-0 top-full border-y border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg shadow-slate-900/10 dark:shadow-black/40"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0, transition: reduce ? { duration: 0 } : { duration: 0.2, ease: [0.22, 1, 0.36, 1] } }}
+            exit={{ opacity: 0, y: -8, transition: reduce ? { duration: 0 } : { duration: 0.15, ease: "easeIn" } }}
           >
             <ul className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-3 flex flex-col gap-1">
               {NAV_ITEMS.map((n) => (
@@ -1194,7 +1121,10 @@ export default function Portfolio() {
                   <a
                     href={n.href}
                     onClick={() => setMobileNavOpen(false)}
-                    className={`block px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
+                    aria-current={n.href === currentHref ? "location" : undefined}
+                    className={`block px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                      n.href === currentHref ? "text-accent font-medium" : ""
+                    } ${focusRing}`}
                   >
                     {n.label}
                   </a>
@@ -1203,7 +1133,7 @@ export default function Portfolio() {
               <li className="mt-1 pt-2 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
-                  onClick={() => setDarkMode(!darkMode)}
+                  onClick={toggleTheme}
                   className={`w-full flex items-center justify-between px-3 py-3 rounded-md text-base hover:bg-slate-100 dark:hover:bg-slate-800 ${focusRing}`}
                   aria-pressed={darkMode}
                 >
@@ -1221,8 +1151,9 @@ export default function Portfolio() {
                 </button>
               </li>
             </ul>
-          </nav>
-        )}
+          </motion.nav>
+          )}
+        </AnimatePresence>
         {/* Scroll progress where the rail does not fit */}
         <motion.span
           aria-hidden="true"
@@ -1231,7 +1162,7 @@ export default function Portfolio() {
         />
       </header>
 
-      <SectionRail items={RAIL_ITEMS} />
+      <SectionRail items={RAIL_ITEMS} active={railActive} fill={railFill} />
 
       <main id="main" className="mx-auto max-w-[clamp(20rem,min(92vw,80rem),80rem)] px-4 py-12 md:py-20">
         {/* Hero */}
@@ -1629,47 +1560,58 @@ export default function Portfolio() {
           kicker="selected work"
         >
           <div className="space-y-6">
-            {PROJECTS.filter((p) => !p.compact).map((p) => (
-              <article
-                key={p.title}
-                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col"
-              >
-                {p.accolade && (
-                  <span
-                    className={
-                      "self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide mb-3 font-mono " +
-                      accoladeClasses(p.accolade.tone)
-                    }
-                  >
-                    {p.accolade.tone === "violet" && (
-                      <BookOpen className="h-3 w-3" aria-hidden="true" />
+            {PROJECTS.filter((p) => !p.compact).map((p) => {
+              // A project with a demo shows it beside its claims: the demo is the evidence.
+              const Demo = DEMOS[p.widget];
+              return (
+                <article
+                  key={p.title}
+                  className={`rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 ${Demo ? "lg:grid lg:grid-cols-5 lg:gap-8" : ""}`}
+                >
+                  <div className={`flex flex-col ${Demo ? "lg:col-span-2" : ""}`}>
+                    {p.accolade && (
+                      <span
+                        className={
+                          "self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide mb-3 font-mono " +
+                          accoladeClasses(p.accolade.tone)
+                        }
+                      >
+                        {p.accolade.tone === "violet" && (
+                          <BookOpen className="h-3 w-3" aria-hidden="true" />
+                        )}
+                        {p.accolade.label}
+                      </span>
                     )}
-                    {p.accolade.label}
-                  </span>
-                )}
-                <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
-                <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>
-                  {p.summary}
-                </p>
+                    <h3 className="text-lg font-semibold tracking-tight font-display">{p.title}</h3>
+                    <p className={`mt-2 ${bodyCopy} text-slate-600 dark:text-slate-400 leading-relaxed`}>
+                      {p.summary}
+                    </p>
 
-                <ul className={`mt-4 space-y-1.5 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
-                  {p.impact.map((i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
-                      <span>{i}</span>
-                    </li>
-                  ))}
-                </ul>
+                    <ul className={`mt-4 space-y-1.5 ${bodyCopy} text-slate-800 dark:text-slate-200`}>
+                      {p.impact.map((i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="text-accent flex-shrink-0" aria-hidden="true">→</span>
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-                {p.widget === "guardrails" && <GuardrailPlayground />}
+                    <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+                      {p.stackLine}
+                    </p>
 
-                <p className="mt-5 text-xs text-slate-500 dark:text-slate-400 font-mono">
-                  {p.stackLine}
-                </p>
-
-                <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
-              </article>
-            ))}
+                    <ProjectLinks links={p.links} title={p.title} className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800" />
+                  </div>
+                  {/* The demo column stretches to the card's height and the panel fills it, so the
+                      panel's bottom edge meets the text column's; it grows downward as a call plays. */}
+                  {Demo && (
+                    <div className="mt-6 min-w-0 lg:col-span-3 lg:mt-0 lg:flex lg:flex-col">
+                      <Demo />
+                    </div>
+                  )}
+                </article>
+              );
+            })}
 
             {/* Smaller projects, one row each */}
             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
